@@ -1,0 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   new_ast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/18 12:04:04 by agaroux           #+#    #+#             */
+/*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+t_ast	*create_ast_node(int type, char *value)
+{
+	t_ast	*new;
+
+	new = malloc(sizeof(t_ast));
+	if (!new)
+		return (NULL);
+	new->type = type;
+	new->value = ft_strdup(value);
+	if (!new->value)
+		return (NULL);
+	new->left = NULL;
+	new->right = NULL;
+	new->parent = NULL;
+	new->children = NULL;
+	new->child_count = 0;
+	new->target = NULL;
+	return (new);
+}
+
+void	add_ast_child(t_ast *parent, t_ast *child)
+{
+	t_ast	**new_children;
+	int		i;
+
+	i = 0;
+	if (!parent || !child)
+		return ;
+	new_children = malloc(sizeof(t_ast *) * (parent->child_count + 1));
+	if (!new_children)
+		return ;
+	while (i < parent->child_count)
+	{
+		new_children[i] = parent->children[i];
+		i++;
+	}
+	new_children[parent->child_count] = child;
+	free(parent->children);
+	parent->children = new_children;
+	parent->child_count++;
+	child->parent = parent;
+}
+
+static char	*get_path_var(t_ast **env)
+{
+	t_ast	*current;
+	int		i;
+
+	current = *env;
+	i = 0;
+	while (current->env->env[i])
+	{
+		if (strncmp(current->env->env[i], "PATH=", 5) == 0)
+			return (current->env->env[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
+static char	*search_in_paths(char **paths, const char *cmd)
+{
+	char	*full_path;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+	{
+		full_path = ft_strjoin_slash(paths[i], cmd);
+		if (access(full_path, X_OK) == 0)
+		{
+			free_split(paths);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	free_split(paths);
+	return (NULL);
+}
+
+char	*get_cmd_path(const char *cmd, t_ast **env)
+{
+	char	*path_var;
+	char	**paths;
+
+	if (strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	path_var = get_path_var(env);
+	if (!path_var)
+		return (NULL);
+	paths = ft_split(path_var, ":");
+	if (!paths)
+		return (NULL);
+	return (search_in_paths(paths, cmd));
+}

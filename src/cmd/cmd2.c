@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:01:46 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 16:08:11 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:46:42 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	exit_recognition(char **argv, int i, t_ast **env)
 		else
 		{
 			(*env)->env->error_code = atoi(argv[i + 1]) % 256;
+			cleanup_readline_resources();
 			exit((*env)->env->error_code);
 		}
 	}
@@ -61,12 +62,14 @@ void	exit_recognition(char **argv, int i, t_ast **env)
 	{
 		if (g_exit_code >= 128)
 			(*env)->env->error_code = g_exit_code;
+		cleanup_readline_resources();
 		exit((*env)->env->error_code);
 	}
 }
 
 void	num_has_sign(t_ast **env)
 {
+	cleanup_readline_resources();
 	exit((*env)->env->error_code);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:31:43 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ static int	handle_pipe_creation(t_pipeline_data *data)
 {
 	if (pipe(data->pipefd) < 0)
 	{
-		free(data->children);
+		if (data->children)
+		{
+			free(data->children);
+			data->children = NULL;
+		}
 		return (-1);
 	}
 	return (0);
@@ -41,7 +45,8 @@ static void	handle_pipe_child(t_ast *cur, t_ast **head, t_ast **env,
 
 static void	handle_pipe_parent(t_pipeline_data *data, pid_t pid)
 {
-	data->children[data->idx++] = pid;
+	// No longer store PID - we'll wait for any child with waitpid(-1)
+	(void)pid; // Mark as unused to avoid compiler warning
 	close(data->pipefd[1]);
 	if (data->cur_in != STDIN_FILENO)
 		close(data->cur_in);

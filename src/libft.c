@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:41:26 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/09 14:26:55 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:37:11 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ void	*ft_calloc(size_t nmemb, size_t size)
 char	*ft_strdup(const char *s1)
 {
 	char	*dst;
+	size_t	len;
 	size_t	i;
 
-	dst = (char *)malloc(ft_strlen(s1) + 1);
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
+	dst = (char *)malloc(len + 1);
 	if (!dst)
-		return (0);
+		return (NULL);
 	i = 0;
-	while (s1[i])
+	while (i < len)
 	{
 		dst[i] = s1[i];
 		i++;

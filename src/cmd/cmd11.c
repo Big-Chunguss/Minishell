@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd11.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:56:59 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 16:16:08 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:46:42 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	free_env_env(t_ast *env)
 void	too_much_exit(t_ast **env)
 {
 	(*env)->env->error_code = 1;
+	cleanup_readline_resources();
 	exit((*env)->env->error_code);
 }
 

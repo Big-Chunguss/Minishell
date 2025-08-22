@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd1.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:47:07 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 15:57:40 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:37:11 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	initialise_exp(t_ast **env, char **envp)
 	{
 		current->env->export[i] = cat_dup(envp[i]);
 		if (!current->env->export[i])
+		{
 			del_export(env);
+			return ;
+		}
 		i++;
 	}
 	current->env->export[i] = NULL;
@@ -72,10 +75,13 @@ void	del_export(t_ast **env)
 
 	i = 0;
 	current = *env;
-	if (!current || !current->env)
+	if (!current || !current->env || !current->env->export)
 		return ;
-	while (i > 0)
+	while (current->env->export[i])
+	{
 		free(current->env->export[i]);
+		i++;
+	}
 	free(current->env->export);
 	current->env->export = NULL;
 	return ;

@@ -6,23 +6,18 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:24:00 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/20 15:55:42 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:37:11 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_lstadd_back_with_quote_info(t_token **lst, t_token *new, char *str,
+void	ft_lstadd_back_with_quote_info(t_token **lst, t_token *new,
 		int was_quoted)
 {
 	t_token	*current;
 
-	new->value = str;
-	new->was_quoted = was_quoted;
-	if (was_quoted)
-		new->type = WORD;
-	else
-		new->type = check_type(str);
+	(void)was_quoted;  // Already set in ft_lstnew_with_quote_info
 	new->next = NULL;
 	new->prev = NULL;
 	if (!*lst)
@@ -55,13 +50,14 @@ void	free_stack(t_token **stack)
 	t_token	*current;
 	t_token	*next;
 
-	if (!*stack)
+	if (!stack || !*stack)
 		return ;
 	current = *stack;
-	next = current->next;
 	while (current != NULL)
 	{
 		next = current->next;
+		if (current->value)
+			free(current->value);
 		free(current);
 		current = next;
 	}

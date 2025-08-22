@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 11:30:19 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/10 11:43:58 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 15:31:43 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,14 @@ static char	*join_expanded_parts(char **parts, char *val)
 		tmp = ft_strdup("");
 	res = ft_strjoin(tmp, parts[2]);
 	if (!res)
+	{
+		free(tmp);  // Free tmp before reassigning res
 		res = ft_strdup("");
-	free(tmp);
+	}
+	else
+	{
+		free(tmp);  // Free tmp in the success case too
+	}
 	return (res);
 }
 

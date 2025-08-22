@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:24:00 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/10 11:55:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 14:37:11 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ t_token	*ft_lstnew_with_quote_info(char *str, int was_quoted)
 
 	element = malloc(sizeof(t_token));
 	if (!element)
-		return (0);
+	{
+		if (str)
+			free(str);
+		return (NULL);
+	}
 	element->value = str;
 	element->was_quoted = was_quoted;
 	if (was_quoted)
@@ -70,18 +74,26 @@ int	create_list_with_quote_info(t_token **start, t_token_info *tokens,
 {
 	t_token	*new;
 	int		i;
+	char	*str_copy;
 
+	*start = NULL;
 	i = 0;
 	while (i < token_count)
 	{
-		new = ft_lstnew_with_quote_info(tokens[i].value, tokens[i].was_quoted);
-		if (!new)
+		str_copy = ft_strdup(tokens[i].value);
+		if (!str_copy)
 		{
 			free_stack(start);
 			return (0);
 		}
-		ft_lstadd_back_with_quote_info(start, new, tokens[i].value,
-			tokens[i].was_quoted);
+		new = ft_lstnew_with_quote_info(str_copy, tokens[i].was_quoted);
+		if (!new)
+		{
+			free(str_copy);
+			free_stack(start);
+			return (0);
+		}
+		ft_lstadd_back_with_quote_info(start, new, 0);  // Don't duplicate was_quoted setting
 		i++;
 	}
 	return (1);

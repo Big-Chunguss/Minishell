@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 16:26:39 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,23 @@ void	run_command(t_ast *node, t_ast **head, t_ast **env,
 	int					is_external;
 	t_cleanup_params	cleanup;
 
+	// Handle NULL node case (shouldn't happen now) or empty command (redirection-only)
+	if (!node || !node->value || ft_strlen(node->value) == 0)
+	{
+		t_cleanup_params	redir_cleanup;
+		
+		redir_cleanup.head = head;
+		redir_cleanup.env = env;
+		redir_cleanup.tab = NULL;
+		redir_cleanup.path = NULL;
+		setup_command_environment(params);
+		// Apply redirections if node exists
+		if (node && apply_redirections2(node) == -1)
+			cleanup_and_exit(1, &redir_cleanup);
+		// For redirection-only commands, just exit successfully
+		cleanup_and_exit(0, &redir_cleanup);
+	}
+	
 	tab = NULL;
 	path = NULL;
 	cleanup.head = head;
@@ -95,6 +112,27 @@ void	handle_command_execution(t_ast *node, t_ast **head, t_ast **env,
 	pid_t	pid;
 	int		status;
 
+	// Handle redirection-only commands (empty command string)
+	if (!node || !node->value || ft_strlen(node->value) == 0)
+	{
+		pid = fork();
+		if (pid == 0)
+			run_command(node, head, env, params);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			(*env)->env->error_code = WEXITSTATUS(status);
+		return;
+	}
+
+	// Check if it's a builtin command - execute in parent process without fork
+	if (cmd_recognize(node->value) == 0)
+	{
+		// Execute builtin in parent process
+		execute_builtin_command(node, head, env, params);
+		return;
+	}
+
+	// For external commands, fork as usual
 	pid = fork();
 	if (pid == 0)
 		run_command(node, head, env, params);
@@ -107,4 +145,33 @@ void	handle_command_execution(t_ast *node, t_ast **head, t_ast **env,
 		g_exit_code = 128 + WTERMSIG(status);
 		(*env)->env->error_code = g_exit_code;
 	}
+}
+
+void	execute_builtin_command(t_ast *node, t_ast **head, t_ast **env,
+		t_cmd_params *params)
+{
+	char	**tab;
+	char	*path;
+	t_cleanup_params	cleanup;
+
+	(void)head;  // May not be used for builtins
+	tab = NULL;
+	path = NULL;
+	cleanup.head = head;
+	cleanup.env = env;
+	
+	// Set up I/O redirections if any
+	setup_command_environment(params);
+	
+	// Build command arguments
+	prepare_command_args(node, &cleanup, &tab, &path);
+	
+	// Execute the builtin command (will handle it without exit())
+	build_in(tab, 0, env);
+	
+	// Clean up arguments
+	if (tab)
+		free_argv_shallow(tab);
+	if (path)
+		free(path);
 }

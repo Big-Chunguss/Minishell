@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/17 11:10:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 16:34:09 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void	infinite_read(t_token **lst, t_ast **env)
 		if (!strcmp(line, "exit"))
 		{
 			free(line);
+			cleanup_readline_resources();
 			break ;
 		}
 		process_tokens(lst, line, env);
+		free(line);
 	}
 }
 
@@ -110,10 +112,17 @@ int	main(int argc, char **argv, char **env)
 	initialise_exp(ast_head, env);
 	initialise_shlvl(ast_head);
 	infinite_read(lst, ast_head);
-	rl_clear_history();
+	cleanup_readline_resources();
 	final_exit_code = ast->env->error_code;
 	free_env_complete(ast);
 	if (g_exit_code >= 128)
 		return (g_exit_code);
 	return (final_exit_code % 256);
+}
+
+void	cleanup_readline_resources(void)
+{
+	rl_clear_history();
+	rl_cleanup_after_signal();
+	rl_deprep_terminal();
 }

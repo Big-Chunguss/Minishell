@@ -16,6 +16,8 @@ extern int	g_exit_code;
 
 void	cd_recognition(char **tab, int i, t_ast **env)
 {
+	int	error_code;
+
 	if (tab[i])
 		i++;
 	if (!tab[i])
@@ -25,9 +27,11 @@ void	cd_recognition(char **tab, int i, t_ast **env)
 	}
 	if (tab[i + 1])
 		cd_exit_code();
-	if (tab[i] && access_error(tab[i]) == 0)
+	error_code = access_error(tab[i]);
+	if (error_code == 0)
 		cd_rec_fnc(tab[i], env);
-	print_error(access_error(tab[i]), tab[i], env);
+	else
+		print_error(error_code, tab[i], env);
 	return ;
 }
 

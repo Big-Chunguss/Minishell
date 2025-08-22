@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 16:34:09 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int						should_break(t_extract_state *state);
 void					init_extract_state(t_extract_state *state,
 							const char *p);
 char					**ft_split(char *s, const char *delim);
+int						is_special_char(char c);
 /* Functions from ft_split_utils.c */
 int						is_delimiter(char c, const char *delim);
 int						skip_spaces(const char *s, int i);
@@ -234,7 +235,7 @@ void					free_stack(t_token **stack);
 int						ft_lstsize(t_token *lst);
 void					ft_lstadd_back(t_token **lst, t_token *new, char *str);
 void					ft_lstadd_back_with_quote_info(t_token **lst,
-							t_token *new, char *str, int was_quoted);
+							t_token *new, int was_quoted);
 int						create_list(t_token **start, char **str);
 int						create_list_with_quote_info(t_token **start,
 							t_token_info *tokens, int token_count);
@@ -243,7 +244,8 @@ t_token					*ft_lstnew_with_quote_info(char *str, int was_quoted);
 t_token_info			extract_token_with_quote_info(const char **s);
 void					execute_nodes(t_ast **head, t_ast **env);
 void					execute_nodes2(t_ast **head, t_ast **env);
-int						is_special_char(char c);
+int						validate_command_exists(const char *cmd, t_ast **env);
+int						pre_validate_ast(t_ast *node, t_ast **env);
 void					exec_pipe_right(t_ast *node, t_ast **head,
 							t_ast **env, t_pipe_data *data);
 void					exec_pipe_left(t_ast *node, t_ast **head,
@@ -371,11 +373,18 @@ void					run_pipeline_loop(t_ast **head, t_ast **env,
 							t_pipeline_data *data);
 void					wait_for_children(t_pipeline_data *data, pid_t last_pid,
 							t_ast **env);
+void					wait_for_all_pipeline_children(int cmd_count,
+							pid_t last_pid, t_ast **env);
 void					run_command(t_ast *node, t_ast **head, t_ast **env,
 							t_cmd_params *params);
 char					**build_argv(t_ast *node);
 int						apply_redirections2(t_ast *node);
 void					handle_command_execution(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
+void					execute_builtin_command(t_ast *node, t_ast **head,
+							t_ast **env, t_cmd_params *params);
+
+// Cleanup functions
+void					cleanup_readline_resources(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd9.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 19:00:32 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 17:23:51 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:46:42 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ void	add_exp_fnc(t_ast *current, char **temp, char *argv)
 void	cd_exit_code(void)
 {
 	g_exit_code = 1;
+	cleanup_readline_resources();
 	exit(g_exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:14:09 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 16:26:39 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ static t_ast	*parse_command_head(t_token **lst_ptr, t_ast **env)
 {
 	t_token	*lst;
 	t_ast	*cmd;
+	bool	has_redirections;
 
 	lst = *lst_ptr;
 	cmd = NULL;
+	has_redirections = false;
 	while (lst && define_type_from_token(lst, env) != NODE_PIPE)
 	{
 		if (define_type_from_token(lst, env) != NODE_REDIRECTION)
@@ -54,9 +56,16 @@ static t_ast	*parse_command_head(t_token **lst_ptr, t_ast **env)
 			lst = lst->next;
 			break ;
 		}
+		has_redirections = true;
 		lst = lst->next;
 		if (lst)
 			lst = lst->next;
+	}
+	
+	// If we have redirections but no command, create a pass-through command
+	if (!cmd && has_redirections)
+	{
+		cmd = create_ast_node(NODE_COMMAND, "");
 	}
 	*lst_ptr = lst;
 	return (cmd);

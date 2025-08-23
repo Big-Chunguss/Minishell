@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:16:42 by agaroux           #+#    #+#             */
-/*   Updated: 2025/07/08 13:05:51 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ char	*ft_replace(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	tmp = ft_calloc(sizeof(char), ft_strlen(buffer) - i);
+	i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
+	}
+	tmp = ft_calloc(sizeof(char), ft_strlen(buffer) - i + 1);
 	if (!tmp)
 		return (NULL);
-	i++;
 	j = 0;
 	while (buffer[i])
 		tmp[j++] = buffer[i++];
@@ -64,6 +69,7 @@ char	*ft_extract(char *buffer)
 char	*ft_buffer(int fd, char *buffer)
 {
 	char	*tmp;
+	char	*new_buffer;
 	int		bytes;
 
 	if (!buffer)
@@ -74,14 +80,20 @@ char	*ft_buffer(int fd, char *buffer)
 	{
 		tmp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		if (!tmp)
-			return (NULL);
+			return (free(buffer), NULL);
 		bytes = read(fd, tmp, BUFFER_SIZE);
 		if (bytes < 0)
-			return (free(tmp), NULL);
-		buffer = ft_strjoin(buffer, tmp);
-		if (!buffer)
+		{
+			free(tmp);
+			free(buffer);
 			return (NULL);
+		}
+		new_buffer = ft_strjoin(buffer, tmp);
+		free(buffer);
 		free(tmp);
+		if (!new_buffer)
+			return (NULL);
+		buffer = new_buffer;
 		if (bytes == 0 || ft_newline(buffer))
 			break ;
 	}
@@ -93,12 +105,38 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
+	if (fd == -42)
+	{
+		if (buffer)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-		return (free(buffer), NULL);
+	{
+		if (buffer)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		return (NULL);
+	}
 	buffer = ft_buffer(fd, buffer);
 	if (!buffer)
 		return (NULL);
 	line = ft_extract(buffer);
 	buffer = ft_replace(buffer);
+	if (!line && buffer)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
 	return (line);
+}
+
+void	cleanup_get_next_line(void)
+{
+	get_next_line(-42);
 }

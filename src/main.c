@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 16:34:09 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int argc, char **argv, char **env)
 
 void	cleanup_readline_resources(void)
 {
+	cleanup_get_next_line();
 	rl_clear_history();
 	rl_cleanup_after_signal();
 	rl_deprep_terminal();

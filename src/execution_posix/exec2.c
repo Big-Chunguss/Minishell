@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/21 19:10:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,18 @@ char	**build_argv(t_ast *node)
 int	apply_redirections2(t_ast *node)
 {
 	int		i;
-	t_ast	*child;
+	int		res;
 
+	if (!node)
+		return (0);
 	i = 0;
 	while (i < node->child_count)
 	{
-		child = node->children[i];
-		if (child->type == NODE_REDIRECTION)
+		if (node->children[i]->type == NODE_REDIRECTION)
 		{
-			if (process_redirection_child(child) == -1)
-				return (-1);
+			res = process_redirection_child(node->children[i]);
+			if (res == -1)
+				return (-1); // stop at first failing redirection
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 16:26:39 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,65 @@
 
 extern int	g_exit_code;
 
+static void	print_exec_error(const char *cmd, int code, int has_slash)
+{
+	if (code == 127)
+	{
+		if (has_slash)
+			fprintf(stderr, "%s: No such file or directory\n", cmd);
+		else
+			fprintf(stderr, "%s: command not found\n", cmd);
+	}
+	else if (code == 126)
+	{
+		if (is_directory(cmd))
+			fprintf(stderr, "%s: Is a directory\n", cmd);
+		else if (access(cmd, F_OK) == 0 && access(cmd, X_OK) != 0)
+			fprintf(stderr, "%s: Permission denied\n", cmd);
+	}
+}
+
+static int	classify_error(const char *cmd, char *resolved)
+{
+	int	has_slash;
+
+	has_slash = (strchr(cmd, '/') != NULL);
+	if (!resolved)
+		return (127);
+	if (is_directory(resolved))
+		return (126);
+	if (access(resolved, F_OK) == 0 && access(resolved, X_OK) != 0)
+		return (126);
+	return (0);
+}
+
 static void	handle_external_command(char **tab, char *path, t_ast **env,
 		t_ast **head)
 {
+	int			code;
 	t_cleanup_params	cleanup;
+	int			has_slash;
 
+	has_slash = (strchr(tab[0], '/') != NULL);
 	cleanup.head = head;
 	cleanup.env = env;
 	cleanup.tab = tab;
 	cleanup.path = path;
-	if (path == NULL || access(path, F_OK) < 0)
+	code = classify_error(tab[0], path);
+	if (code != 0)
 	{
-		command_not_found_error(tab[0]);
-		(*env)->env->error_code = 127;
-		cleanup_and_exit((*env)->env->error_code, &cleanup);
-	}
-	else if (is_directory(path) || access(path, X_OK) != 0)
-	{
-		(*env)->env->error_code = 126;
-		cleanup_and_exit((*env)->env->error_code, &cleanup);
+		print_exec_error(tab[0], code, has_slash);
+		(*env)->env->error_code = code;
+		cleanup_and_exit(code, &cleanup);
 	}
 	execve(path, tab, (*env)->env->env);
-	(*env)->env->error_code = 1;
+	if (errno == EACCES)
+		(*env)->env->error_code = 126;
+	else if (errno == ENOENT)
+		(*env)->env->error_code = 127;
+	else
+		(*env)->env->error_code = 1;
+	print_exec_error(tab[0], (*env)->env->error_code, has_slash);
 	cleanup_and_exit((*env)->env->error_code, &cleanup);
 }
 

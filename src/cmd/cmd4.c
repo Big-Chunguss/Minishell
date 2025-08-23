@@ -6,7 +6,7 @@
 /*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:59:42 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 15:49:22 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,34 @@ char	*cat_dup(char *s1)
 
 void	export_recognition(char **argv, int i, t_ast **env)
 {
+	int	invalid;
+	int	is_assign;
+
 	i++;
+	invalid = 0;
 	if (argv[i] == NULL)
+	{
 		show_export(env);
+		return ;
+	}
 	while (argv[i])
 	{
+		is_assign = (strchr(argv[i], '=') != NULL);
 		if (parse_exp(argv[i]) == 1)
 		{
-			(*env)->env->error_code = 1;
-			return ;
+			fprintf(stderr, "export: `%s': not a valid identifier\n", argv[i]);
+			invalid = 1;
 		}
-		if (parse_exp(argv[i]) != 1 && !strchr(argv[i], '='))
-		{
+		else if (!is_assign)
 			add_export(argv[i], env);
-			(*env)->env->error_code = 0;
-		}
-		if (parse_exp(argv[i]) != 1 && strchr(argv[i], '='))
+		else
 		{
 			add_env(argv[i], env);
 			add_export(argv[i], env);
-			(*env)->env->error_code = 0;
 		}
 		i++;
 	}
-	(*env)->env->error_code = 0;
-	return ;
+	(*env)->env->error_code = invalid ? 1 : 0;
 }
 
 void	add_env(char *argv, t_ast **env)

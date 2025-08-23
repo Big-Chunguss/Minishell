@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd6.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:10:14 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 18:40:10 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void	cd_recognition(char **tab, int i, t_ast **env)
 		return ;
 	}
 	if (tab[i + 1])
-		cd_exit_code();
+	{
+		fprintf(stderr, "cd: too many arguments\n");
+		(*env)->env->error_code = 1;
+		return ;
+	}
 	error_code = access_error(tab[i]);
 	if (error_code == 0)
 		cd_rec_fnc(tab[i], env);

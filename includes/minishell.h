@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 16:34:09 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ char					**ft_split_once_range(const char *s, char sep,
 char					**ft_split_dollar_range(const char *s, int start,
 							int end);
 void					tab_to_file(char **lines, const char *filename);
+int						tab_to_file_with_path(char **lines, const char *filename, char *temp_path_out, size_t path_size);
 char					*ft_substr(char const *s, unsigned int start,
 							size_t len);
 void					*ft_calloc(size_t nmemb, size_t size);
@@ -330,11 +331,13 @@ char					*ft_replace(char *buffer);
 char					*ft_extract(char *buffer);
 char					*ft_buffer(int fd, char *buffer);
 char					*get_next_line(int fd);
+void					cleanup_get_next_line(void);
 
 // Heredoc
 void					clean_heredoc(char **argv);
 void					read_heredoc(char *limiter, int quoted_limiter,
 							t_ast **env);
+void					read_heredoc_consume_only(char *limiter);
 void					free_tab(char **tab);
 void					check_heredoc(t_token **lst, t_ast **env);
 void					copy_tmp_to_file(const char *temp_path,

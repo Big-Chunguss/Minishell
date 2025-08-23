@@ -20,7 +20,7 @@ WHITE = \033[0;37m
 
 # Source files (all with correct relative paths and .c extensions)
 SRC = main.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.c libft4.c  expand2.c handle_quotes.c \
-	ft_split.c ft_split_utils.c ft_split2.c ft_itoa.c expand.c chained_list.c chained_list2.c \
+	ft_split.c ft_split_utils.c ft_split2.c ft_itoa.c expand.c chained_list.c chained_list2.c string_utils.c \
 	exit_status.c bash_split.c bash_split2.c bash_split3.c syntax_check.c syntax_check2.c \
 	heredoc/get_next_line.c heredoc/heredoc.c heredoc/heredoc_utlis.c heredoc/heredoc_utils2.c quotes2.c heredoc/read_heredoc.c \
 	execution_posix/exec.c execution_posix/exec_redirection.c \

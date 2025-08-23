@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:27:46 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ int	open_tempfile(const char *filename, char *temp_path,
 {
 	int	fd;
 
-	snprintf(temp_path, path_size, "/tmp/minishell_heredoc_%s_%d", filename,
-		getpid());
+	build_temp_path(temp_path, path_size, filename, getpid());
 	fd = open(temp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-		perror("open");
+	{
+		write(2, "open: ", 6);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
+	}
 	return (fd);
 }
 
@@ -68,7 +71,9 @@ int	write_all_lines(int fd, char **lines)
 		written = write(fd, lines[i], ft_strlen(lines[i]));
 		if (written < 0)
 		{
-			perror("write");
+			write(2, "write: ", 7);
+			write(2, strerror(errno), ft_strlen(strerror(errno)));
+			write(2, "\n", 1);
 			return (-1);
 		}
 		write(fd, "\n", 1);

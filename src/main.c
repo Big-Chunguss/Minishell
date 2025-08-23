@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	infinite_read(t_token **lst, t_ast **env)
 			continue ;
 		}
 		add_history(line);
-		if (!strcmp(line, "clear"))
+		if (!ft_strcmp(line, "clear"))
 			clear_history();
-		if (!strcmp(line, "exit"))
+		if (!ft_strcmp(line, "exit"))
 		{
 			free(line);
 			cleanup_readline_resources();

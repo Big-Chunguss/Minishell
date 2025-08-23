@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:14:09 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 16:26:39 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	define_type_from_token(t_token *token, t_ast **env)
 {
 	char	*cmd_path;
 
-	if (token->was_quoted && (!strcmp(token->value, "|")
-			|| !strcmp(token->value, "<") || !strcmp(token->value, ">")
-			|| !strcmp(token->value, ">>") || !strcmp(token->value, "<<")))
+	if (token->was_quoted && (!ft_strcmp(token->value, "|")
+			|| !ft_strcmp(token->value, "<") || !ft_strcmp(token->value, ">")
+			|| !ft_strcmp(token->value, ">>") || !ft_strcmp(token->value, "<<")))
 		return (NODE_ARGUMENT);
 	cmd_path = get_cmd_path(token->value, env);
 	if (cmd_path)
@@ -26,10 +26,10 @@ int	define_type_from_token(t_token *token, t_ast **env)
 		free(cmd_path);
 		return (NODE_COMMAND);
 	}
-	if (!strcmp(token->value, "<<") || !strcmp(token->value, "<")
-		|| !strcmp(token->value, ">>") || !strcmp(token->value, ">"))
+	if (!ft_strcmp(token->value, "<<") || !ft_strcmp(token->value, "<")
+		|| !ft_strcmp(token->value, ">>") || !ft_strcmp(token->value, ">"))
 		return (NODE_REDIRECTION);
-	if (!strcmp(token->value, "|"))
+	if (!ft_strcmp(token->value, "|"))
 		return (NODE_PIPE);
 	return (NODE_ARGUMENT);
 }

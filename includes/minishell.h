@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ int						contains_meta_character(char *str);
 char					*ft_strjoin_buffer(char const *s1, char const *s2,
 							char buffer);
 size_t					ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t					ft_strlcat(char *dst, const char *src, size_t dstsize);
 int						process_redirection_child(t_ast *child);
 
 char					*readline_open_quotes(char *str);
@@ -386,6 +387,11 @@ void					handle_command_execution(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
 void					execute_builtin_command(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
+
+// String utilities
+void	build_temp_path(char *temp_path, size_t path_size, const char *filename, int pid);
+void	ft_strcpy_safe(char *dst, const char *src, size_t size);
+void	ft_strcat_safe(char *dst, const char *src, size_t size);
 
 // Cleanup functions
 void					cleanup_readline_resources(void);

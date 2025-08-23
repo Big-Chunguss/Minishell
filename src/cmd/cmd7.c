@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd7.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:21:38 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 16:15:49 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	env_recognition(char **tab, int j, t_ast **env)
 		return ;
 	while (current->env->env[i])
 	{
-		printf("%s\n", current->env->env[i]);
+		write(1, current->env->env[i], ft_strlen(current->env->env[i]));
+		write(1, "\n", 1);
 		i++;
 	}
 	return ;
@@ -44,16 +45,16 @@ void	pwd_recognition(t_ast **env)
 	current = *env;
 	if (!current->env->env[i])
 		return ;
-	while (current->env->env[i] && strncmp(current->env->env[i], "PWD=", 4))
+	while (current->env->env[i] && ft_strncmp(current->env->env[i], "PWD=", 4))
 		i++;
-	if (current->env->env[i] && !strncmp(current->env->env[i], "PWD=", 4))
+	if (current->env->env[i] && !ft_strncmp(current->env->env[i], "PWD=", 4))
 	{
 		while (current->env->env[i][j] != '\0')
 		{
 			write(1, &current->env->env[i][j], 1);
 			j++;
 		}
-		printf("\n");
+		write(1, "\n", 1);
 		i++;
 	}
 	return ;

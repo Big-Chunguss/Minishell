@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:10:14 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	cd_recognition(char **tab, int i, t_ast **env)
 	}
 	if (tab[i + 1])
 	{
-		fprintf(stderr, "cd: too many arguments\n");
+		write(2, "cd: too many arguments\n", 23);
 		(*env)->env->error_code = 1;
 		return ;
 	}
@@ -46,15 +46,21 @@ void	print_error(int num, char *tab, t_ast **env)
 	if (num == 1)
 	{
 		if (!tab)
-			fprintf(stderr, "cd: No such file or directory\n");
+			write(2, "cd: No such file or directory\n", 30);
 		else
-			fprintf(stderr, "cd: %s: No such file or directory\n", tab);
+		{
+			write(2, "cd: ", 4);
+			write(2, tab, ft_strlen(tab));
+			write(2, ": No such file or directory\n", 28);
+		}
 		(*env)->env->error_code = 1;
 		return ;
 	}
 	if (num == 2)
 	{
-		fprintf(stderr, "cd: %s: Permission denied\n", tab);
+		write(2, "cd: ", 4);
+		write(2, tab, ft_strlen(tab));
+		write(2, ": Permission denied\n", 20);
 		(*env)->env->error_code = 1;
 		return ;
 	}

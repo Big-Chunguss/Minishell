@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd4.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:59:42 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	export_recognition(char **argv, int i, t_ast **env)
 		is_assign = (strchr(argv[i], '=') != NULL);
 		if (parse_exp(argv[i]) == 1)
 		{
-			fprintf(stderr, "export: `%s': not a valid identifier\n", argv[i]);
+			write(2, "export: `", 9);
+			write(2, argv[i], ft_strlen(argv[i]));
+			write(2, "': not a valid identifier\n", 26);
 			invalid = 1;
 		}
 		else if (!is_assign)

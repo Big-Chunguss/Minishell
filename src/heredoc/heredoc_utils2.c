@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:41:09 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,28 @@ int	tab_to_file_with_path(char **lines, const char *filename, char *temp_path_ou
 void	clean_heredoc(char **argv)
 {
 	char	temp_path[256];
-	char	cmd[300];
+	char	pid_str[16];
+	int		i;
+	int		pid;
 
 	if (!ft_strcmp(argv[1], "here_doc"))
 		free(argv[1]);
 	get_next_line(-1);
-	snprintf(temp_path, sizeof(temp_path), "/tmp/minishell_heredoc_*_%d",
-		getpid());
-	snprintf(cmd, sizeof(cmd), "rm -f %s 2>/dev/null", temp_path);
-	system(cmd);
+	pid = getpid();
+	i = 0;
+	if (pid == 0)
+		pid_str[i++] = '0';
+	else
+	{
+		while (pid > 0)
+		{
+			pid_str[i++] = (pid % 10) + '0';
+			pid /= 10;
+		}
+	}
+	pid_str[i] = '\0';
+	ft_strlcpy(temp_path, "/tmp/minishell_heredoc_*_", sizeof(temp_path));
+	ft_strlcat(temp_path, pid_str, sizeof(temp_path));
 }
 
 void	check_heredoc(t_token **lst, t_ast **env)

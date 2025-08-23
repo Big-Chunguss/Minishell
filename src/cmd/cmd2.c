@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:01:46 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	exit_recognition(char **argv, int i, t_ast **env)
 			number_has_sign(argv, i, env);
 		else
 		{
-			(*env)->env->error_code = atoi(argv[i + 1]) % 256;
+			(*env)->env->error_code = ft_atoi(argv[i + 1]) % 256;
 			cleanup_readline_resources();
 			exit((*env)->env->error_code);
 		}
@@ -75,7 +75,9 @@ void	num_has_sign(t_ast **env)
 
 void	valid_number_fail(t_ast **env, char *arg)
 {
-	fprintf(stderr, "exit: %s: numeric argument required\n", arg);
+	write(2, "exit: ", 6);
+	write(2, arg, ft_strlen(arg));
+	write(2, ": numeric argument required\n", 28);
 	exit((*env)->env->error_code);
 }
 
@@ -93,7 +95,7 @@ void	echo_recognition(char **argv, int i, t_ast **env)
 	}
 	while (argv[i])
 	{
-		write(1, argv[i], strlen(argv[i]));
+		write(1, argv[i], ft_strlen(argv[i]));
 		if (argv[i + 1])
 			write(1, " ", 1);
 		i++;

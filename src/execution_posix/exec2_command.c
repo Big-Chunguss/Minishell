@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,29 @@
 
 extern int	g_exit_code;
 
+static void	write_error_msg(const char *cmd, const char *msg)
+{
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": ", 2);
+	write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
+}
+
 static void	print_exec_error(const char *cmd, int code, int has_slash)
 {
 	if (code == 127)
 	{
 		if (has_slash)
-			fprintf(stderr, "%s: No such file or directory\n", cmd);
+			write_error_msg(cmd, "No such file or directory");
 		else
-			fprintf(stderr, "%s: command not found\n", cmd);
+			write_error_msg(cmd, "command not found");
 	}
 	else if (code == 126)
 	{
 		if (is_directory(cmd))
-			fprintf(stderr, "%s: Is a directory\n", cmd);
+			write_error_msg(cmd, "Is a directory");
 		else if (access(cmd, F_OK) == 0 && access(cmd, X_OK) != 0)
-			fprintf(stderr, "%s: Permission denied\n", cmd);
+			write_error_msg(cmd, "Permission denied");
 	}
 }
 

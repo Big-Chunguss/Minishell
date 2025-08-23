@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:33:49 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,22 @@ extern int	g_exit_code;
 static int	print_redir_error(const char *path)
 {
 	if (errno == EACCES)
-		fprintf(stderr, "%s: Permission denied\n", path);
+	{
+		write(2, path, ft_strlen(path));
+		write(2, ": Permission denied\n", 20);
+	}
 	else if (errno == ENOENT)
-		fprintf(stderr, "%s: No such file or directory\n", path);
+	{
+		write(2, path, ft_strlen(path));
+		write(2, ": No such file or directory\n", 28);
+	}
 	else
-		perror(path);
+	{
+		write(2, path, ft_strlen(path));
+		write(2, ": ", 2);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
+	}
 	return (-1);
 }
 
@@ -77,39 +88,57 @@ static int	handle_output_redirection(t_ast *child)
 
 static char	*find_heredoc_file(const char *limiter)
 {
-	char		pattern[256];
-	char		*result;
-	char		command[512];
-	FILE		*fp;
-	char		line[256];
-	int			len;
-	const char	*trimmed_limiter;
+	char			pattern[256];
+	char			*result;
+	DIR				*dir;
+	struct dirent	*entry;
+	const char		*trimmed_limiter;
+	char			prefix[256];
+	char			best_file[256];
+	struct stat		st;
+	struct stat		best_stat;
+	int				found;
 
 	// Skip leading whitespace in limiter
 	trimmed_limiter = limiter;
 	while (*trimmed_limiter && (*trimmed_limiter == ' ' || *trimmed_limiter == '\t'))
 		trimmed_limiter++;
 
-	// Create a pattern to match heredoc files for this limiter, sorted by time (most recent first)
-	snprintf(pattern, sizeof(pattern), "/tmp/minishell_heredoc_%s_*", trimmed_limiter);
-	snprintf(command, sizeof(command), "ls -t %s 2>/dev/null | head -1", pattern);
-	
-	fp = popen(command, "r");
-	if (!fp)
+	// Create prefix pattern
+	ft_strlcpy(prefix, "minishell_heredoc_", sizeof(prefix));
+	ft_strlcat(prefix, trimmed_limiter, sizeof(prefix));
+	ft_strlcat(prefix, "_", sizeof(prefix));
+
+	dir = opendir("/tmp");
+	if (!dir)
 		return (NULL);
 	
-	if (fgets(line, sizeof(line), fp) != NULL)
+	found = 0;
+	best_stat.st_mtime = 0;
+	while ((entry = readdir(dir)) != NULL)
 	{
-		// Remove newline if present
-		len = ft_strlen(line);
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
-		result = ft_strdup(line);
+		if (ft_strncmp(entry->d_name, prefix, ft_strlen(prefix)) == 0)
+		{
+			ft_strlcpy(pattern, "/tmp/", sizeof(pattern));
+			ft_strlcat(pattern, entry->d_name, sizeof(pattern));
+			if (stat(pattern, &st) == 0)
+			{
+				if (!found || st.st_mtime > best_stat.st_mtime)
+				{
+					best_stat = st;
+					ft_strlcpy(best_file, pattern, sizeof(best_file));
+					found = 1;
+				}
+			}
+		}
 	}
+	closedir(dir);
+	
+	if (found)
+		result = ft_strdup(best_file);
 	else
 		result = NULL;
 	
-	pclose(fp);
 	return (result);
 }
 
@@ -119,9 +148,9 @@ int	process_redirection_child(t_ast *child)
 
 	if (g_exit_code == 130)
 		return (-1);
-	if (!strcmp(child->value, "<"))
+	if (!ft_strcmp(child->value, "<"))
 		return (handle_input_redirection(child));
-	else if (!strcmp(child->value, "<<"))
+	else if (!ft_strcmp(child->value, "<<"))
 	{
 		// For heredoc, find the temp file
 		heredoc_path = find_heredoc_file(child->target->value);
@@ -135,7 +164,7 @@ int	process_redirection_child(t_ast *child)
 		child->target->value = heredoc_path;
 		return (handle_input_redirection(child));
 	}
-	else if (!strcmp(child->value, ">") || !strcmp(child->value, ">>"))
+	else if (!ft_strcmp(child->value, ">") || !ft_strcmp(child->value, ">>"))
 		return (handle_output_redirection(child));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:10:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,9 @@ char					**ft_split_once_range(const char *s, char sep,
 char					**ft_split_dollar_range(const char *s, int start,
 							int end);
 void					tab_to_file(char **lines, const char *filename);
-int						tab_to_file_with_path(char **lines, const char *filename, char *temp_path_out, size_t path_size);
+int						tab_to_file_with_path(char **lines,
+							const char *filename, char *temp_path_out,
+							size_t path_size);
 char					*ft_substr(char const *s, unsigned int start,
 							size_t len);
 void					*ft_calloc(size_t nmemb, size_t size);
@@ -325,6 +327,11 @@ void					number_has_sign(char **argv, int i, t_ast **env);
 void					too_much_exit(t_ast **env);
 void					number_not_valid(char **argv, int i, t_ast **env);
 
+// cmd1_utils.c
+int						count_envp_entries(char **envp);
+int						allocate_export_array(t_ast *current, int count);
+int						copy_envp_entries(t_ast **env, char **envp);
+
 // gnl
 char					*ft_strjoin(char const *s1, char const *s2);
 int						ft_newline(const char *str);
@@ -333,6 +340,11 @@ char					*ft_extract(char *buffer);
 char					*ft_buffer(int fd, char *buffer);
 char					*get_next_line(int fd);
 void					cleanup_get_next_line(void);
+
+// get_next_line_utils.c
+void					cleanup_buffer(char **buffer);
+int						validate_fd_and_cleanup(int fd, char **buffer);
+char					*read_and_join(char *buffer, int fd, int *should_break);
 
 // Heredoc
 void					clean_heredoc(char **argv);
@@ -388,10 +400,23 @@ void					handle_command_execution(t_ast *node, t_ast **head,
 void					execute_builtin_command(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
 
-// String utilities
-void	build_temp_path(char *temp_path, size_t path_size, const char *filename, int pid);
-void	ft_strcpy_safe(char *dst, const char *src, size_t size);
-void	ft_strcat_safe(char *dst, const char *src, size_t size);
+// exec2_command_helpers.c
+void					write_error_msg(const char *cmd, const char *msg);
+void					print_exec_error(const char *cmd, int code, int has_slash);
+int						classify_error(const char *cmd, char *resolved);
+void					setup_command_environment(t_cmd_params *params);
+int						prepare_command_args(t_ast *node, t_cleanup_params *cleanup,
+							char ***tab, char **path);
+void					handle_empty_cmd_fork(t_ast *node, t_ast **head,
+							t_ast **env, t_cmd_params *params);
+
+// String utilities  
+void					build_temp_path(char *temp_path, size_t path_size,
+							const char *filename, int pid);
+void					ft_strcpy_safe(char *dst, const char *src,
+							size_t size);
+void					ft_strcat_safe(char *dst, const char *src,
+							size_t size);
 
 // Cleanup functions
 void					cleanup_readline_resources(void);

@@ -22,12 +22,12 @@ WHITE = \033[0;37m
 SRC = main.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.c libft4.c  expand2.c handle_quotes.c \
 	ft_split.c ft_split_utils.c ft_split2.c ft_itoa.c expand.c chained_list.c chained_list2.c string_utils.c \
 	exit_status.c bash_split.c bash_split2.c bash_split3.c syntax_check.c syntax_check2.c \
-	heredoc/get_next_line.c heredoc/heredoc.c heredoc/heredoc_utlis.c heredoc/heredoc_utils2.c quotes2.c heredoc/read_heredoc.c \
+	heredoc/get_next_line.c heredoc/get_next_line_utils.c heredoc/heredoc.c heredoc/heredoc_utlis.c heredoc/heredoc_utils2.c quotes2.c heredoc/read_heredoc.c \
 	execution_posix/exec.c execution_posix/exec_redirection.c \
-	cmd/cmd1.c cmd/cmd2.c cmd/cmd3.c cmd/cmd4.c cmd/cmd5.c cmd/cmd6.c cmd/cmd7.c cmd/cmd8.c cmd/cmd9.c cmd/cmd10.c cmd/cmd11.c \
+	cmd/cmd1.c cmd/cmd1_utils.c cmd/cmd2.c cmd/cmd3.c cmd/cmd4.c cmd/cmd5.c cmd/cmd6.c cmd/cmd7.c cmd/cmd8.c cmd/cmd9.c cmd/cmd10.c cmd/cmd11.c \
 	ast/new_ast.c ast/new_ast2.c ast/new_ast3.c ast/new_ast4.c ast/new_ast5.c signal/signal.c signal/heredoc_signals.c \
 	execution_posix/exec2.c execution_posix/exec2_utils.c execution_posix/exec2_pipeline.c execution_posix/exec2_wait.c \
-	execution_posix/exec2_command.c execution_posix/exec2_main.c
+	execution_posix/exec2_command.c execution_posix/exec2_command_helpers.c execution_posix/exec2_main.c
 
 # Object files, with obj/ prefix and .o extension
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

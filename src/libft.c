@@ -9,14 +9,13 @@
 /*   Updated: 2025/08/22 14:37:11 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
+
 {
 	size_t			i;
 	unsigned char	*ptr;
-
 	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (0);
@@ -31,13 +30,12 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (ptr);
 	}
 }
-
 char	*ft_strdup(const char *s1)
+
 {
 	char	*dst;
 	size_t	len;
 	size_t	i;
-
 	if (!s1)
 		return (NULL);
 	len = ft_strlen(s1);
@@ -53,11 +51,10 @@ char	*ft_strdup(const char *s1)
 	dst[i] = '\0';
 	return (dst);
 }
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
+
 {
 	size_t	i;
-
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] && s2[i] && i < n)
 		i++;
@@ -65,13 +62,12 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (0);
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
+
 {
 	char	*result;
 	size_t	i;
 	size_t	str_len;
-
 	if (!s)
 		return (0);
 	str_len = ft_strlen(s);
@@ -91,11 +87,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	result[i] = 0;
 	return (result);
 }
-
 size_t	ft_strlen(char const *src)
+
 {
 	size_t	i;
-
 	i = 0;
 	while (src[i])
 		i++;

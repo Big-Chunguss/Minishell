@@ -6,17 +6,12 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:59:03 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/09 13:03:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:06:05 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/// @brief eliminating signle quotes
-/// @param str
-/// @param start start of single quotes
-/// @param end end of single quotes
-/// @return
 char	*single_quotes(char *str, int start, int end)
 {
 	char	*res;
@@ -44,9 +39,6 @@ char	*single_quotes(char *str, int start, int end)
 	return (res);
 }
 
-/// @brief check that quotes are still open while reading the line
-/// @param str
-/// @return true if one quote is still open
 int	open_quotes(const char *str)
 {
 	int	i;
@@ -67,9 +59,6 @@ int	open_quotes(const char *str)
 	return (s % 2 != 0 || d % 2 != 0);
 }
 
-/// @brief reading user input while quotes are still open
-/// @param str
-/// @return
 char	*readline_open_quotes(char *str)
 {
 	char	*tmp;

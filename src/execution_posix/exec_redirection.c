@@ -9,12 +9,11 @@
 /*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
 static int	print_redir_error(const char *path)
+
 {
 	if (errno == EACCES)
 	{
@@ -35,11 +34,10 @@ static int	print_redir_error(const char *path)
 	}
 	return (-1);
 }
-
 static int	open_output_redir(t_ast *redir)
+
 {
 	int	fd;
-
 	if (!ft_strcmp(redir->value, ">"))
 		fd = open(redir->target->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
@@ -48,24 +46,19 @@ static int	open_output_redir(t_ast *redir)
 		return (print_redir_error(redir->target->value));
 	return (fd);
 }
-
-/// @brief checking if node contains an input redirection and applying
-/// it to STDIN
-/// @param node
 static int	open_input_redir(t_ast *redir)
+
 {
 	int	fd;
-
 	fd = open(redir->target->value, O_RDONLY);
 	if (fd < 0)
 		return (print_redir_error(redir->target->value));
 	return (fd);
 }
-
 static int	handle_input_redirection(t_ast *child)
+
 {
 	int	fd;
-
 	fd = open_input_redir(child);
 	if (fd == -1)
 		return (-1);
@@ -73,11 +66,10 @@ static int	handle_input_redirection(t_ast *child)
 	close(fd);
 	return (0);
 }
-
 static int	handle_output_redirection(t_ast *child)
+
 {
 	int	fd;
-
 	fd = open_output_redir(child);
 	if (fd == -1)
 		return (-1);
@@ -85,8 +77,8 @@ static int	handle_output_redirection(t_ast *child)
 	close(fd);
 	return (0);
 }
-
 static char	*find_heredoc_file(const char *limiter)
+
 {
 	char			pattern[256];
 	char			*result;
@@ -98,21 +90,15 @@ static char	*find_heredoc_file(const char *limiter)
 	struct stat		st;
 	struct stat		best_stat;
 	int				found;
-
-	// Skip leading whitespace in limiter
 	trimmed_limiter = limiter;
 	while (*trimmed_limiter && (*trimmed_limiter == ' ' || *trimmed_limiter == '\t'))
 		trimmed_limiter++;
-
-	// Create prefix pattern
 	ft_strlcpy(prefix, "minishell_heredoc_", sizeof(prefix));
 	ft_strlcat(prefix, trimmed_limiter, sizeof(prefix));
 	ft_strlcat(prefix, "_", sizeof(prefix));
-
 	dir = opendir("/tmp");
 	if (!dir)
 		return (NULL);
-	
 	found = 0;
 	best_stat.st_mtime = 0;
 	while ((entry = readdir(dir)) != NULL)
@@ -133,33 +119,28 @@ static char	*find_heredoc_file(const char *limiter)
 		}
 	}
 	closedir(dir);
-	
 	if (found)
 		result = ft_strdup(best_file);
 	else
 		result = NULL;
-	
 	return (result);
 }
-
 int	process_redirection_child(t_ast *child)
+
 {
 	char	*heredoc_path;
-
 	if (g_exit_code == 130)
 		return (-1);
 	if (!ft_strcmp(child->value, "<"))
 		return (handle_input_redirection(child));
 	else if (!ft_strcmp(child->value, "<<"))
 	{
-		// For heredoc, find the temp file
 		heredoc_path = find_heredoc_file(child->target->value);
 		if (!heredoc_path)
 		{
 			write(2, "No heredoc file found!\n", 23);
 			return (-1);
 		}
-		// Update the target to point to the temp file
 		free(child->target->value);
 		child->target->value = heredoc_path;
 		return (handle_input_redirection(child));

@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 t_ast	**combine(t_ast **head, t_ast *cmd)
+
 {
 	t_ast	**new_head;
-
 	if (!head)
 	{
 		head = malloc(sizeof(t_ast *));
@@ -35,11 +34,10 @@ t_ast	**combine(t_ast **head, t_ast *cmd)
 		return (new_head);
 	}
 }
-
 void	free_split(char **split)
+
 {
 	int	i;
-
 	i = 0;
 	if (!split)
 		return ;
@@ -50,21 +48,19 @@ void	free_split(char **split)
 	}
 	free(split);
 }
-
 t_ast	**build_and_print_ast(t_token *lst, t_ast **env)
+
 {
 	t_ast	**root;
-
 	root = malloc(sizeof(t_ast *));
 	*root = parse_pipeline(&lst, env);
 	return (root);
 }
-
 char	*ft_strjoin_slash(char const *s1, char const *s2)
+
 {
 	char	*res;
 	char	*tmp;
-
 	tmp = ft_strjoin(s1, "/");
 	if (!tmp)
 		return (NULL);

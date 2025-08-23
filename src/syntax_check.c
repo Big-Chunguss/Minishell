@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:10:04 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/17 12:55:14 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:05:15 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
  * @param lst The token list
  * @return 1 if there's a syntax error, 0 otherwise
  */
+
 static int	check_pipe_at_start(t_token *lst)
 {
 	if (lst && (lst->type == PIPE || (!lst->was_quoted && !ft_strcmp(lst->value,
@@ -35,6 +36,7 @@ static int	check_pipe_at_start(t_token *lst)
  * @param lst The token list
  * @return 1 if there's a syntax error, 0 otherwise
  */
+
 static int	check_consecutive_pipes(t_token *lst)
 {
 	t_token	*current;
@@ -80,7 +82,6 @@ static int	check_pipe_at_end(t_token *lst)
 	}
 	return (0);
 }
-
 /**
  * Check for invalid syntax in the token list
  *
@@ -88,6 +89,7 @@ static int	check_pipe_at_end(t_token *lst)
  * @param env The AST environment
  * @return 1 if there's a syntax error, 0 otherwise
  */
+
 int	check_syntax_errors(t_token *lst)
 {
 	if (check_pipe_at_start(lst) || check_consecutive_pipes(lst)

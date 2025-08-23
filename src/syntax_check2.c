@@ -6,13 +6,12 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:54:19 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/17 13:03:14 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:04:41 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/* Helpers to respect 42 Norm for readability and line limits */
 static int	is_redirection_token(t_token *tok)
 {
 	if (!tok)
@@ -21,8 +20,7 @@ static int	is_redirection_token(t_token *tok)
 		|| tok->type == APPEND || tok->type == HEREDOC)
 		return (1);
 	if (!tok->was_quoted && tok->value && (!ft_strcmp(tok->value, "<")
-			|| !ft_strcmp(tok->value, ">")
-			|| !ft_strcmp(tok->value, ">>")
+			|| !ft_strcmp(tok->value, ">") || !ft_strcmp(tok->value, ">>")
 			|| !ft_strcmp(tok->value, "<<")))
 		return (1);
 	return (0);
@@ -60,6 +58,7 @@ static void	print_syntax_error_token(t_token *tok)
  * @param lst The token list
  * @return 1 if there's a syntax error, 0 otherwise
  */
+
 int	check_redirection_without_file(t_token *lst)
 {
 	t_token	*current;
@@ -77,13 +76,13 @@ int	check_redirection_without_file(t_token *lst)
 	}
 	return (0);
 }
-
 /**
  * Check for invalid token combinations not covered by other checks
  *
  * @param lst The token list
  * @return 1 if there's a syntax error, 0 otherwise
  */
+
 int	check_invalid_combinations(t_token *lst)
 {
 	t_token	*current;

@@ -9,15 +9,13 @@
 /*   Updated: 2025/08/22 14:46:42 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
 void	unset_exp_fnc(t_ast *current, char *target, char **temp, int j)
+
 {
 	int	count;
-
 	count = 0;
 	while (current->env->export && current->env->export[j])
 	{
@@ -32,11 +30,10 @@ void	unset_exp_fnc(t_ast *current, char *target, char **temp, int j)
 	free_both(target, current);
 	current->env->export = temp;
 }
-
 void	unset_env_fnc(t_ast *current, char *argv, char **temp, int j)
+
 {
 	int	count;
-
 	count = 0;
 	while (current->env->env[j])
 	{
@@ -51,11 +48,10 @@ void	unset_env_fnc(t_ast *current, char *argv, char **temp, int j)
 	current->env->env = temp;
 	return ;
 }
-
 void	add_env_fnc(t_ast *current, char **temp, char *argv)
+
 {
 	int	i;
-
 	i = 0;
 	while (current->env->env && current->env->env[i])
 	{
@@ -68,11 +64,10 @@ void	add_env_fnc(t_ast *current, char **temp, char *argv)
 	current->env->env = temp;
 	return ;
 }
-
 void	add_exp_fnc(t_ast *current, char **temp, char *argv)
+
 {
 	int	i;
-
 	i = 0;
 	while (current->env->export && current->env->export[i])
 		i++;
@@ -92,8 +87,8 @@ void	add_exp_fnc(t_ast *current, char **temp, char *argv)
 	current->env->export = temp;
 	return ;
 }
-
 void	cd_exit_code(void)
+
 {
 	g_exit_code = 1;
 	cleanup_readline_resources();

@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/23 12:01:45 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 static void	maybe_expand_line(char **line, int quoted_limiter, t_ast **env)
+
 {
 	char	*expanded;
-
 	if (quoted_limiter)
 		return ;
 	expanded = unquoted_var_expansion(*line, env);
@@ -25,11 +24,10 @@ static void	maybe_expand_line(char **line, int quoted_limiter, t_ast **env)
 		*line = expanded;
 	}
 }
-
 static void	append_line(char **acc, char *line)
+
 {
 	char	*tmp;
-
 	tmp = ft_strjoin(*acc, line);
 	free(*acc);
 	*acc = tmp;
@@ -37,12 +35,11 @@ static void	append_line(char **acc, char *line)
 	free(*acc);
 	*acc = tmp;
 }
-
 void	heredoc_process_lines(char **str, char *limiter, int quoted_limiter,
 		t_ast **env)
+
 {
 	char	*line;
-
 	while (1)
 	{
 		line = heredoc_readline();
@@ -58,11 +55,10 @@ void	heredoc_process_lines(char **str, char *limiter, int quoted_limiter,
 		free(line);
 	}
 }
-
 void	read_heredoc_consume_only(char *limiter)
+
 {
 	char	*line;
-
 	while (1)
 	{
 		line = heredoc_readline();

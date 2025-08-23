@@ -9,16 +9,15 @@
 /*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 void	attach_redirections(t_ast *cmd, t_token *lst, t_ast **env)
+
 {
 	t_token	*cur;
 	t_token	*redir_token;
 	t_ast	*redir_node;
 	t_ast	*target_node;
-
 	cur = lst;
 	while (cur && define_type(cur->value, env) != NODE_PIPE)
 	{
@@ -37,15 +36,14 @@ void	attach_redirections(t_ast *cmd, t_token *lst, t_ast **env)
 		cur = cur->next;
 	}
 }
-
 t_ast	*parse_pipeline(t_token **lst_ptr, t_ast **env)
+
 {
 	t_ast	*left;
 	t_ast	*pipe;
 	t_ast	*right;
 	t_token	*lst;
 	t_token	*cur;
-
 	lst = *lst_ptr;
 	left = parse_command(lst_ptr, env);
 	attach_redirections(left, lst, env);

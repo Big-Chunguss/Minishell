@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/09 12:10:59 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 void	free_tab(char **tab)
+
 {
 	int	i;
-
 	if (!tab)
 		return ;
 	i = 0;
@@ -27,11 +26,10 @@ void	free_tab(char **tab)
 	}
 	free(tab);
 }
-
 int	ft_newline(const char *str)
+
 {
 	size_t	i;
-
 	if (!str)
 		return (0);
 	i = 0;

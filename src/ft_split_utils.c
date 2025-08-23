@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/09 15:57:56 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 int	is_delimiter(char c, const char *delim)
+
 {
 	int	i;
-
 	i = 0;
 	while (delim[i])
 	{
@@ -25,18 +24,17 @@ int	is_delimiter(char c, const char *delim)
 	}
 	return (0);
 }
-
 int	skip_spaces(const char *s, int i)
+
 {
 	while (s[i] && isspace((unsigned char)s[i]))
 		i++;
 	return (i);
 }
-
 int	segment_length(const char *s, const char *delim, int i)
+
 {
 	int	start;
-
 	start = i;
 	if (is_delimiter(s[i], delim))
 	{
@@ -51,12 +49,11 @@ int	segment_length(const char *s, const char *delim, int i)
 	}
 	return (i - start);
 }
-
 int	count_words(const char *s, const char *delim)
+
 {
 	int	count;
 	int	i;
-
 	count = 0;
 	i = 0;
 	while (s[i])
@@ -80,11 +77,10 @@ int	count_words(const char *s, const char *delim)
 	}
 	return (count);
 }
-
 void	free_all(char **psplit)
+
 {
 	int	word;
-
 	word = 0;
 	while (psplit[word])
 	{

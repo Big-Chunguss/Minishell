@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 11:16:10 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/10 11:41:50 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:04:09 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ static char	*handle_var_expansion(char *str, int start, t_ast **env, int *i)
 	return (str);
 }
 
-/// @brief reading user input and checking
-/// for variables that need to get expanded
-/// @param str user input
-/// @param env
-/// @return new line with expanded variables
 char	*unquoted_var_expansion(char *str, t_ast **env)
 {
 	int	i;

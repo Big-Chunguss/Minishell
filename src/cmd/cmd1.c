@@ -6,15 +6,16 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:47:07 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:10:27 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int	g_exit_code;
 
+extern int	g_exit_code;
 void	build_in(char **tab, int i, t_ast **env)
+
 {
 	if (ft_strnstr(BUILTIN, tab[i]))
 	{
@@ -36,43 +37,26 @@ void	build_in(char **tab, int i, t_ast **env)
 	}
 	return ;
 }
-
 void	initialise_exp(t_ast **env, char **envp)
 {
 	t_ast	*current;
-	int		i;
+	int		count;
 
-	i = 0;
 	if (!envp)
 		return ;
 	current = *env;
 	if (!current || !current->env)
 		return ;
-	while (envp[i])
-		i++;
-	current->env->export = malloc(sizeof(char *) * (i + 1));
-	if (!current->env->export)
+	count = count_envp_entries(envp);
+	if (!allocate_export_array(current, count))
 		return ;
-	i = 0;
-	while (envp[i])
-	{
-		current->env->export[i] = cat_dup(envp[i]);
-		if (!current->env->export[i])
-		{
-			del_export(env);
-			return ;
-		}
-		i++;
-	}
-	current->env->export[i] = NULL;
-	return ;
+	copy_envp_entries(env, envp);
 }
-
 void	del_export(t_ast **env)
+
 {
 	t_ast	*current;
 	int		i;
-
 	i = 0;
 	current = *env;
 	if (!current || !current->env || !current->env->export)
@@ -86,14 +70,13 @@ void	del_export(t_ast **env)
 	current->env->export = NULL;
 	return ;
 }
-
 void	initialise_shlvl(t_ast **env)
+
 {
 	char	*str;
 	char	*merge;
 	int		shlvl;
 	char	*final;
-
 	if (!env || !*env)
 		return ;
 	str = number_shlvl(env);
@@ -114,14 +97,13 @@ void	initialise_shlvl(t_ast **env)
 	add_env(merge, env);
 	free(merge);
 }
-
 char	*number_shlvl(t_ast **env)
+
 {
 	t_ast	*current;
 	int		i;
 	char	*str;
 	char	*result;
-
 	i = 0;
 	current = *env;
 	if (!current->env->env)

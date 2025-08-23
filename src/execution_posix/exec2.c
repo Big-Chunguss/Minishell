@@ -9,19 +9,22 @@
 /*   Updated: 2025/08/23 15:05:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
+
 #include <signal.h>
+
 #include <sys/wait.h>
+
 #include <unistd.h>
+
 #include <stdlib.h>
 
 char	**build_argv(t_ast *node)
+
 {
 	char	**tab;
 	int		i;
 	int		argc;
-
 	tab = (char **)malloc(sizeof(char *) * (node->child_count + 2));
 	if (!tab)
 		return (NULL);
@@ -37,12 +40,11 @@ char	**build_argv(t_ast *node)
 	tab[argc] = NULL;
 	return (tab);
 }
-
 int	apply_redirections2(t_ast *node)
+
 {
 	int		i;
 	int		res;
-
 	if (!node)
 		return (0);
 	i = 0;
@@ -52,7 +54,7 @@ int	apply_redirections2(t_ast *node)
 		{
 			res = process_redirection_child(node->children[i]);
 			if (res == -1)
-				return (-1); // stop at first failing redirection
+				return (-1);
 		}
 		i++;
 	}

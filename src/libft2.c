@@ -9,16 +9,15 @@
 /*   Updated: 2025/08/09 14:42:05 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 char	*ft_strjoin_buffer(char const *s1, char const *s2, char buffer)
+
 {
 	char	*str;
 	size_t	s1_len;
 	size_t	s2_len;
 	int		i;
-
 	i = 0;
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
@@ -39,8 +38,8 @@ char	*ft_strjoin_buffer(char const *s1, char const *s2, char buffer)
 	str[i] = '\0';
 	return (str);
 }
-
 static void	copy_str(char *dst, const char *src, int *i)
+
 {
 	while (src[*i])
 	{
@@ -48,11 +47,10 @@ static void	copy_str(char *dst, const char *src, int *i)
 		(*i)++;
 	}
 }
-
 static void	copy_str2(char *dst, const char *src, int i)
+
 {
 	int	j;
-
 	j = 0;
 	while (src[j])
 	{
@@ -61,14 +59,13 @@ static void	copy_str2(char *dst, const char *src, int i)
 	}
 	dst[i + j] = '\0';
 }
-
 char	*ft_strjoin(char const *s1, char const *s2)
+
 {
 	char	*str;
 	size_t	s1_len;
 	size_t	s2_len;
 	int		i;
-
 	if (!s1 || !s2)
 		return (NULL);
 	s1_len = ft_strlen(s1);

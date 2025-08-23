@@ -9,16 +9,19 @@
 /*   Updated: 2025/08/22 11:31:02 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
+
 #include <signal.h>
+
 #include <sys/wait.h>
+
 #include <unistd.h>
+
 #include <stdlib.h>
 
 extern int	g_exit_code;
-
 void	free_ast_full(t_ast **head)
+
 {
 	if (head && *head)
 	{
@@ -26,14 +29,14 @@ void	free_ast_full(t_ast **head)
 		*head = NULL;
 	}
 }
-
 void	free_argv_shallow(char **tab)
+
 {
 	if (tab)
 		free(tab);
 }
-
 void	cleanup_and_exit(int status, t_cleanup_params *params)
+
 {
 	if (params->tab)
 		free_argv_shallow(params->tab);
@@ -44,8 +47,8 @@ void	cleanup_and_exit(int status, t_cleanup_params *params)
 	free_ast_full(params->head);
 	exit(status);
 }
-
 void	redirect_io2(int input_fd, int output_fd)
+
 {
 	if (input_fd != STDIN_FILENO)
 	{
@@ -58,12 +61,11 @@ void	redirect_io2(int input_fd, int output_fd)
 		close(output_fd);
 	}
 }
-
 int	count_pipeline_cmds(t_ast *node)
+
 {
 	int		count;
 	t_ast	*cur;
-
 	count = 0;
 	cur = node;
 	while (cur && cur->type == NODE_PIPE)

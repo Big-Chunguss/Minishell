@@ -9,21 +9,23 @@
 /*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
+
 #include <signal.h>
+
 #include <sys/wait.h>
+
 #include <unistd.h>
+
 #include <stdlib.h>
 
 extern int	g_exit_code;
-
 void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
+
 {
 	int	status;
 	int	last_status;
 	int	i;
-
 	last_status = 0;
 	waitpid(last_pid, &last_status, 0);
 	i = 0;
@@ -41,18 +43,15 @@ void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
 		(*env)->env->error_code = g_exit_code;
 	}
 }
-
 void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid, t_ast **env)
+
 {
 	int	status;
 	int	last_status;
 	int	i;
-
 	last_status = 0;
 	waitpid(last_pid, &last_status, 0);
-	
-	// Wait for all other children using waitpid(-1)
-	i = 1; // We already waited for one (last_pid)
+	i = 1;
 	while (i < cmd_count)
 	{
 		if (waitpid(-1, &status, 0) > 0)
@@ -60,7 +59,6 @@ void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid, t_ast **env)
 		else
 			break;
 	}
-	
 	if (WIFEXITED(last_status))
 		(*env)->env->error_code = WEXITSTATUS(last_status);
 	else if (WIFSIGNALED(last_status))

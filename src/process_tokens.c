@@ -6,13 +6,17 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:06:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+extern int	g_exit_code;
+
+
 static int	has_heredoc(t_token *lst)
+
 {
 	while (lst)
 	{
@@ -22,19 +26,13 @@ static int	has_heredoc(t_token *lst)
 	}
 	return (0);
 }
-
-/// @brief parsing user input
-/// @param lst list for the tokens
-/// @param line input from the user
-/// @param env
 static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
-		t_token_info **tokens, int *token_count_out)
+		t_token_info **tokens)
+
 {
 	int	token_count;
-
 	line = unquoted_var_expansion(line, env);
 	*tokens = split_bash_style_with_quotes(line, &token_count);
-	*token_count_out = token_count;
 	*lst = NULL;
 	create_list_with_quote_info(lst, *tokens, token_count);
 	check_heredoc(lst, env);
@@ -52,39 +50,33 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 		free_stack(lst);
 		return (0);
 	}
-	return (1);
+	return (token_count);
 }
-
 static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 		t_token_info *tokens, int token_count)
+
 {
 	t_ast	*ast_root;
 	t_token	*original_list_head;
-
-	// Save the original list head before parsing modifies the pointer
 	original_list_head = *lst;
-	
 	exit_status(lst, env);
 	ast_root = parse_pipeline(lst, env);
 	unlink_redirection(&original_list_head);
-	
-	// Free all token-related memory immediately after AST construction
 	free_token_info_array(tokens, token_count);
-	free_stack(&original_list_head);  // Use original head for proper cleanup
-	
+	free_stack(&original_list_head);
 	if (ast_root)
 	{
 		execute_nodes2(&ast_root, env);
 		ast_free(ast_root);
 	}
 }
-
 void	process_tokens(t_token **lst, char *line, t_ast **env)
+
 {
 	t_token_info	*tokens;
 	int				token_count;
-
-	if (!init_tokens_and_check(lst, line, env, &tokens, &token_count))
+	token_count = init_tokens_and_check(lst, line, env, &tokens);
+	if (token_count == 0)
 		return ;
 	handle_ast_and_exec(lst, env, tokens, token_count);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 17:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:05:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,11 @@ void	ft_strcat_safe(char *dst, const char *src, size_t size)
 	dst[dst_len + i] = '\0';
 }
 
-void	build_temp_path(char *temp_path, size_t path_size, const char *filename, int pid)
+static void	convert_pid_to_string(int pid, char *pid_str)
 {
-	char	pid_str[12];
-	int		i;
-	int		num;
+	int	i;
+	int	num;
 
-	ft_strcpy_safe(temp_path, "/tmp/minishell_heredoc_", path_size);
-	ft_strcat_safe(temp_path, filename, path_size);
-	ft_strcat_safe(temp_path, "_", path_size);
-	
-	// Convert pid to string manually
-	if (pid == 0)
-	{
-		ft_strcat_safe(temp_path, "0", path_size);
-		return;
-	}
-	
 	i = 0;
 	num = pid;
 	while (num > 0)
@@ -64,15 +52,40 @@ void	build_temp_path(char *temp_path, size_t path_size, const char *filename, in
 		pid_str[i++] = (num % 10) + '0';
 		num /= 10;
 	}
-	
-	// Reverse the string
+	pid_str[i] = '\0';
+}
+
+static void	append_reversed_string(char *temp_path, char *pid_str,
+		size_t path_size)
+{
+	int		i;
+	char	c[2];
+
+	i = ft_strlen(pid_str);
 	while (--i >= 0)
 	{
-		char c[2] = {pid_str[i], '\0'};
+		c[0] = pid_str[i];
+		c[1] = '\0';
 		ft_strcat_safe(temp_path, c, path_size);
 	}
 }
 
+void	build_temp_path(char *temp_path, size_t path_size, const char *filename,
+		int pid)
+{
+	char	pid_str[12];
+
+	ft_strcpy_safe(temp_path, "/tmp/minishell_heredoc_", path_size);
+	ft_strcat_safe(temp_path, filename, path_size);
+	ft_strcat_safe(temp_path, "_", path_size);
+	if (pid == 0)
+	{
+		ft_strcat_safe(temp_path, "0", path_size);
+		return ;
+	}
+	convert_pid_to_string(pid, pid_str);
+	append_reversed_string(temp_path, pid_str, path_size);
+}
 void	build_pattern(char *pattern, size_t size, const char *trimmed_limiter)
 {
 	ft_strcpy_safe(pattern, "/tmp/minishell_heredoc_", size);

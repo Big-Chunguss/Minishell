@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 int	define_type(char *str, t_ast **env)
+
 {
 	char	*cmd_path;
-
 	cmd_path = get_cmd_path(str, env);
 	if (cmd_path)
 	{
@@ -29,11 +28,10 @@ int	define_type(char *str, t_ast **env)
 		return (NODE_PIPE);
 	return (NODE_ARGUMENT);
 }
-
 void	ast_free(t_ast *node)
+
 {
 	int	i;
-
 	i = 0;
 	if (!node)
 		return ;
@@ -55,22 +53,22 @@ void	ast_free(t_ast *node)
 		node = NULL;
 	}
 }
-
 void	set_ast_left(t_ast *parent, t_ast *child)
+
 {
 	parent->left = child;
 	if (child)
 		child->parent = parent;
 }
-
 void	set_ast_right(t_ast *parent, t_ast *child)
+
 {
 	parent->right = child;
 	if (child)
 		child->parent = parent;
 }
-
 void	add_redirection(t_ast *cmd, t_ast *redir)
+
 {
 	add_ast_child(cmd, redir);
 }

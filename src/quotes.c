@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:28:27 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/09 13:03:09 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:06:26 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 extern int	g_exit_code;
 
-/// @brief checking for the variable in the environment
-/// @param var
-/// @param n
-/// @param env
-/// @return value of variable
 static char	*get_exit_code_str(t_ast **env)
 {
 	int	exit_code;
@@ -54,12 +49,6 @@ char	*get_value(char *var, int n, t_ast **env)
 	return (get_env_value(var, n, env));
 }
 
-/// @brief eliminating double quotes & expanding variables
-/// @param str
-/// @param start
-/// @param end
-/// @param env
-/// @return new clean string
 char	*double_quotes(char *str, int start, int end, t_ast **env)
 {
 	char	*res;

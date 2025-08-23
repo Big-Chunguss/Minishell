@@ -9,12 +9,11 @@
 /*   Updated: 2025/08/16 19:01:32 by stcharlo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
 void	unset_recognition(char **argv, int i, t_ast **env)
+
 {
 	i++;
 	if (argv[i] == NULL)
@@ -31,14 +30,13 @@ void	unset_recognition(char **argv, int i, t_ast **env)
 	}
 	return ;
 }
-
 int	search_value(char *str, t_ast **env)
+
 {
 	t_ast	*current;
 	int		j;
 	int		count;
 	char	*target;
-
 	j = 0;
 	count = 0;
 	current = *env;
@@ -59,15 +57,14 @@ int	search_value(char *str, t_ast **env)
 	(*env)->env->error_code = 0;
 	return (1);
 }
-
 void	unset_exp(char *argv, t_ast **env)
+
 {
 	t_ast	*current;
 	char	**temp;
 	int		j;
 	int		count;
 	char	*target;
-
 	j = 0;
 	if (!env || !*env || !(*env)->env || !argv)
 		return ;
@@ -87,11 +84,10 @@ void	unset_exp(char *argv, t_ast **env)
 	unset_exp_fnc(current, target, temp, j);
 	return ;
 }
-
 int	tab_len(t_ast *current)
+
 {
 	int		count;
-
 	count = 0;
 	if (!current || !current->env || !current->env->export)
 		return (0);
@@ -99,8 +95,8 @@ int	tab_len(t_ast *current)
 		count++;
 	return (count);
 }
-
 void	free_both(char *target, t_ast *current)
+
 {
 	free(target);
 	free(current->env->export);

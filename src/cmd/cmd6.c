@@ -9,15 +9,13 @@
 /*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
 void	cd_recognition(char **tab, int i, t_ast **env)
+
 {
 	int	error_code;
-
 	if (tab[i])
 		i++;
 	if (!tab[i])
@@ -38,8 +36,8 @@ void	cd_recognition(char **tab, int i, t_ast **env)
 		print_error(error_code, tab[i], env);
 	return ;
 }
-
 void	print_error(int num, char *tab, t_ast **env)
+
 {
 	if (!env || !*env || !(*env)->env)
 		return ;
@@ -66,8 +64,8 @@ void	print_error(int num, char *tab, t_ast **env)
 	}
 	return ;
 }
-
 int	access_error(char *tab)
+
 {
 	if (!tab)
 		return (1);
@@ -77,12 +75,11 @@ int	access_error(char *tab)
 		return (2);
 	return (0);
 }
-
 void	pwd_change(char *pwd, char *oldpwd, t_ast **env)
+
 {
 	char	*pw;
 	char	*oldpw;
-
 	if (!env || !*env || !(*env)->env || !pwd || !oldpwd)
 		return ;
 	unset_env("OLDPWD=", env);

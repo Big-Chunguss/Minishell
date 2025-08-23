@@ -9,13 +9,12 @@
 /*   Updated: 2025/08/21 19:45:23 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 t_ast	*create_ast_node(int type, char *value)
+
 {
 	t_ast	*new;
-
 	new = malloc(sizeof(t_ast));
 	if (!new)
 		return (NULL);
@@ -31,12 +30,11 @@ t_ast	*create_ast_node(int type, char *value)
 	new->target = NULL;
 	return (new);
 }
-
 void	add_ast_child(t_ast *parent, t_ast *child)
+
 {
 	t_ast	**new_children;
 	int		i;
-
 	i = 0;
 	if (!parent || !child)
 		return ;
@@ -54,12 +52,11 @@ void	add_ast_child(t_ast *parent, t_ast *child)
 	parent->child_count++;
 	child->parent = parent;
 }
-
 static char	*get_path_var(t_ast **env)
+
 {
 	t_ast	*current;
 	int		i;
-
 	current = *env;
 	i = 0;
 	while (current->env->env[i])
@@ -70,12 +67,11 @@ static char	*get_path_var(t_ast **env)
 	}
 	return (NULL);
 }
-
 static char	*search_in_paths(char **paths, const char *cmd)
+
 {
 	char	*full_path;
 	int		i;
-
 	i = 0;
 	while (paths[i])
 	{
@@ -91,12 +87,11 @@ static char	*search_in_paths(char **paths, const char *cmd)
 	free_split(paths);
 	return (NULL);
 }
-
 char	*get_cmd_path(const char *cmd, t_ast **env)
+
 {
 	char	*path_var;
 	char	**paths;
-
 	if (strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = get_path_var(env);

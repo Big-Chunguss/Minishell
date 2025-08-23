@@ -9,14 +9,13 @@
 /*   Updated: 2025/08/09 14:38:25 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 char	*ft_strchr(const char *s, int c)
+
 {
 	unsigned char	un_c;
 	int				i;
-
 	un_c = (unsigned char)c;
 	i = 0;
 	while (s[i])
@@ -29,12 +28,11 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)(s + i));
 	return (0);
 }
-
 int	ft_strnstr(char *big, char *little)
+
 {
 	size_t	i;
 	size_t	j;
-
 	i = 0;
 	j = 0;
 	if (*little == '\0')
@@ -52,23 +50,21 @@ int	ft_strnstr(char *big, char *little)
 	}
 	return (0);
 }
-
 int	ft_strcmp(char *s1, char *s2)
+
 {
 	int	i;
-
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] && s2[i])
 		i++;
 	return (s1[i] - s2[i]);
 }
-
 int	ft_atoi(const char *nptr)
+
 {
 	int	i;
 	int	c;
 	int	resultat;
-
 	i = 0;
 	c = 1;
 	resultat = 0;
@@ -87,7 +83,6 @@ int	ft_atoi(const char *nptr)
 	}
 	return (resultat * c);
 }
-
 /**
  * Outputs the string 's' to the given file descriptor.
  *
@@ -95,6 +90,7 @@ int	ft_atoi(const char *nptr)
  * @param fd The file descriptor on which to write.
  */
 void	ft_putstr_fd(char *s, int fd)
+
 {
 	if (!s)
 		return ;

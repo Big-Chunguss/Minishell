@@ -9,23 +9,22 @@
 /*   Updated: 2025/08/23 12:02:10 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 static void	free_result(char **result, int j)
+
 {
 	while (--j >= 0)
 		free(result[j]);
 	free(result);
 }
-
 static char	**fill_result(char *str, char **result)
+
 {
 	int	i;
 	int	j;
 	int	start;
 	int	len;
-
 	i = 0;
 	j = 0;
 	start = 0;
@@ -45,22 +44,20 @@ static char	**fill_result(char *str, char **result)
 	}
 	return (finish_last_line(str, result, j, start));
 }
-
 char	**split_newline_alloc(char *str, int line_count)
+
 {
 	char	**result;
-
 	result = malloc(sizeof(char *) * (line_count + 1));
 	if (!result)
 		return (NULL);
 	return (fill_result(str, result));
 }
-
 char	**finish_last_line(char *str, char **result, int j, int start)
+
 {
 	int	i;
 	int	len;
-
 	i = 0;
 	while (str[i])
 		i++;

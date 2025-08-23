@@ -9,19 +9,13 @@
 /*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 int		g_exit_code = 0;
-
-/// @brief keeps on reading user input, add_history of input,
-///	checks for cmds such as clear and exit and calls process_tokens
-/// @param lst chained list for the tokenisation
-/// @param env
 void	infinite_read(t_token **lst, t_ast **env)
+
 {
 	char	*line;
-
 	while (1)
 	{
 		line = get_input();
@@ -45,17 +39,11 @@ void	infinite_read(t_token **lst, t_ast **env)
 		free(line);
 	}
 }
-
-/// @brief reads a complete line of the user input and 
-/// checks if there are open quotes once quotes are 
-/// closed it sends the user input
-/// @param
-/// @return unparsed input from the user
 char	*get_input(void)
+
 {
 	char	*line;
 	char	*tmp;
-
 	line = readline("Minishell> ");
 	if (line == NULL)
 		return (NULL);
@@ -72,11 +60,10 @@ char	*get_input(void)
 	}
 	return (line);
 }
-
 void	unlink_redirection(t_token **lst)
+
 {
 	t_token	*tmp;
-
 	tmp = *lst;
 	while (tmp)
 	{
@@ -85,20 +72,14 @@ void	unlink_redirection(t_token **lst)
 		tmp = tmp->next;
 	}
 }
-
-/// @brief main function calling infinite read
-/// @param argc
-/// @param argv
-/// @param env
-/// @return
 int	main(int argc, char **argv, char **env)
+
 {
 	int		final_exit_code;
 	t_token	*list;
 	t_token	**lst;
 	t_ast	**ast_head;
 	t_ast	*ast;
-
 	(void)argc;
 	(void)argv;
 	ast = NULL;
@@ -119,8 +100,8 @@ int	main(int argc, char **argv, char **env)
 		return (g_exit_code);
 	return (final_exit_code % 256);
 }
-
 void	cleanup_readline_resources(void)
+
 {
 	cleanup_get_next_line();
 	rl_clear_history();

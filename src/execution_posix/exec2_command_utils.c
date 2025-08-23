@@ -6,30 +6,23 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:24:13 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-#include <signal.h>
-
-#include <stdlib.h>
-
-#include <sys/wait.h>
-
-#include <unistd.h>
-
 extern int	g_exit_code;
-void	setup_command_environment(t_cmd_params *params)
 
+void	setup_command_environment(t_cmd_params *params)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	redirect_io2(params->input_fd, params->output_fd);
 }
-int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup,
-		char ***tab, char **path)
 
+int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup, char ***tab,
+		char **path)
 {
 	*tab = build_argv(node);
 	cleanup->tab = *tab;
@@ -42,11 +35,12 @@ int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup,
 	cleanup->path = *path;
 	return (0);
 }
+
 static void	handle_redirection_only(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
-
 {
 	t_cleanup_params	redir_cleanup;
+
 	redir_cleanup.head = head;
 	redir_cleanup.env = env;
 	redir_cleanup.tab = NULL;
@@ -56,11 +50,12 @@ static void	handle_redirection_only(t_ast *node, t_ast **head, t_ast **env,
 		cleanup_and_exit(1, &redir_cleanup);
 	cleanup_and_exit(0, &redir_cleanup);
 }
+
 void	handle_external_command(char **tab, char *path, t_ast **env,
 		t_ast **head)
-
 {
 	t_cleanup_params	cleanup;
+
 	cleanup.head = head;
 	cleanup.env = env;
 	cleanup.tab = tab;
@@ -80,14 +75,15 @@ void	handle_external_command(char **tab, char *path, t_ast **env,
 	(*env)->env->error_code = 1;
 	cleanup_and_exit((*env)->env->error_code, &cleanup);
 }
+
 void	run_command(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
-
 {
 	char				**tab;
 	char				*path;
 	int					is_external;
 	t_cleanup_params	cleanup;
+
 	if (!node || !node->value || ft_strlen(node->value) == 0)
 	{
 		handle_redirection_only(node, head, env, params);

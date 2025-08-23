@@ -6,20 +6,18 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:01:46 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:06 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:17:51 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <ctype.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 extern int	g_exit_code;
-int	is_valid_number(const char *str)
 
+int	is_valid_number(const char *str)
 {
 	int	i;
+
 	i = 0;
 	if (!str || str[0] == '\0')
 		return (0);
@@ -37,8 +35,8 @@ int	is_valid_number(const char *str)
 	}
 	return (1);
 }
-static void	handle_exit_with_arg(char **argv, int i, t_ast **env)
 
+static void	handle_exit_with_arg(char **argv, int i, t_ast **env)
 {
 	if (!is_valid_number(argv[i + 1]))
 		number_not_valid(argv, i, env);
@@ -51,18 +49,19 @@ static void	handle_exit_with_arg(char **argv, int i, t_ast **env)
 		exit((*env)->env->error_code);
 	}
 }
-static void	handle_exit_no_arg(t_ast **env)
 
+static void	handle_exit_no_arg(t_ast **env)
 {
 	if (g_exit_code >= 128)
 		(*env)->env->error_code = g_exit_code;
 	cleanup_readline_resources();
 	exit((*env)->env->error_code);
 }
-void	exit_recognition(char **argv, int i, t_ast **env)
 
+void	exit_recognition(char **argv, int i, t_ast **env)
 {
 	int	a;
+
 	a = 0;
 	while (argv[a])
 		a++;
@@ -73,24 +72,25 @@ void	exit_recognition(char **argv, int i, t_ast **env)
 	else
 		handle_exit_no_arg(env);
 }
-void	num_has_sign(t_ast **env)
 
+void	num_has_sign(t_ast **env)
 {
 	cleanup_readline_resources();
 	exit((*env)->env->error_code);
 }
-void	valid_number_fail(t_ast **env, char *arg)
 
+void	valid_number_fail(t_ast **env, char *arg)
 {
 	write(2, "exit: ", 6);
 	write(2, arg, ft_strlen(arg));
 	write(2, ": numeric argument required\n", 28);
 	exit((*env)->env->error_code);
 }
-void	echo_recognition(char **argv, int i, t_ast **env)
 
+void	echo_recognition(char **argv, int i, t_ast **env)
 {
 	int	count;
+
 	count = 1;
 	i++;
 	(*env)->env->error_code = 0;

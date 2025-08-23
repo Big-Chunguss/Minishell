@@ -6,14 +6,13 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:16:51 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:03:34 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:25:21 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	check_type(char *str)
-
 {
 	if (!strcmp(str, "|"))
 		return (PIPE);
@@ -32,9 +31,9 @@ int	check_type(char *str)
 }
 
 t_ast	*create_ast(int type, char *word)
-
 {
-	t_ast *node;
+	t_ast	*node;
+
 	node = malloc(sizeof(t_ast));
 	node->type = type;
 	node->value = word;
@@ -42,10 +41,11 @@ t_ast	*create_ast(int type, char *word)
 	node->child_count = 0;
 	return (node);
 }
-int	contains_meta_character(char *str)
 
+int	contains_meta_character(char *str)
 {
-	int i;
+	int	i;
+
 	i = 0;
 	while (str[i])
 	{
@@ -55,11 +55,12 @@ int	contains_meta_character(char *str)
 	}
 	return (0);
 }
-int	is_meta_character(char c)
 
+int	is_meta_character(char c)
 {
-	int i;
-	char *str;
+	int		i;
+	char	*str;
+
 	i = 0;
 	str = " \t\n|&;()<>";
 	while (str[i])
@@ -70,11 +71,12 @@ int	is_meta_character(char c)
 	}
 	return (0);
 }
-void	separate_tokens(char *str)
 
+void	separate_tokens(char *str)
 {
-	int i;
-	int count_letters;
+	int	i;
+	int	count_letters;
+
 	i = 0;
 	count_letters = 0;
 	while (str[i])

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:06:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:25:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 extern int	g_exit_code;
 
-
 static int	has_heredoc(t_token *lst)
-
 {
 	while (lst)
 	{
@@ -26,9 +24,9 @@ static int	has_heredoc(t_token *lst)
 	}
 	return (0);
 }
+
 static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 		t_token_info **tokens)
-
 {
 	int	token_count;
 	line = unquoted_var_expansion(line, env);
@@ -52,9 +50,9 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 	}
 	return (token_count);
 }
+
 static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 		t_token_info *tokens, int token_count)
-
 {
 	t_ast	*ast_root;
 	t_token	*original_list_head;
@@ -70,8 +68,8 @@ static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 		ast_free(ast_root);
 	}
 }
-void	process_tokens(t_token **lst, char *line, t_ast **env)
 
+void	process_tokens(t_token **lst, char *line, t_ast **env)
 {
 	t_token_info	*tokens;
 	int				token_count;

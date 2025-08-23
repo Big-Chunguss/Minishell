@@ -6,37 +6,29 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 15:31:43 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:22:57 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-#include <signal.h>
-
-#include <sys/wait.h>
-
-#include <unistd.h>
-
-#include <stdlib.h>
-
-static void	init_pipeline_vars(t_pipeline_data *data, t_ast *node,
-		int input_fd)
-
+static void	init_pipeline_vars(t_pipeline_data *data, t_ast *node, int input_fd)
 {
 	data->cmds = count_pipeline_cmds(node);
 	data->idx = 0;
 	data->cur_in = input_fd;
 	data->cur = node;
 }
+
 static void	run_pipeline(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
-
 {
 	t_pipeline_data	data;
 	t_cmd_params	cmd_params;
 	pid_t			pid;
 	pid_t			last_pid;
 	int				cmd_count;
+
 	init_pipeline_vars(&data, node, params->input_fd);
 	cmd_count = data.cmds;
 	run_pipeline_loop(head, env, &data);
@@ -52,9 +44,9 @@ static void	run_pipeline(t_ast *node, t_ast **head, t_ast **env,
 		close(data.cur_in);
 	wait_for_all_pipeline_children(cmd_count, last_pid, env);
 }
+
 void	exec2_exec_ast(t_ast **node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
-
 {
 	if (!node || !*node)
 		return ;
@@ -63,12 +55,13 @@ void	exec2_exec_ast(t_ast **node, t_ast **head, t_ast **env,
 	else if ((*node)->type == NODE_COMMAND)
 		handle_command_execution(*node, head, env, params);
 }
-void	execute_nodes2(t_ast **head, t_ast **env)
 
+void	execute_nodes2(t_ast **head, t_ast **env)
 {
 	int				saved_stdout;
 	int				saved_stdin;
 	t_cmd_params	params;
+
 	if (!head || !*head)
 		return ;
 	saved_stdout = dup(STDOUT_FILENO);

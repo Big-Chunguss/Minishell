@@ -6,26 +6,20 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/22 19:48:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:23:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-#include <signal.h>
-
-#include <sys/wait.h>
-
-#include <unistd.h>
-
-#include <stdlib.h>
-
 extern int	g_exit_code;
-void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
 
+void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
 {
 	int	status;
 	int	last_status;
 	int	i;
+
 	last_status = 0;
 	waitpid(last_pid, &last_status, 0);
 	i = 0;
@@ -43,12 +37,14 @@ void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
 		(*env)->env->error_code = g_exit_code;
 	}
 }
-void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid, t_ast **env)
 
+void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid,
+		t_ast **env)
 {
 	int	status;
 	int	last_status;
 	int	i;
+
 	last_status = 0;
 	waitpid(last_pid, &last_status, 0);
 	i = 1;
@@ -57,7 +53,7 @@ void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid, t_ast **env)
 		if (waitpid(-1, &status, 0) > 0)
 			i++;
 		else
-			break;
+			break ;
 	}
 	if (WIFEXITED(last_status))
 		(*env)->env->error_code = WEXITSTATUS(last_status);

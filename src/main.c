@@ -6,16 +6,18 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:26:54 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int		g_exit_code = 0;
-void	infinite_read(t_token **lst, t_ast **env)
 
+void	infinite_read(t_token **lst, t_ast **env)
 {
 	char	*line;
+
 	while (1)
 	{
 		line = get_input();
@@ -39,11 +41,12 @@ void	infinite_read(t_token **lst, t_ast **env)
 		free(line);
 	}
 }
-char	*get_input(void)
 
+char	*get_input(void)
 {
 	char	*line;
 	char	*tmp;
+
 	line = readline("Minishell> ");
 	if (line == NULL)
 		return (NULL);
@@ -60,10 +63,11 @@ char	*get_input(void)
 	}
 	return (line);
 }
-void	unlink_redirection(t_token **lst)
 
+void	unlink_redirection(t_token **lst)
 {
 	t_token	*tmp;
+
 	tmp = *lst;
 	while (tmp)
 	{
@@ -73,13 +77,13 @@ void	unlink_redirection(t_token **lst)
 	}
 }
 int	main(int argc, char **argv, char **env)
-
 {
 	int		final_exit_code;
 	t_token	*list;
 	t_token	**lst;
 	t_ast	**ast_head;
 	t_ast	*ast;
+
 	(void)argc;
 	(void)argv;
 	ast = NULL;
@@ -100,6 +104,7 @@ int	main(int argc, char **argv, char **env)
 		return (g_exit_code);
 	return (final_exit_code % 256);
 }
+
 void	cleanup_readline_resources(void)
 
 {

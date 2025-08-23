@@ -6,20 +6,21 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:59:42 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:55 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:17:55 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-void	unset_env(char *argv, t_ast **env)
 
+void	unset_env(char *argv, t_ast **env)
 {
 	t_ast	*current;
 	char	**temp;
 	int		j;
 	int		count;
+
 	j = 0;
 	count = 0;
 	if (!env || !*env || !(*env)->env || !argv || !(*env)->env->env)
@@ -33,18 +34,19 @@ void	unset_env(char *argv, t_ast **env)
 	unset_env_fnc(current, argv, temp, j);
 	return ;
 }
-char	*cat_dup(char *s1)
 
+char	*cat_dup(char *s1)
 {
 	if (!s1)
 		return (NULL);
 	return (ft_strjoin("export ", s1));
 }
-void	export_recognition(char **argv, int i, t_ast **env)
 
+void	export_recognition(char **argv, int i, t_ast **env)
 {
 	int	invalid;
 	int	is_assign;
+
 	i++;
 	invalid = 0;
 	if (argv[i] == NULL)
@@ -76,12 +78,13 @@ void	export_recognition(char **argv, int i, t_ast **env)
 	else
 		(*env)->env->error_code = 0;
 }
-void	add_env(char *argv, t_ast **env)
 
+void	add_env(char *argv, t_ast **env)
 {
 	t_ast	*current;
 	int		i;
 	char	**temp;
+
 	i = 0;
 	if (!env || !*env || !(*env)->env || !argv)
 		return ;
@@ -104,10 +107,11 @@ void	add_env(char *argv, t_ast **env)
 	add_env_fnc(current, temp, argv);
 	return ;
 }
-int	parse_exp(char *argv)
 
+int	parse_exp(char *argv)
 {
 	int	j;
+
 	j = skip_isspace(argv);
 	if (argv[j] == '=')
 		return (1);

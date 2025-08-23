@@ -6,16 +6,18 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 19:05:45 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/21 19:46:25 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:16:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-void	cd_only(t_ast **env)
 
+void	cd_only(t_ast **env)
 {
 	char	*home;
+
 	home = get_env_var(env, "HOME=");
 	if (!home)
 	{
@@ -24,20 +26,21 @@ void	cd_only(t_ast **env)
 	}
 	cd_rec_fnc(home, env);
 }
-void	free_tab1(char *buffer, char *buffer2)
 
+void	free_tab1(char *buffer, char *buffer2)
 {
 	free(buffer);
 	free(buffer2);
 	cd_exit_code();
 }
-void	cd_rec_fnc(char *tab, t_ast **env)
 
+void	cd_rec_fnc(char *tab, t_ast **env)
 {
 	char	*oldpwd;
 	char	*pwd;
 	char	*buffer;
 	char	*buffer2;
+
 	buffer = malloc(1024);
 	buffer2 = malloc(1024);
 	if (!buffer || !buffer2)
@@ -59,8 +62,8 @@ void	cd_rec_fnc(char *tab, t_ast **env)
 	(*env)->env->error_code = 0;
 	return ;
 }
-void	free_buffer(char *buffer, char *buffer2, t_ast **env)
 
+void	free_buffer(char *buffer, char *buffer2, t_ast **env)
 {
 	if (buffer)
 		free(buffer);
@@ -69,11 +72,12 @@ void	free_buffer(char *buffer, char *buffer2, t_ast **env)
 	(*env)->env->error_code = 1;
 	return ;
 }
-char	*get_env_var(t_ast **env, char *str)
 
+char	*get_env_var(t_ast **env, char *str)
 {
 	int	i;
 	int	len;
+
 	if (!env || !(*env) || !(*env)->env || !(*env)->env->env)
 		return (NULL);
 	len = strlen(str);

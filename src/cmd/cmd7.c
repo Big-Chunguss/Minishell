@@ -6,17 +6,19 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:21:38 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:17:28 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-void	env_recognition(char **tab, int j, t_ast **env)
 
+void	env_recognition(char **tab, int j, t_ast **env)
 {
 	int		i;
 	t_ast	*current;
+
 	current = *env;
 	i = 0;
 	if (!current->env->env)
@@ -31,12 +33,13 @@ void	env_recognition(char **tab, int j, t_ast **env)
 	}
 	return ;
 }
-void	pwd_recognition(t_ast **env)
 
+void	pwd_recognition(t_ast **env)
 {
 	int		i;
 	int		j;
 	t_ast	*current;
+
 	i = 0;
 	j = 4;
 	current = *env;
@@ -56,10 +59,11 @@ void	pwd_recognition(t_ast **env)
 	}
 	return ;
 }
-int	cmd(char **tab, char *path, t_ast **env)
 
+int	cmd(char **tab, char *path, t_ast **env)
 {
 	int	i;
+
 	i = 0;
 	if (ft_strnstr(BUILTIN, tab[i]) == 1)
 	{
@@ -70,8 +74,8 @@ int	cmd(char **tab, char *path, t_ast **env)
 	}
 	return (1);
 }
-int	cmd_recognize(char *tab)
 
+int	cmd_recognize(char *tab)
 {
 	if (ft_strnstr(BUILTIN, tab) == 1)
 	{

@@ -6,16 +6,18 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:56:59 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/22 14:46:42 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:17:01 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-void	free_env_complete(t_ast *env)
 
+void	free_env_complete(t_ast *env)
 {
 	int	i;
+
 	i = 0;
 	if (!env || !env->env)
 		return ;
@@ -34,10 +36,11 @@ void	free_env_complete(t_ast *env)
 	free(env->env);
 	free(env);
 }
-void	free_env_env(t_ast *env)
 
+void	free_env_env(t_ast *env)
 {
 	int	i;
+
 	i = 0;
 	while (env->env->env[i])
 	{
@@ -47,21 +50,21 @@ void	free_env_env(t_ast *env)
 	}
 	free(env->env->env);
 }
-void	too_much_exit(t_ast **env)
 
+void	too_much_exit(t_ast **env)
 {
 	(*env)->env->error_code = 1;
 	cleanup_readline_resources();
 	exit((*env)->env->error_code);
 }
-void	number_has_sign(char **argv, int i, t_ast **env)
 
+void	number_has_sign(char **argv, int i, t_ast **env)
 {
 	(*env)->env->error_code = (256 + atoi(argv[i + 1])) % 256;
 	num_has_sign(env);
 }
-void	number_not_valid(char **argv, int i, t_ast **env)
 
+void	number_not_valid(char **argv, int i, t_ast **env)
 {
 	(*env)->env->error_code = 2;
 	valid_number_fail(env, argv[i + 1]);

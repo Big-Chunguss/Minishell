@@ -6,16 +6,15 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:47:07 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:27 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:13:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
 extern int	g_exit_code;
-void	build_in(char **tab, int i, t_ast **env)
 
+void	build_in(char **tab, int i, t_ast **env)
 {
 	if (ft_strnstr(BUILTIN, tab[i]))
 	{
@@ -52,11 +51,12 @@ void	initialise_exp(t_ast **env, char **envp)
 		return ;
 	copy_envp_entries(env, envp);
 }
-void	del_export(t_ast **env)
 
+void	del_export(t_ast **env)
 {
 	t_ast	*current;
 	int		i;
+
 	i = 0;
 	current = *env;
 	if (!current || !current->env || !current->env->export)
@@ -70,13 +70,14 @@ void	del_export(t_ast **env)
 	current->env->export = NULL;
 	return ;
 }
-void	initialise_shlvl(t_ast **env)
 
+void	initialise_shlvl(t_ast **env)
 {
 	char	*str;
 	char	*merge;
 	int		shlvl;
 	char	*final;
+
 	if (!env || !*env)
 		return ;
 	str = number_shlvl(env);
@@ -97,13 +98,14 @@ void	initialise_shlvl(t_ast **env)
 	add_env(merge, env);
 	free(merge);
 }
-char	*number_shlvl(t_ast **env)
 
+char	*number_shlvl(t_ast **env)
 {
 	t_ast	*current;
 	int		i;
 	char	*str;
 	char	*result;
+
 	i = 0;
 	current = *env;
 	if (!current->env->env)

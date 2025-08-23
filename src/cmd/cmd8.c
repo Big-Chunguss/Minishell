@@ -6,13 +6,13 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 12:17:34 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/10 12:19:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:17:41 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	init_ast_node(t_ast *node)
-
 {
 	node->type = 0;
 	node->value = NULL;
@@ -23,15 +23,15 @@ static void	init_ast_node(t_ast *node)
 	node->target = NULL;
 	node->parent = NULL;
 }
-static void	init_env_struct(t_env *env_struct)
 
+static void	init_env_struct(t_env *env_struct)
 {
 	env_struct->error_code = 0;
 	env_struct->last_pid = 0;
 	env_struct->export = NULL;
 }
-static int	allocate_ast_structures(t_ast **env)
 
+static int	allocate_ast_structures(t_ast **env)
 {
 	*env = malloc(sizeof(t_ast));
 	if (!*env)
@@ -44,10 +44,11 @@ static int	allocate_ast_structures(t_ast **env)
 	}
 	return (1);
 }
-static int	copy_env_variables(t_ast *current, char **envp, int env_count)
 
+static int	copy_env_variables(t_ast *current, char **envp, int env_count)
 {
 	int	i;
+
 	current->env->env = malloc(sizeof(char *) * (env_count + 1));
 	if (!current->env->env)
 		return (0);
@@ -66,11 +67,12 @@ static int	copy_env_variables(t_ast *current, char **envp, int env_count)
 	current->env->env[i] = NULL;
 	return (1);
 }
-void	initialise_env(t_ast **env, char **envp)
 
+void	initialise_env(t_ast **env, char **envp)
 {
 	t_ast	*current;
 	int		env_count;
+
 	if (!envp)
 		return ;
 	if (!allocate_ast_structures(env))

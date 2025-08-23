@@ -6,14 +6,15 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:33:49 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 12:37:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:24:32 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-static int	print_redir_error(const char *path)
 
+static int	print_redir_error(const char *path)
 {
 	if (errno == EACCES)
 	{
@@ -34,10 +35,11 @@ static int	print_redir_error(const char *path)
 	}
 	return (-1);
 }
-static int	open_output_redir(t_ast *redir)
 
+static int	open_output_redir(t_ast *redir)
 {
 	int	fd;
+
 	if (!ft_strcmp(redir->value, ">"))
 		fd = open(redir->target->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
@@ -46,19 +48,21 @@ static int	open_output_redir(t_ast *redir)
 		return (print_redir_error(redir->target->value));
 	return (fd);
 }
-static int	open_input_redir(t_ast *redir)
 
+static int	open_input_redir(t_ast *redir)
 {
 	int	fd;
+
 	fd = open(redir->target->value, O_RDONLY);
 	if (fd < 0)
 		return (print_redir_error(redir->target->value));
 	return (fd);
 }
-static int	handle_input_redirection(t_ast *child)
 
+static int	handle_input_redirection(t_ast *child)
 {
 	int	fd;
+
 	fd = open_input_redir(child);
 	if (fd == -1)
 		return (-1);
@@ -66,10 +70,11 @@ static int	handle_input_redirection(t_ast *child)
 	close(fd);
 	return (0);
 }
-static int	handle_output_redirection(t_ast *child)
 
+static int	handle_output_redirection(t_ast *child)
 {
 	int	fd;
+
 	fd = open_output_redir(child);
 	if (fd == -1)
 		return (-1);
@@ -77,8 +82,8 @@ static int	handle_output_redirection(t_ast *child)
 	close(fd);
 	return (0);
 }
-static char	*find_heredoc_file(const char *limiter)
 
+static char	*find_heredoc_file(const char *limiter)
 {
 	char			pattern[256];
 	char			*result;
@@ -90,8 +95,10 @@ static char	*find_heredoc_file(const char *limiter)
 	struct stat		st;
 	struct stat		best_stat;
 	int				found;
+
 	trimmed_limiter = limiter;
-	while (*trimmed_limiter && (*trimmed_limiter == ' ' || *trimmed_limiter == '\t'))
+	while (*trimmed_limiter && (*trimmed_limiter == ' '
+			|| *trimmed_limiter == '\t'))
 		trimmed_limiter++;
 	ft_strlcpy(prefix, "minishell_heredoc_", sizeof(prefix));
 	ft_strlcat(prefix, trimmed_limiter, sizeof(prefix));
@@ -125,10 +132,11 @@ static char	*find_heredoc_file(const char *limiter)
 		result = NULL;
 	return (result);
 }
-int	process_redirection_child(t_ast *child)
 
+int	process_redirection_child(t_ast *child)
 {
 	char	*heredoc_path;
+
 	if (g_exit_code == 130)
 		return (-1);
 	if (!ft_strcmp(child->value, "<"))

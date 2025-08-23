@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cmd5.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stcharlo <stcharlo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:06:26 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/18 16:43:19 by stcharlo         ###   ########.fr       */
+/*   Updated: 2025/08/23 13:14:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-int	check_dbl_equal(char *argv)
 
+int	check_dbl_equal(char *argv)
 {
 	int	i;
 	int	temp;
+
 	i = 0;
 	temp = 0;
 	while (argv[i])
@@ -29,20 +31,22 @@ int	check_dbl_equal(char *argv)
 		return (1);
 	return (0);
 }
-int	skip_isspace(char *argv)
 
+int	skip_isspace(char *argv)
 {
 	int	i;
+
 	i = 0;
 	while (argv[i] == 32 || argv[i] == '\t' || argv[i] == '\n')
 		i++;
 	return (i);
 }
-void	add_export(char *argv, t_ast **env)
 
+void	add_export(char *argv, t_ast **env)
 {
 	t_ast	*current;
 	char	**temp;
+
 	temp = NULL;
 	if (!env || !*env || !(*env)->env || !argv)
 		return ;
@@ -61,12 +65,13 @@ void	add_export(char *argv, t_ast **env)
 	add_exp_fnc(current, temp, argv);
 	return ;
 }
-void	show_export(t_ast **env)
 
+void	show_export(t_ast **env)
 {
 	int		i;
 	t_ast	*current;
 	int		j;
+
 	i = 0;
 	j = 0;
 	current = *env;
@@ -85,12 +90,13 @@ void	show_export(t_ast **env)
 	}
 	return ;
 }
-void	show_env(t_ast **env)
 
+void	show_env(t_ast **env)
 {
 	int		i;
 	t_ast	*current;
 	int		j;
+
 	i = 0;
 	j = 0;
 	current = *env;

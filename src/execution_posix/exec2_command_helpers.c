@@ -6,15 +6,15 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 14:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:08 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/23 13:21:51 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <signal.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 void	write_error_msg(const char *cmd, const char *msg)
 {
@@ -63,8 +63,8 @@ void	setup_command_environment(t_cmd_params *params)
 	redirect_io2(params->input_fd, params->output_fd);
 }
 
-int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup,
-		char ***tab, char **path)
+int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup, char ***tab,
+		char **path)
 {
 	*tab = build_argv(node);
 	cleanup->tab = *tab;

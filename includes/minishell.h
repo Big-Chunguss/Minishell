@@ -6,12 +6,14 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:06 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 14:31:43 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _POSIX_C_SOURCE 200809L
 
 # include <ctype.h>
 # include <dirent.h>
@@ -29,8 +31,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
-# define _POSIX_C_SOURCE 200809L
 # define ECHOCTL 0001000
 
 /*
@@ -147,6 +147,14 @@ typedef struct s_cleanup_params
 	char				*path;
 }						t_cleanup_params;
 
+typedef struct s_segment
+{
+	const char			*s;
+	int					start;
+	int					len;
+	int					word;
+}						t_segment;
+
 // ast
 t_ast					*create_ast_node(int type, char *value);
 void					add_ast_child(t_ast *parent, t_ast *child);
@@ -223,6 +231,7 @@ int						find_next_expand(const char *str, int *start, int *len);
 char					*expand_one(const char *str, int start, int len,
 							t_ast **env);
 int						is_limiter_line(char *line, char *limiter);
+char					*heredoc_readline(void);
 char					*ft_strjoin_slash(char const *s1, char const *s2);
 int						is_directory(const char *path);
 int						is_var_char(char c);
@@ -250,19 +259,19 @@ void					execute_nodes(t_ast **head, t_ast **env);
 void					execute_nodes2(t_ast **head, t_ast **env);
 int						validate_command_exists(const char *cmd, t_ast **env);
 int						pre_validate_ast(t_ast *node, t_ast **env);
-void					exec_pipe_right(t_ast *node, t_ast **head,
-							t_ast **env, t_pipe_data *data);
-void					exec_pipe_left(t_ast *node, t_ast **head,
-							t_ast **env, t_pipe_data *data);
+void					exec_pipe_right(t_ast *node, t_ast **head, t_ast **env,
+							t_pipe_data *data);
+void					exec_pipe_left(t_ast *node, t_ast **head, t_ast **env,
+							t_pipe_data *data);
 void					exec_command_node(t_ast **node, t_ast **env,
 							int input_fd, int output_fd);
-void					exec_pipe_node(t_ast **head, t_ast **env,
-							int input_fd, int output_fd);
+void					exec_pipe_node(t_ast **head, t_ast **env, int input_fd,
+							int output_fd);
 void					exec_ast(t_ast **node, t_ast **env, int input_fd,
 							int output_fd);
 void					exec_cmd(t_ast **node, t_ast **env, int child);
-void					exec2_exec_ast(t_ast **node, t_ast **head,
-							t_ast **env, t_cmd_params *params);
+void					exec2_exec_ast(t_ast **node, t_ast **head, t_ast **env,
+							t_cmd_params *params);
 int						apply_redirections(t_ast *node);
 void					unlink_redirection(t_token **lst);
 
@@ -402,23 +411,82 @@ void					execute_builtin_command(t_ast *node, t_ast **head,
 
 // exec2_command_helpers.c
 void					write_error_msg(const char *cmd, const char *msg);
-void					print_exec_error(const char *cmd, int code, int has_slash);
+void					print_exec_error(const char *cmd, int code,
+							int has_slash);
 int						classify_error(const char *cmd, char *resolved);
 void					setup_command_environment(t_cmd_params *params);
-int						prepare_command_args(t_ast *node, t_cleanup_params *cleanup,
-							char ***tab, char **path);
+int						prepare_command_args(t_ast *node,
+							t_cleanup_params *cleanup, char ***tab,
+							char **path);
 void					handle_empty_cmd_fork(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
 
-// String utilities  
+// String utilities
 void					build_temp_path(char *temp_path, size_t path_size,
 							const char *filename, int pid);
-void					ft_strcpy_safe(char *dst, const char *src,
+void					build_pattern(char *pattern, size_t size,
+							const char *trimmed_limiter);
+void					ft_strcpy_safe(char *dst, const char *src, size_t size);
+void					ft_strcat_safe(char *dst, const char *src, size_t size);
+
+// Heredoc file finder
+char					*find_heredoc_file(const char *limiter);
+
+// Heredoc path utilities
+void					build_prefix(const char *limiter, char *prefix,
 							size_t size);
-void					ft_strcat_safe(char *dst, const char *src,
+void					build_fullpath(const char *name, char *full,
 							size_t size);
+
+// Redirection helpers
+int						print_redir_error(const char *path);
+int						open_output_redir(t_ast *redir);
+int						open_input_redir(t_ast *redir);
+int						handle_input_redirection(t_ast *child);
+int						handle_output_redirection(t_ast *child);
+
+// Command error utilities
+void					write_error_msg(const char *cmd, const char *msg);
+void					print_exec_error(const char *cmd, int code,
+							int has_slash);
+int						classify_error(const char *cmd, char *resolved);
+
+// Validation utilities
+int						is_directory(const char *path);
+int						validate_command_exists(const char *cmd, t_ast **env);
+int						pre_validate_ast(t_ast *node, t_ast **env);
+
+// Split utilities
+char					**split_by_newline(char *str);
+char					**split_newline_alloc(char *str, int line_count);
+char					**finish_last_line(char *str, char **result, int j,
+							int start);
+
+// Heredoc readline utilities
+void					maybe_expand_line(char **line, int quoted_limiter,
+							t_ast **env);
+void					append_line(char **acc, char *line);
+void					finalize_heredoc(char *str, char *filename);
+
+// Heredoc check utilities
+void					check_heredoc(t_token **lst, t_ast **env);
 
 // Cleanup functions
 void					cleanup_readline_resources(void);
+
+// CMD2 Exit helpers
+int						is_valid_number(char *str);
+int						check_has_sign(char *str);
+void					exit_number_fail(char *str);
+
+// CMD4 Export helpers
+void					process_export_args(char **argv, int *i, t_ast **env,
+							int *invalid);
+void					create_initial_env(char *argv, t_ast **env);
+
+// CMD6 CD helpers
+int						handle_home_directory(t_ast **env);
+int						change_to_path(char *path);
+int						handle_specific_path(char *path, char *resolved_path);
 
 #endif

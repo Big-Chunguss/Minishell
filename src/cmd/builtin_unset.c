@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	unset_exp(char *argv, t_ast **env)
 		return ;
 	}
 	unset_exp_fnc(current, target, temp, j);
+	free(target);
 	return ;
 }
 

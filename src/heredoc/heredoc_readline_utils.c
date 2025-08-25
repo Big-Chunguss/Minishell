@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:35:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:56:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,33 @@ void	append_line(char **acc, char *line)
 	*acc = tmp;
 }
 
+static void	process_heredoc_content(char *str, char *filename)
+{
+	char	**res;
+	int		i;
+
+	res = split_by_newline(str);
+	free(str);
+	tab_to_file(res, filename);
+	if (res)
+	{
+		i = 0;
+		while (res[i])
+		{
+			free(res[i]);
+			i++;
+		}
+		free(res);
+	}
+}
+
 void	finalize_heredoc(char *str, char *filename)
 {
 	extern int	g_exit_code;
-	char		**res;
 
 	if (g_exit_code != 130)
 	{
-		res = split_by_newline(str);
-		free(str);
-		tab_to_file(res, filename);
+		process_heredoc_content(str, filename);
 		free(filename);
 	}
 	else

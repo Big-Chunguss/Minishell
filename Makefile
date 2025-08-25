@@ -27,7 +27,8 @@ SRC = main.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.
 	cmd/builtin_dispatcher.c cmd/builtin_echo.c cmd/builtin_exit.c cmd/builtin_exit_helpers.c cmd/builtin_cd.c cmd/builtin_cd_helpers.c cmd/builtin_pwd.c cmd/builtin_export.c cmd/builtin_export_helpers.c cmd/builtin_unset.c cmd/builtin_unset_helpers.c cmd/builtin_env.c cmd/builtin_env_helpers.c cmd/builtin_utils.c cmd/builtin_utils_helpers.c cmd/builtin_utils_helpers2.c cmd/builtin_memory.c \
 	ast/new_ast.c ast/new_ast2.c ast/new_ast3.c ast/new_ast4.c ast/new_ast5.c signal/signal.c signal/heredoc_signals.c \
 	execution_posix/exec2.c execution_posix/exec2_utils.c execution_posix/exec2_pipeline.c execution_posix/exec2_wait.c \
-	execution_posix/exec2_command.c execution_posix/exec2_command_helpers.c execution_posix/exec2_command_error_utils.c execution_posix/exec2_main.c
+	execution_posix/exec2_command.c execution_posix/exec2_command_helpers.c execution_posix/exec2_command_error_utils.c execution_posix/exec2_main.c \
+	execution_posix/exec2_redirection_helpers.c
 
 # Object files, with obj/ prefix and .o extension
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:11:10 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,9 @@ static int	has_heredoc(t_token *lst)
 	return (0);
 }
 
-static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
-		t_token_info **tokens)
+static int	handle_heredoc_and_syntax(t_token **lst, t_token_info **tokens,
+		int token_count, t_ast **env)
 {
-	int	token_count;
-
-	line = unquoted_var_expansion(line, env);
-	*tokens = split_bash_style_with_quotes(line, &token_count);
-	*lst = NULL;
-	create_list_with_quote_info(lst, *tokens, token_count);
-	check_heredoc(lst, env);
 	if (has_heredoc(*lst) && g_exit_code == 130)
 	{
 		(*env)->env->error_code = 130;
@@ -50,6 +43,23 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 		return (0);
 	}
 	return (token_count);
+}
+
+static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
+		t_token_info **tokens)
+{
+	int		token_count;
+	char	*original_line;
+
+	original_line = line;
+	line = unquoted_var_expansion(line, env);
+	*tokens = split_bash_style_with_quotes(line, &token_count);
+	if (line != original_line)
+		free(line);
+	*lst = NULL;
+	create_list_with_quote_info(lst, *tokens, token_count);
+	check_heredoc(lst, env);
+	return (handle_heredoc_and_syntax(lst, tokens, token_count, env));
 }
 
 static void	handle_ast_and_exec(t_token **lst, t_ast **env,

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 14:31:43 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -404,6 +404,11 @@ void					run_command(t_ast *node, t_ast **head, t_ast **env,
 							t_cmd_params *params);
 char					**build_argv(t_ast *node);
 int						apply_redirections2(t_ast *node);
+int						is_input_redirection(t_ast *node);
+int						is_heredoc_redirection(t_ast *node);
+int						find_last_heredoc_redirection(t_ast *node);
+int						process_single_redirection(t_ast *node, int i,
+							int last_heredoc_redir);
 void					handle_command_execution(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
 void					execute_builtin_command(t_ast *node, t_ast **head,

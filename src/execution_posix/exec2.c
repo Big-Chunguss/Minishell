@@ -40,17 +40,17 @@ char	**build_argv(t_ast *node)
 int	apply_redirections2(t_ast *node)
 {
 	int	i;
-	int	res;
+	int	last_heredoc_redir;
 
 	if (!node)
 		return (0);
+	last_heredoc_redir = find_last_heredoc_redirection(node);
 	i = 0;
 	while (i < node->child_count)
 	{
 		if (node->children[i]->type == NODE_REDIRECTION)
 		{
-			res = process_redirection_child(node->children[i]);
-			if (res == -1)
+			if (process_single_redirection(node, i, last_heredoc_redir) == -1)
 				return (-1);
 		}
 		i++;

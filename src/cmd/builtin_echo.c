@@ -1,18 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_is_limiter_line.c                             :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 15:39:34 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:39:35 by agaroux          ###   ########.fr       */
+/*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
+/*   Updated: 2025/08/25 15:29:34 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_limiter_line(char *line, char *limiter)
+void	echo_recognition(char **argv, int i, t_ast **env)
 {
-	return (ft_strcmp(line, limiter) == 0);
+	int	count;
+
+	count = 1;
+	i++;
+	(*env)->env->error_code = 0;
+	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+	{
+		count = 0;
+		i++;
+	}
+	while (argv[i])
+	{
+		write(1, argv[i], ft_strlen(argv[i]));
+		if (argv[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
+	if (count)
+		write(1, "\n", 1);
+	return ;
 }

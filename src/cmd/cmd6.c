@@ -6,37 +6,52 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 18:10:14 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:14:56 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 14:12:01 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <limits.h>
+#include <stdlib.h>
 
 extern int	g_exit_code;
 
-void	cd_recognition(char **tab, int i, t_ast **env)
+static int	count_cd_args(char **argv, int i)
 {
-	int	error_code;
+	int	arg_count;
 
-	if (tab[i])
-		i++;
-	if (!tab[i])
-	{
-		cd_only(env);
-		return ;
-	}
-	if (tab[i + 1])
+	arg_count = 0;
+	while (argv[i + 1 + arg_count])
+		arg_count++;
+	return (arg_count);
+}
+
+void	cd_recognition(char **argv, int i, t_ast **env)
+{
+	char	*resolved_path;
+	char	*path;
+
+	if (count_cd_args(argv, i) > 1)
 	{
 		write(2, "cd: too many arguments\n", 23);
 		(*env)->env->error_code = 1;
 		return ;
 	}
-	error_code = access_error(tab[i]);
-	if (error_code == 0)
-		cd_rec_fnc(tab[i], env);
+	if (!argv || !argv[i + 1])
+		path = NULL;
 	else
-		print_error(error_code, tab[i], env);
-	return ;
+		path = argv[i + 1];
+	resolved_path = malloc(PATH_MAX);
+	if (!resolved_path)
+	{
+		(*env)->env->error_code = 1;
+		return ;
+	}
+	if (path == NULL || ft_strcmp(path, "~") == 0)
+		(*env)->env->error_code = handle_home_directory(env);
+	else
+		(*env)->env->error_code = handle_specific_path(path, resolved_path);
+	free(resolved_path);
 }
 
 void	print_error(int num, char *tab, t_ast **env)

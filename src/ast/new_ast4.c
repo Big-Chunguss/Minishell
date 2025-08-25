@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:14:09 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:19:51 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:45:22 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ static t_ast	*parse_command_head(t_token **lst_ptr, t_ast **env)
 			lst = lst->next;
 	}
 	if (!cmd && has_redirections)
-	{
 		cmd = create_ast_node(NODE_COMMAND, "");
-	}
 	*lst_ptr = lst;
 	return (cmd);
 }

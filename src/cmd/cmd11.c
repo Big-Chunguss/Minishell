@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:56:59 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:17:01 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 13:09:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,16 @@ void	too_much_exit(t_ast **env)
 void	number_has_sign(char **argv, int i, t_ast **env)
 {
 	(*env)->env->error_code = (256 + atoi(argv[i + 1])) % 256;
-	num_has_sign(env);
+	cleanup_readline_resources();
+	exit((*env)->env->error_code);
 }
 
 void	number_not_valid(char **argv, int i, t_ast **env)
 {
 	(*env)->env->error_code = 2;
-	valid_number_fail(env, argv[i + 1]);
+	write(2, "minishell: exit: ", 17);
+	write(2, argv[i + 1], ft_strlen(argv[i + 1]));
+	write(2, ": numeric argument required\n", 28);
+	cleanup_readline_resources();
+	exit(2);
 }

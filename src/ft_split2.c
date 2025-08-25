@@ -6,15 +6,16 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 15:34:30 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/10 12:28:17 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:23:43 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 static int	find_next_dollar(const char *s, int start, int end)
-
 {
 	int	i;
+
 	i = start;
 	while (s[i] && i <= end)
 	{
@@ -24,8 +25,8 @@ static int	find_next_dollar(const char *s, int start, int end)
 	}
 	return (-1);
 }
-int	is_var_char2(char c)
 
+int	is_var_char2(char c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
 		return (1);
@@ -33,10 +34,11 @@ int	is_var_char2(char c)
 		return (1);
 	return (0);
 }
-static int	var_end_index(const char *s, int i, int end)
 
+static int	var_end_index(const char *s, int i, int end)
 {
 	int	j;
+
 	j = i + 1;
 	while (s[j] && j <= end && is_var_char(s[j]))
 	{
@@ -49,20 +51,21 @@ static int	var_end_index(const char *s, int i, int end)
 	}
 	return (j);
 }
-static void	set_tail(char **arr, const char *s, int j)
 
+static void	set_tail(char **arr, const char *s, int j)
 {
 	if (s[j])
 		arr[2] = ft_strdup(s + j);
 	else
 		arr[2] = NULL;
 }
-char	**ft_split_dollar_range(const char *s, int start, int end)
 
+char	**ft_split_dollar_range(const char *s, int start, int end)
 {
 	char	**arr;
 	int		i;
 	int		j;
+
 	if (!s || start < 0 || end < start)
 		return (NULL);
 	i = find_next_dollar(s, start, end);

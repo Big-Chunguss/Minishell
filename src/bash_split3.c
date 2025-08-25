@@ -6,12 +6,11 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 11:56:42 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:08:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:04:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	process_token_char(t_extract_state *state)
 {
@@ -28,6 +27,7 @@ void	process_token_char(t_extract_state *state)
 t_token_info	extract_token_with_quote_info(const char **s)
 {
 	t_extract_state	state;
+
 	init_extract_state(&state, *s);
 	if (!state.token)
 		return (state.info);
@@ -53,6 +53,7 @@ t_token_info	extract_token_with_quote_info(const char **s)
 void	free_tokens(char **tokens)
 {
 	int	i;
+
 	i = 0;
 	while (tokens[i])
 		free(tokens[i++]);
@@ -62,6 +63,7 @@ void	free_tokens(char **tokens)
 void	free_token_info_array(t_token_info *tokens, int count)
 {
 	int	i;
+
 	if (!tokens)
 		return ;
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:26:54 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:10:39 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	unlink_redirection(t_token **lst)
 		tmp = tmp->next;
 	}
 }
+
 int	main(int argc, char **argv, char **env)
 {
 	int		final_exit_code;
@@ -106,7 +107,6 @@ int	main(int argc, char **argv, char **env)
 }
 
 void	cleanup_readline_resources(void)
-
 {
 	cleanup_get_next_line();
 	rl_clear_history();

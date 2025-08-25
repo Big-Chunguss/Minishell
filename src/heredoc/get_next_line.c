@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 16:16:42 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:07 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:54:29 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
 char	*ft_replace(char *buffer)
-
 {
 	int		i;
 	int		j;
 	char	*tmp;
+
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
@@ -41,14 +40,14 @@ char	*ft_replace(char *buffer)
 	j = 0;
 	while (buffer[i])
 		tmp[j++] = buffer[i++];
-	free(buffer);
-	return (tmp);
+	return (free(buffer), tmp);
 }
-char	*ft_extract(char *buffer)
 
+char	*ft_extract(char *buffer)
 {
 	int		i;
 	char	*line;
+
 	i = 0;
 	if (!buffer || !buffer[i])
 		return (NULL);
@@ -67,6 +66,7 @@ char	*ft_extract(char *buffer)
 		line[i] = '\n';
 	return (line);
 }
+
 char	*ft_buffer(int fd, char *buffer)
 {
 	int	should_break;
@@ -83,6 +83,7 @@ char	*ft_buffer(int fd, char *buffer)
 	}
 	return (buffer);
 }
+
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
@@ -99,6 +100,7 @@ char	*get_next_line(int fd)
 		cleanup_buffer(&buffer);
 	return (line);
 }
+
 void	cleanup_get_next_line(void)
 
 {

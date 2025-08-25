@@ -10,21 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
-
 #include <signal.h>
-
+#include <stdlib.h>
 #include <sys/wait.h>
-
 #include <unistd.h>
 
-#include <stdlib.h>
-
 char	**build_argv(t_ast *node)
-
 {
 	char	**tab;
 	int		i;
 	int		argc;
+
 	tab = (char **)malloc(sizeof(char *) * (node->child_count + 2));
 	if (!tab)
 		return (NULL);
@@ -40,11 +36,12 @@ char	**build_argv(t_ast *node)
 	tab[argc] = NULL;
 	return (tab);
 }
-int	apply_redirections2(t_ast *node)
 
+int	apply_redirections2(t_ast *node)
 {
-	int		i;
-	int		res;
+	int	i;
+	int	res;
+
 	if (!node)
 		return (0);
 	i = 0;

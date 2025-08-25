@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:47:07 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:13:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 13:00:38 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	build_in(char **tab, int i, t_ast **env)
 	}
 	return ;
 }
+
 void	initialise_exp(t_ast **env, char **envp)
 {
 	t_ast	*current;

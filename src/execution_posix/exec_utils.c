@@ -1,34 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 15:45:00 by agaroux           #+#    #+#             */
+/*   Created: 2025/08/25 13:00:00 by agaroux           #+#    #+#             */
 /*   Updated: 2025/08/25 12:56:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	heredoc_process_lines(char **str, char *limiter, int quoted_limiter,
-		t_ast **env)
+void	command_not_found_error(const char *cmd)
 {
-	char	*line;
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 20);
+}
 
-	while (1)
+void	handle_errno_error(const char *path)
+{
+	char	*msg;
+
+	write(2, path, ft_strlen(path));
+	write(2, ": ", 2);
+	if (errno == EACCES)
 	{
-		line = heredoc_readline();
-		if (!line)
-			break ;
-		if (is_limiter_line(line, limiter))
-		{
-			free(line);
-			break ;
-		}
-		maybe_expand_line(&line, quoted_limiter, env);
-		append_line(str, line);
-		free(line);
+		write(2, "Permission denied\n", 18);
+		exit(1);
 	}
+	else if (errno == ENOENT)
+	{
+		write(2, "No such file or directory\n", 26);
+		exit(1);
+	}
+	else
+	{
+		msg = strerror(errno);
+		write(2, msg, ft_strlen(msg));
+		write(2, "\n", 1);
+		exit(1);
+	}
+}
+
+void	exit_child(int exit_code, int child)
+{
+	if (child == CHILD)
+		exit(exit_code);
 }

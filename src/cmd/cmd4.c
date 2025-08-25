@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:59:42 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:17:55 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 13:09:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,15 @@ char	*cat_dup(char *s1)
 void	export_recognition(char **argv, int i, t_ast **env)
 {
 	int	invalid;
-	int	is_assign;
 
-	i++;
 	invalid = 0;
+	i++;
 	if (argv[i] == NULL)
 	{
 		show_export(env);
 		return ;
 	}
-	while (argv[i])
-	{
-		is_assign = (strchr(argv[i], '=') != NULL);
-		if (parse_exp(argv[i]) == 1)
-		{
-			write(2, "export: `", 9);
-			write(2, argv[i], ft_strlen(argv[i]));
-			write(2, "': not a valid identifier\n", 26);
-			invalid = 1;
-		}
-		else if (!is_assign)
-			add_export(argv[i], env);
-		else
-		{
-			add_env(argv[i], env);
-			add_export(argv[i], env);
-		}
-		i++;
-	}
+	process_export_args(argv, &i, env, &invalid);
 	if (invalid)
 		(*env)->env->error_code = 1;
 	else
@@ -91,12 +72,7 @@ void	add_env(char *argv, t_ast **env)
 	current = *env;
 	if (!current->env->env)
 	{
-		temp = malloc(sizeof(char *) * 2);
-		if (!temp)
-			return ;
-		temp[0] = ft_strdup(argv);
-		temp[1] = NULL;
-		current->env->env = temp;
+		create_initial_env(argv, env);
 		return ;
 	}
 	while (current->env->env && current->env->env[i])
@@ -105,7 +81,6 @@ void	add_env(char *argv, t_ast **env)
 	if (!temp)
 		return ;
 	add_env_fnc(current, temp, argv);
-	return ;
 }
 
 int	parse_exp(char *argv)

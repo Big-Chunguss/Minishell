@@ -1,34 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   heredoc_utlis.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 11:12:41 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:37:49 by agaroux          ###   ########.fr       */
+/*   Created: 2025/07/07 16:08:43 by agaroux           #+#    #+#             */
+/*   Updated: 2025/08/25 11:57:48 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int	g_exit_code;
-
-void	execute_nodes(t_ast **head, t_ast **env)
+void	free_tab(char **tab)
 {
-	int				saved_stdout;
-	int				saved_stdin;
-	t_cmd_params	params;
+	int	i;
 
-	if (!head || !(*head))
+	if (!tab)
 		return ;
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
-	params.input_fd = STDIN_FILENO;
-	params.output_fd = STDOUT_FILENO;
-	exec2_exec_ast(head, head, env, &params);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		tab[i] = NULL;
+		i++;
+	}
+	free(tab);
+}
+
+int	ft_newline(const char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }

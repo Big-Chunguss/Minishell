@@ -6,19 +6,12 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:41:54 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/09 16:05:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:23:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-typedef struct s_segment
-
-{
-	const char	*s;
-	int			start;
-	int			len;
-	int			word;
-}	t_segment;
 static int	copy_segment(char **psplit, t_segment seg)
 
 {
@@ -28,20 +21,21 @@ static int	copy_segment(char **psplit, t_segment seg)
 	ft_strlcpy(psplit[seg.word], seg.s + seg.start, seg.len + 1);
 	return (0);
 }
-static void	setup_segment(t_segment *seg, const char *s, int word)
 
+static void	setup_segment(t_segment *seg, const char *s, int word)
 {
 	seg->s = s;
 	seg->word = word;
 }
-static int	process_next_word(char **psplit, const char *s,
-			const char *delim, int *word)
 
+static int	process_next_word(char **psplit, const char *s, const char *delim,
+		int *word)
 {
 	int			i;
 	int			start;
 	int			len;
 	t_segment	seg;
+
 	i = skip_spaces(s, 0);
 	if (!s[i])
 		return (0);
@@ -55,12 +49,13 @@ static int	process_next_word(char **psplit, const char *s,
 	(*word)++;
 	return (i + len);
 }
-static int	fill_split(char **psplit, const char *s, const char *delim)
 
+static int	fill_split(char **psplit, const char *s, const char *delim)
 {
 	int	i;
 	int	word;
 	int	offset;
+
 	i = 0;
 	word = 0;
 	while (s[i])
@@ -78,11 +73,12 @@ static int	fill_split(char **psplit, const char *s, const char *delim)
 	psplit[word] = NULL;
 	return (0);
 }
-char	**ft_split(char *s, const char *delim)
 
+char	**ft_split(char *s, const char *delim)
 {
 	char	**psplit;
 	int		count;
+
 	if (!s || !delim)
 		return (NULL);
 	count = count_words(s, delim);

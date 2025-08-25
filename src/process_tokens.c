@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:25:40 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:11:10 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 		t_token_info **tokens)
 {
 	int	token_count;
+
 	line = unquoted_var_expansion(line, env);
 	*tokens = split_bash_style_with_quotes(line, &token_count);
 	*lst = NULL;
@@ -56,6 +57,7 @@ static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 {
 	t_ast	*ast_root;
 	t_token	*original_list_head;
+
 	original_list_head = *lst;
 	exit_status(lst, env);
 	ast_root = parse_pipeline(lst, env);
@@ -73,6 +75,7 @@ void	process_tokens(t_token **lst, char *line, t_ast **env)
 {
 	t_token_info	*tokens;
 	int				token_count;
+
 	token_count = init_tokens_and_check(lst, line, env, &tokens);
 	if (token_count == 0)
 		return ;

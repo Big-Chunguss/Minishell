@@ -6,23 +6,24 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:02:32 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/09 13:02:53 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:04:38 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/minishell.h"
+
+#include "../../includes/minishell.h"
 
 static int	find_quote_end(const char *str, int i, char quote)
-
 {
 	while (str[i] && str[i] != quote)
 		i++;
 	return (i);
 }
-static char	*handle_single_quotes(char *str, int *i)
 
+static char	*handle_single_quotes(char *str, int *i)
 {
 	int	start;
 	int	end;
+
 	start = *i;
 	end = find_quote_end(str, ++(*i), '\'');
 	if (str[end] == '\'')
@@ -34,11 +35,12 @@ static char	*handle_single_quotes(char *str, int *i)
 		*i = end;
 	return (str);
 }
-static char	*handle_double_quotes(char *str, int *i, t_ast **env)
 
+static char	*handle_double_quotes(char *str, int *i, t_ast **env)
 {
 	int	start;
 	int	end;
+
 	start = *i;
 	end = find_quote_end(str, ++(*i), '\"');
 	if (str[end] == '\"')
@@ -50,10 +52,11 @@ static char	*handle_double_quotes(char *str, int *i, t_ast **env)
 		*i = end;
 	return (str);
 }
-char	*clean_line(char *str, t_ast **env)
 
+char	*clean_line(char *str, t_ast **env)
 {
 	int	i;
+
 	i = 0;
 	while (str[i])
 	{

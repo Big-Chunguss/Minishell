@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 17:01:46 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/23 13:17:51 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 13:09:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,11 @@
 
 extern int	g_exit_code;
 
-int	is_valid_number(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || str[0] == '\0')
-		return (0);
-	if (str[i] == '+' || str[i] == '-')
-	{
-		i++;
-		if (str[i] == '\0')
-			return (0);
-	}
-	while (str[i])
-	{
-		if (!isdigit((unsigned char)str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static void	handle_exit_with_arg(char **argv, int i, t_ast **env)
 {
 	if (!is_valid_number(argv[i + 1]))
 		number_not_valid(argv, i, env);
-	else if (argv[i + 1][0] == '-' || argv[i + 1][0] == '+')
+	else if (check_has_sign(argv[i + 1]))
 		number_has_sign(argv, i, env);
 	else
 	{
@@ -71,20 +49,6 @@ void	exit_recognition(char **argv, int i, t_ast **env)
 		handle_exit_with_arg(argv, i, env);
 	else
 		handle_exit_no_arg(env);
-}
-
-void	num_has_sign(t_ast **env)
-{
-	cleanup_readline_resources();
-	exit((*env)->env->error_code);
-}
-
-void	valid_number_fail(t_ast **env, char *arg)
-{
-	write(2, "exit: ", 6);
-	write(2, arg, ft_strlen(arg));
-	write(2, ": numeric argument required\n", 28);
-	exit((*env)->env->error_code);
 }
 
 void	echo_recognition(char **argv, int i, t_ast **env)

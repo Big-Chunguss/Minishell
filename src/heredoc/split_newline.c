@@ -6,25 +6,26 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:50:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 12:02:10 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 12:56:00 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	free_result(char **result, int j)
-
 {
 	while (--j >= 0)
 		free(result[j]);
 	free(result);
 }
-static char	**fill_result(char *str, char **result)
 
+static char	**fill_result(char *str, char **result)
 {
 	int	i;
 	int	j;
 	int	start;
 	int	len;
+
 	i = 0;
 	j = 0;
 	start = 0;
@@ -44,20 +45,22 @@ static char	**fill_result(char *str, char **result)
 	}
 	return (finish_last_line(str, result, j, start));
 }
-char	**split_newline_alloc(char *str, int line_count)
 
+char	**split_newline_alloc(char *str, int line_count)
 {
 	char	**result;
+
 	result = malloc(sizeof(char *) * (line_count + 1));
 	if (!result)
 		return (NULL);
 	return (fill_result(str, result));
 }
-char	**finish_last_line(char *str, char **result, int j, int start)
 
+char	**finish_last_line(char *str, char **result, int j, int start)
 {
 	int	i;
 	int	len;
+
 	i = 0;
 	while (str[i])
 		i++;
@@ -72,4 +75,20 @@ char	**finish_last_line(char *str, char **result, int j, int start)
 	}
 	result[j] = NULL;
 	return (result);
+}
+
+char	**split_by_newline(char *str)
+{
+	int	line_count;
+	int	i;
+
+	line_count = 1;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			line_count++;
+		i++;
+	}
+	return (split_newline_alloc(str, line_count));
 }

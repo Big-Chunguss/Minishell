@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_redirection_utils.c                           :+:      :+:    :+:   */
+/*   heredoc_path_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/23 15:35:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:20:52 by agaroux          ###   ########.fr       */
+/*   Created: 2025/08/25 00:00:00 by agaroux           #+#    #+#             */
+/*   Updated: 2025/08/25 13:43:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	build_prefix(const char *limiter, char *prefix, size_t size)
+void	build_prefix(const char *limiter, char *prefix, size_t size)
 {
 	size_t		idx;
 	size_t		j;
@@ -35,7 +35,7 @@ static void	build_prefix(const char *limiter, char *prefix, size_t size)
 	prefix[idx] = 0;
 }
 
-static void	build_fullpath(const char *name, char *full, size_t size)
+void	build_fullpath(const char *name, char *full, size_t size)
 {
 	size_t		idx;
 	size_t		j;
@@ -52,33 +52,4 @@ static void	build_fullpath(const char *name, char *full, size_t size)
 	while (name[j] && idx < size - 1)
 		full[idx++] = name[j++];
 	full[idx] = 0;
-}
-
-char	*find_heredoc_file(const char *limiter)
-{
-	DIR				*dir;
-	struct dirent	*ent;
-	char			prefix[256];
-	char			full[512];
-	char			best[512];
-	struct stat		st;
-
-	build_prefix(limiter, prefix, sizeof(prefix));
-	best[0] = 0;
-	dir = opendir("/tmp");
-	if (!dir)
-		return (NULL);
-	while ((ent = readdir(dir)) != NULL)
-	{
-		if (ft_strncmp(ent->d_name, prefix, ft_strlen(prefix)) == 0)
-		{
-			build_fullpath(ent->d_name, full, sizeof(full));
-			if (stat(full, &st) == 0)
-				ft_strlcpy(best, full, sizeof(best));
-		}
-	}
-	closedir(dir);
-	if (best[0] == 0)
-		return (NULL);
-	return (ft_strdup(best));
 }

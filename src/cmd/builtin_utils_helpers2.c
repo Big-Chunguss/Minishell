@@ -6,59 +6,11 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:43:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:17:13 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	show_export(t_ast **env)
-{
-	int		i;
-	t_ast	*current;
-	int		j;
-
-	i = 0;
-	j = 0;
-	current = *env;
-	if (!current->env->export)
-		return ;
-	while (current->env->export[i])
-	{
-		write(1, &current->env->export[i][j], 1);
-		j++;
-		if (current->env->export[i][j] == '\0')
-		{
-			write(1, "\n", 1);
-			j = 0;
-			i++;
-		}
-	}
-	return ;
-}
-
-void	show_env(t_ast **env)
-{
-	int		i;
-	t_ast	*current;
-	int		j;
-
-	i = 0;
-	j = 0;
-	current = *env;
-	while (current->env->env[i])
-	{
-		write(1, &current->env->env[i][j], 1);
-		j++;
-		if (current->env->env[i][j] == '\0')
-		{
-			write(1, "\n", 1);
-			j = 0;
-			i++;
-		}
-	}
-	return ;
-}
 
 char	*number_shlvl(t_ast **env)
 {
@@ -86,48 +38,68 @@ char	*number_shlvl(t_ast **env)
 	return (ft_strdup("0"));
 }
 
-char	*get_env_var(t_ast **env, char *str)
+int	validate_shlvl_export(int value)
 {
-	int	i;
-	int	len;
+	if (value < 0)
+		return (0);
+	else if (value > 1000)
+		return (1);
+	return (value);
+}
 
-	if (!env || !(*env) || !(*env)->env || !(*env)->env->env)
-		return (NULL);
-	len = strlen(str);
-	i = 0;
-	while ((*env)->env->env[i])
-	{
-		if (strncmp((*env)->env->env[i], str, len) == 0)
-			return ((*env)->env->env[i] + len);
+char	*create_validated_shlvl_entry(char *argv)
+{
+	char	*value_str;
+	int		value;
+	char	*validated_str;
+	char	*result;
+
+	value_str = ft_strchr(argv, '=');
+	if (!value_str)
+		return (ft_strdup(argv));
+	value_str++;
+	value = ft_atoi(value_str);
+	value = validate_shlvl_export(value);
+	validated_str = ft_itoa(value);
+	if (!validated_str)
+		return (ft_strdup(argv));
+	result = ft_strjoin("SHLVL=", validated_str);
+	free(validated_str);
+	if (result)
+		return (result);
+	return (ft_strdup(argv));
+}
+
+static int	verify_shlvl_value(int i)
+{
+	if (i < 0)
+		i = 0;
+	else if (i > 1000)
+		i = 1;
+	else
 		i++;
-	}
-	return (NULL);
+	return (i);
 }
 
 void	initialise_shlvl(t_ast **env)
 {
-	char	*str;
-	char	*merge;
-	int		shlvl;
-	char	*final;
+	char	*current_shlvl;
+	int		shlvl_value;
+	char	*new_shlvl;
+	char	*shlvl_entry;
 
-	if (!env || !*env)
-		return ;
-	str = number_shlvl(env);
-	if (!str)
-		return ;
-	shlvl = ft_atoi(str);
-	free(str);
-	shlvl++;
-	final = ft_itoa(shlvl);
-	if (!final)
-		return ;
-	unset_env("SHLVL=", env);
-	unset_exp("SHLVL=", env);
-	merge = ft_strjoin("SHLVL=", final);
-	free(final);
-	if (!merge)
-		return ;
-	add_env(merge, env);
-	free(merge);
+	current_shlvl = get_env_var(env, "SHLVL");
+	if (!current_shlvl)
+		shlvl_value = 1;
+	else
+	{
+		shlvl_value = ft_atoi(current_shlvl);
+		shlvl_value = verify_shlvl_value(shlvl_value);
+	}
+	unset_exp("SHLVL", env);
+	new_shlvl = ft_itoa(shlvl_value);
+	shlvl_entry = ft_strjoin("SHLVL=", new_shlvl);
+	add_env(shlvl_entry, env);
+	free(new_shlvl);
+	free(shlvl_entry);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:36:32 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,28 @@ static void	export_error(char *var_name)
 
 static void	handle_export_variable(char *argv, t_ast **env)
 {
-	int	is_assign;
+	int		is_assign;
+	char	*var_name;
+	char	*equals_pos;
+	int		name_len;
+	int		j;
 
 	is_assign = (strchr(argv, '=') != NULL);
 	if (!is_assign)
 		add_export(argv, env);
 	else
 	{
+		equals_pos = strchr(argv, '=');
+		name_len = equals_pos - argv;
+		var_name = malloc(name_len + 1);
+		j = -1;
+		while (++j < name_len)
+			var_name[j] = argv[j];
+		var_name[name_len] = '\0';
+		unset_exp(var_name, env);
 		add_env(argv, env);
 		add_export(argv, env);
+		free(var_name);
 	}
 }
 

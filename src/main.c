@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:10:39 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:21:44 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	infinite_read(t_token **lst, t_ast **env)
 		line = get_input();
 		if (!line)
 			return ;
-		if (line[0] == 0)
+		if (line[0] == 0 || g_exit_code > 128)
 		{
 			free(line);
 			continue ;

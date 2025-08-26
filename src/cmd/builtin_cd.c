@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 19:53:28 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	count_cd_args(char **argv, int i)
 
 void	cd_recognition(char **argv, int i, t_ast **env)
 {
-	char	*resolved_path;
+	char	*old_pwd;
 	char	*path;
 
 	if (count_cd_args(argv, i) > 1)
@@ -61,19 +61,17 @@ void	cd_recognition(char **argv, int i, t_ast **env)
 		(*env)->env->error_code = 1;
 		return ;
 	}
+	old_pwd = getcwd(NULL, 0);
 	if (!argv || !argv[i + 1])
 		path = NULL;
 	else
 		path = argv[i + 1];
-	resolved_path = malloc(PATH_MAX);
-	if (!resolved_path)
-	{
-		(*env)->env->error_code = 1;
-		return ;
-	}
 	if (path == NULL || ft_strcmp(path, "~") == 0)
 		(*env)->env->error_code = handle_home_directory(env);
 	else
-		(*env)->env->error_code = handle_specific_path(path, resolved_path);
-	free(resolved_path);
+		(*env)->env->error_code = change_to_path(path);
+	if ((*env)->env->error_code == 0)
+		update_pwd_after_cd(*env, old_pwd);
+	if (old_pwd)
+		free(old_pwd);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:29:34 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 13:53:51 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,21 @@ void	build_in(char **tab, int i, t_ast **env)
 {
 	if (ft_strnstr(BUILTIN, tab[i]))
 	{
-		if (ft_strnstr("pwd", tab[i]))
+		if (ft_strcmp("pwd", tab[i]) == 0)
 			pwd_recognition(env);
-		if (ft_strnstr("env", tab[i]))
+		else if (ft_strcmp("env", tab[i]) == 0)
 			env_recognition(tab, i, env);
-		if (ft_strnstr("cd", tab[i]))
+		else if (ft_strcmp("cd", tab[i]) == 0)
 			cd_recognition(tab, i, env);
-		if (ft_strnstr("export", tab[i]))
+		else if (ft_strcmp("export", tab[i]) == 0)
 			export_recognition(tab, i, env);
-		if (ft_strnstr("unset", tab[i]))
+		else if (ft_strcmp("unset", tab[i]) == 0)
 			unset_recognition(tab, i, env);
-		if (ft_strnstr("echo", tab[i]))
+		else if (ft_strcmp("echo", tab[i]) == 0)
 			echo_recognition(tab, i, env);
-		if (ft_strnstr("exit", tab[i]))
+		else if (ft_strcmp("exit", tab[i]) == 0)
 			exit_recognition(tab, i, env);
-		return ;
 	}
-	return ;
 }
 
 int	cmd(char **tab, char *path, t_ast **env)

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:30:08 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,9 @@ char					*ft_strjoin_buffer(char const *s1, char const *s2,
 size_t					ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t					ft_strlcat(char *dst, const char *src, size_t dstsize);
 int						process_redirection_child(t_ast *child);
-
+void					builtin_env(t_ast **env);
+char					*env_get_entry(t_ast *env, char *key);
+char					*env_get_value(t_ast *env, char *key);
 char					*readline_open_quotes(char *str);
 int						open_quotes(const char *str);
 char					*clean_line(char *str, t_ast **env);
@@ -278,6 +280,7 @@ void					unlink_redirection(t_token **lst);
 // Pour les test
 void					pwd_recognition(t_ast **env);
 void					env_recognition(char **tab, int j, t_ast **env);
+char					*create_env_entry(char *name, char *value);
 void					echo_recognition(char **argv, int i, t_ast **env);
 void					cd_recognition(char **argv, int i, t_ast **env);
 void					build_in(char **argv, int i, t_ast **env);
@@ -304,6 +307,8 @@ void					free_split(char **split);
 void					pwd_change(char *pwd, char *oldpwd, t_ast **env);
 void					initialise_shlvl(t_ast **env);
 char					*number_shlvl(t_ast **env);
+int						validate_shlvl_export(int value);
+char					*create_validated_shlvl_entry(char *argv);
 int						ft_atoi(const char *nptr);
 char					*ft_itoa(int n);
 void					print_error(int num, char *tab, t_ast **env);
@@ -387,7 +392,10 @@ void					exit_child(int exit_code, int child);
 t_ast					*parse_pipeline(t_token **lst_ptr, t_ast **env);
 void					free_tokens(char **tokens);
 void					free_token_info_array(t_token_info *tokens, int count);
-
+void					setup_shell_signals(void);
+void					setup_child_signals(void);
+void					ignore_signals_during_execution(void);
+void					restore_parent_signals(void);
 // exec2 helper functions
 void					free_ast_full(t_ast **head);
 void					free_argv_shallow(char **tab);
@@ -494,4 +502,13 @@ int						handle_home_directory(t_ast **env);
 int						change_to_path(char *path);
 int						handle_specific_path(char *path, char *resolved_path);
 
+// Environment helpers
+void					set_env_var(t_ast *env, char *name, char *value);
+void					update_pwd_at_startup(t_ast *env);
+void					update_pwd_after_cd(t_ast *env, char *old_pwd);
+void					initialise_env(t_ast **env, char **envp);
+int						validate_shlvl_export(int value);
+char					*create_validated_shlvl_entry(char *argv);
+void					execute_external_command(t_ast *node, t_ast **head,
+							t_ast **env, t_cmd_params *params);
 #endif

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:30:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:01:06 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:21:14 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,16 @@ void	restore_parent_signals(void)
 {
 	setup_sigint_handler();
 	setup_sigquit_handler();
+}
+
+void	setup_child_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	ignore_signals_during_execution(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

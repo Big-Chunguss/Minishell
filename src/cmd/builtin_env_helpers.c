@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:40:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:45:54 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,5 @@ void	initialise_env(t_ast **env, char **envp)
 	}
 	init_env_struct(current->env);
 	init_ast_node(current);
+	update_pwd_at_startup(current);
 }

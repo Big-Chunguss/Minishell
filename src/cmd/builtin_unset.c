@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:36:19 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,49 +35,58 @@ void	unset_env(char *argv, t_ast **env)
 	return ;
 }
 
-void	unset_exp(char *argv, t_ast **env)
+static void	unset_from_array(char **array, char *name, int name_len)
 {
-	t_ast	*current;
-	char	**temp;
-	int		j;
-	int		count;
-	char	*target;
+	int	i;
+	int	j;
 
-	j = 0;
-	if (!env || !*env || !(*env)->env || !argv)
+	if (!array)
 		return ;
-	current = *env;
-	if (!current->env->export)
-		return ;
-	target = cat_dup(argv);
-	if (!target)
-		return ;
-	count = tab_len(current);
-	temp = malloc(sizeof(char *) * (count + 1));
-	if (!temp)
+	i = 0;
+	while (array[i])
 	{
-		free(target);
-		return ;
+		if (ft_strncmp(array[i], name, name_len) == 0
+			&& (array[i][name_len] == '=' || array[i][name_len] == '\0'))
+		{
+			free(array[i]);
+			j = i;
+			while (array[j + 1])
+			{
+				array[j] = array[j + 1];
+				j++;
+			}
+			array[j] = NULL;
+			continue ;
+		}
+		i++;
 	}
-	unset_exp_fnc(current, target, temp, j);
-	free(target);
-	return ;
+}
+
+void	unset_exp(char *name, t_ast **env)
+{
+	int	name_len;
+
+	if (!env || !*env || !(*env)->env || !name)
+		return ;
+	name_len = 0;
+	while (name[name_len] && name[name_len] != '=')
+		name_len++;
+	unset_from_array((*env)->env->env, name, name_len);
+	unset_from_array((*env)->env->export, name, name_len);
 }
 
 void	unset_recognition(char **argv, int i, t_ast **env)
 {
 	i++;
 	if (argv[i] == NULL)
+	{
 		(*env)->env->error_code = 0;
-	return ;
+		return ;
+	}
 	while (argv[i])
 	{
-		if (search_value(argv[i], env) != 1)
-		{
-			unset_env(argv[i], env);
-			unset_exp(argv[i], env);
-		}
+		unset_exp(argv[i], env);
 		i++;
 	}
-	return ;
+	(*env)->env->error_code = 0;
 }

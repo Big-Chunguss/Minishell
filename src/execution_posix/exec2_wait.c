@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:23:35 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/25 20:12:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ void	wait_for_children(t_pipeline_data *data, pid_t last_pid, t_ast **env)
 	if (WIFEXITED(last_status))
 		(*env)->env->error_code = WEXITSTATUS(last_status);
 	else if (WIFSIGNALED(last_status))
-	{
-		g_exit_code = 128 + WTERMSIG(last_status);
-		(*env)->env->error_code = g_exit_code;
-	}
+		(*env)->env->error_code = 128 + WTERMSIG(last_status);
 }
 
 void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid,
@@ -58,8 +55,6 @@ void	wait_for_all_pipeline_children(int cmd_count, pid_t last_pid,
 	if (WIFEXITED(last_status))
 		(*env)->env->error_code = WEXITSTATUS(last_status);
 	else if (WIFSIGNALED(last_status))
-	{
-		g_exit_code = 128 + WTERMSIG(last_status);
-		(*env)->env->error_code = g_exit_code;
-	}
+		(*env)->env->error_code = 128 + WTERMSIG(last_status);
+	restore_parent_signals();
 }

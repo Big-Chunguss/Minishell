@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:29:34 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:36:46 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,15 @@
 
 void	pwd_recognition(t_ast **env)
 {
-	int		i;
-	int		j;
-	t_ast	*current;
+	char	cwd[4096];
 
-	i = 0;
-	j = 4;
-	current = *env;
-	if (!current->env->env[i])
-		return ;
-	while (current->env->env[i] && ft_strncmp(current->env->env[i], "PWD=", 4))
-		i++;
-	if (current->env->env[i] && !ft_strncmp(current->env->env[i], "PWD=", 4))
+	if (getcwd(cwd, sizeof(cwd)))
 	{
-		while (current->env->env[i][j] != '\0')
-		{
-			write(1, &current->env->env[i][j], 1);
-			j++;
-		}
-		write(1, "\n", 1);
-		i++;
+		printf("%s\n", cwd);
+		(*env)->env->error_code = 0;
+		return ;
 	}
+	perror("pwd");
+	(*env)->env->error_code = 1;
 	return ;
 }

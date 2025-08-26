@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 16:28:17 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 12:35:34 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	handle_heredoc_and_syntax(t_token **lst, t_token_info **tokens,
 	if (has_heredoc(*lst) && g_exit_code == 130)
 	{
 		(*env)->env->error_code = 130;
+		g_exit_code = 0;
 		free_token_info_array(*tokens, token_count);
 		free_stack(lst);
 		return (0);

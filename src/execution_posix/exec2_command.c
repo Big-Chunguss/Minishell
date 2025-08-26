@@ -6,15 +6,15 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:10:06 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:29:49 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <signal.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 extern int	g_exit_code;
 
@@ -92,34 +92,26 @@ void	run_command(t_ast *node, t_ast **head, t_ast **env,
 	handle_external_command(tab, path, env, head);
 }
 
-void	handle_command_execution(t_ast *node, t_ast **head, t_ast **env,
+void	execute_external_command(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
 {
 	pid_t	pid;
 	int		status;
 
-	if (!node || !node->value || ft_strlen(node->value) == 0)
-	{
-		handle_empty_cmd_fork(node, head, env, params);
-		return ;
-	}
-	if (cmd_recognize(node->value) == 0)
-	{
-		execute_builtin_command(node, head, env, params);
-		return ;
-	}
+	ignore_signals_during_execution();
 	pid = fork();
 	if (pid == 0)
+	{
+		setup_child_signals();
 		run_command(node, head, env, params);
+	}
 	status = 0;
 	waitpid(pid, &status, 0);
+	restore_parent_signals();
 	if (WIFEXITED(status))
 		(*env)->env->error_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-	{
-		g_exit_code = 128 + WTERMSIG(status);
-		(*env)->env->error_code = g_exit_code;
-	}
+		(*env)->env->error_code = 128 + WTERMSIG(status);
 }
 
 void	execute_builtin_command(t_ast *node, t_ast **head, t_ast **env,

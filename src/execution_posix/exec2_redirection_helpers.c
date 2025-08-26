@@ -74,3 +74,19 @@ int	process_single_redirection(t_ast *node, int i, int last_heredoc_redir)
 	}
 	return (0);
 }
+
+void	handle_command_execution(t_ast *node, t_ast **head, t_ast **env,
+		t_cmd_params *params)
+{
+	if (!node || !node->value || ft_strlen(node->value) == 0)
+	{
+		handle_empty_cmd_fork(node, head, env, params);
+		return ;
+	}
+	if (cmd_recognize(node->value) == 0)
+	{
+		execute_builtin_command(node, head, env, params);
+		return ;
+	}
+	execute_external_command(node, head, env, params);
+}

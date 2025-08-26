@@ -6,46 +6,11 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:35:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 15:12:47 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	check_dbl_equal(char *argv)
-{
-	int	i;
-	int	temp;
-
-	i = 0;
-	temp = 0;
-	while (argv[i])
-	{
-		if (argv[i] == '=')
-			temp++;
-		i++;
-	}
-	if (temp > 1)
-		return (1);
-	return (0);
-}
-
-int	skip_isspace(char *argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i] == 32 || argv[i] == '\t' || argv[i] == '\n')
-		i++;
-	return (i);
-}
-
-char	*cat_dup(char *s1)
-{
-	if (!s1)
-		return (NULL);
-	return (ft_strjoin("export ", s1));
-}
 
 void	create_initial_env(char *argv, t_ast **env)
 {
@@ -61,25 +26,55 @@ void	create_initial_env(char *argv, t_ast **env)
 	current->env->env = temp;
 }
 
-void	add_env(char *argv, t_ast **env)
+static char	*get_validated_argv(char *argv)
+{
+	if (ft_strncmp(argv, "SHLVL=", 6) == 0)
+		return (create_validated_shlvl_entry(argv));
+	return (argv);
+}
+
+static void	handle_initial_env(char *validated_argv, char *argv, t_ast **env)
+{
+	create_initial_env(validated_argv, env);
+	if (validated_argv != argv)
+		free(validated_argv);
+}
+
+static void	handle_existing_env(char *validated_argv, char *argv, t_ast **env)
 {
 	t_ast	*current;
 	int		i;
 	char	**temp;
 
-	i = 0;
-	if (!env || !*env || !(*env)->env || !argv)
-		return ;
 	current = *env;
-	if (!current->env->env)
-	{
-		create_initial_env(argv, env);
-		return ;
-	}
+	i = 0;
 	while (current->env->env && current->env->env[i])
 		i++;
 	temp = malloc(sizeof(char *) * (i + 2));
 	if (!temp)
+	{
+		if (validated_argv != argv)
+			free(validated_argv);
 		return ;
-	add_env_fnc(current, temp, argv);
+	}
+	add_env_fnc(current, temp, validated_argv);
+	if (validated_argv != argv)
+		free(validated_argv);
+}
+
+void	add_env(char *argv, t_ast **env)
+{
+	t_ast	*current;
+	char	*validated_argv;
+
+	if (!env || !*env || !(*env)->env || !argv)
+		return ;
+	current = *env;
+	validated_argv = get_validated_argv(argv);
+	if (!current->env->env)
+	{
+		handle_initial_env(validated_argv, argv, env);
+		return ;
+	}
+	handle_existing_env(validated_argv, argv, env);
 }

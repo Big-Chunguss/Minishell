@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 16:46:58 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/26 15:30:08 by agaroux          ###   ########.fr       */
+/*   Created: 2025/08/27 20:57:34 by agaroux           #+#    #+#             */
+/*   Updated: 2025/08/27 21:03:46 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -82,6 +83,14 @@ typedef struct s_token
 	struct s_token		*next;
 	struct s_token		*prev;
 }						t_token;
+
+typedef struct s_qtstate
+{
+	bool				single_open;
+	bool				double_open;
+	int					i;
+	char				first_quote;
+}						t_qtstate;
 
 typedef struct s_env
 {
@@ -260,7 +269,6 @@ t_token_info			extract_token_with_quote_info(const char **s);
 void					execute_nodes(t_ast **head, t_ast **env);
 void					execute_nodes2(t_ast **head, t_ast **env);
 int						validate_command_exists(const char *cmd, t_ast **env);
-int						pre_validate_ast(t_ast *node, t_ast **env);
 void					exec_pipe_right(t_ast *node, t_ast **head, t_ast **env,
 							t_pipe_data *data);
 void					exec_pipe_left(t_ast *node, t_ast **head, t_ast **env,
@@ -283,7 +291,8 @@ void					env_recognition(char **tab, int j, t_ast **env);
 char					*create_env_entry(char *name, char *value);
 void					echo_recognition(char **argv, int i, t_ast **env);
 void					cd_recognition(char **argv, int i, t_ast **env);
-void					build_in(char **argv, int i, t_ast **env);
+void					build_in(char **argv, int i, t_ast **env,
+							t_cleanup_params *cleanup);
 void					export_recognition(char **argv, int i, t_ast **env);
 void					add_export(char *argv, t_ast **env);
 void					show_env(t_ast **env);
@@ -301,7 +310,8 @@ void					redirection(char **argv, int i);
 void					output_recognition(char **argv, int i);
 void					initialise_env(t_ast **env, char **envp);
 void					initialise_exp(t_ast **env, char **envp);
-int						cmd(char **tab, char *path, t_ast **env);
+int						cmd(char **tab, char *path, t_ast **env,
+							t_cleanup_params *cleanup);
 int						cmd_recognize(char *tab);
 void					free_split(char **split);
 void					pwd_change(char *pwd, char *oldpwd, t_ast **env);
@@ -315,13 +325,13 @@ void					print_error(int num, char *tab, t_ast **env);
 int						access_error(char *tab);
 int						ft_isdigit(int i);
 int						search_value(char *str, t_ast **env);
-void					exit_recognition(char **argv, int i, t_ast **env);
+void					exit_recognition(char **argv, int i, t_ast **env,
+							t_cleanup_params *cleanup);
 void					free_env_complete(t_ast *env);
 void					valid_number_fail(t_ast **env, char *arg);
 void					num_has_sign(t_ast **env);
 void					free_both(char *target, t_ast *current);
 int						tab_len(t_ast *current);
-void					cd_exit_code(void);
 char					*path_var_set(t_ast *env, const char *key);
 char					*full_path(char **paths, const char *cmd);
 void					unset_exp_fnc(t_ast *current, char *target, char **temp,
@@ -337,9 +347,13 @@ void					cd_rec_fnc(char *tab, t_ast **env);
 void					free_tab1(char *buffer, char *buffer2);
 void					cd_only(t_ast **env);
 void					free_env_env(t_ast *env);
-void					number_has_sign(char **argv, int i, t_ast **env);
+void					number_has_sign(char **argv, int i, t_ast **env,
+							t_cleanup_params *cleanup);
 void					too_much_exit(t_ast **env);
-void					number_not_valid(char **argv, int i, t_ast **env);
+void					number_not_valid(char **argv, int i, t_ast **env,
+							t_cleanup_params *cleanup);
+void					handle_external_command(char **tab, char *path,
+							t_ast **env, t_ast **head);
 
 // cmd1_utils.c
 int						count_envp_entries(char **envp);
@@ -427,10 +441,6 @@ void					write_error_msg(const char *cmd, const char *msg);
 void					print_exec_error(const char *cmd, int code,
 							int has_slash);
 int						classify_error(const char *cmd, char *resolved);
-void					setup_command_environment(t_cmd_params *params);
-int						prepare_command_args(t_ast *node,
-							t_cleanup_params *cleanup, char ***tab,
-							char **path);
 void					handle_empty_cmd_fork(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
 
@@ -459,15 +469,10 @@ int						handle_input_redirection(t_ast *child);
 int						handle_output_redirection(t_ast *child);
 
 // Command error utilities
-void					write_error_msg(const char *cmd, const char *msg);
-void					print_exec_error(const char *cmd, int code,
-							int has_slash);
 int						classify_error(const char *cmd, char *resolved);
 
 // Validation utilities
-int						is_directory(const char *path);
 int						validate_command_exists(const char *cmd, t_ast **env);
-int						pre_validate_ast(t_ast *node, t_ast **env);
 
 // Split utilities
 char					**split_by_newline(char *str);
@@ -511,4 +516,16 @@ int						validate_shlvl_export(int value);
 char					*create_validated_shlvl_entry(char *argv);
 void					execute_external_command(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
+
+// PRE PARSING UTILS HUGO
+int						count_total_quotes(char *line);
+int						count_sing_quotes(const char *line);
+int						count_double_quotes(const char *line);
+void					init_qt_state(t_qtstate *state);
+void					update_quotes_state(t_qtstate *state, char c);
+
+// PRE PARSING HUGO
+bool					return_quotes_error(char *line);
+bool					too_much_redir(char *line);
+
 #endif

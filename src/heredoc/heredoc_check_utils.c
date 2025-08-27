@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_check_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 16:02:42 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 12:26:19 by hfragnol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	collect_heredoc_limiters(t_token *list, t_token **heredoc_limiters)
+static int collect_heredoc_limiters(t_token *list, t_token **heredoc_limiters)
 {
-	int	heredoc_count;
+	int heredoc_count;
 
 	heredoc_count = 0;
 	while (list && heredoc_count < 100)
@@ -32,11 +32,11 @@ static int	collect_heredoc_limiters(t_token *list, t_token **heredoc_limiters)
 	return (heredoc_count);
 }
 
-static void	process_heredoc_limiters(t_token **heredoc_limiters,
-		int heredoc_count, t_ast **env)
+static void process_heredoc_limiters(t_token **heredoc_limiters,
+									 int heredoc_count, t_ast **env)
 {
-	extern int	g_exit_code;
-	int			i;
+	extern int g_exit_code;
+	int i;
 
 	i = 0;
 	while (i < heredoc_count)
@@ -44,30 +44,35 @@ static void	process_heredoc_limiters(t_token **heredoc_limiters,
 		if (i == heredoc_count - 1)
 		{
 			start_heredoc(heredoc_limiters[i]->value,
-				heredoc_limiters[i]->was_quoted, env);
+						  heredoc_limiters[i]->was_quoted, env);
 		}
 		else
 		{
 			read_heredoc_consume_only(heredoc_limiters[i]->value);
 		}
 		if (g_exit_code == 130)
-			break ;
+			break;
 		i++;
 	}
 }
 
-void	check_heredoc(t_token **lst, t_ast **env)
+void check_heredoc(t_token **lst, t_ast **env)
 {
-	t_token		*list;
-	t_token		*heredoc_limiters[100];
-	int			heredoc_count;
-	extern int	g_exit_code;
-	int			saved_exit_code;
+	t_token *list;
+	t_token *heredoc_limiters[100];
+	int heredoc_count;
+	extern int g_exit_code;
+	int saved_exit_code;
 
 	saved_exit_code = g_exit_code;
 	list = *lst;
 	heredoc_count = collect_heredoc_limiters(list, heredoc_limiters);
-	process_heredoc_limiters(heredoc_limiters, heredoc_count, env);
+	if (heredoc_count != 0)
+	{
+		setup_heredoc_signals();
+		process_heredoc_limiters(heredoc_limiters, heredoc_count, env);
+		restore_parent_signals();
+	}
 	if (g_exit_code != 130)
 		g_exit_code = saved_exit_code;
 }

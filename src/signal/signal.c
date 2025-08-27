@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 19:28:11 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:20:58 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 19:42:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ void	handle_sigint_parent(int sig_num)
 {
 	const char	*prompt = "Minishell> ";
 
+	(void)sig_num;
 	write(STDOUT_FILENO, "\r", 1);
 	write(STDOUT_FILENO, prompt, 11);
 	write(STDOUT_FILENO, "^c\n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_exit_code = 128 + sig_num;
+	g_exit_code = 130;
 }
 
 void	handle_sigquit_parent(int sig_num)

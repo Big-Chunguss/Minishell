@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 13:17:46 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 19:42:31 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	start_heredoc(char *limiter, int quoted_limiter, t_ast **env)
 {
-	setup_heredoc_signals();
 	read_heredoc(limiter, quoted_limiter, env);
-	restore_parent_signals();
 }
 
 void	copy_tmp_to_file(const char *temp_path, const char *filename)

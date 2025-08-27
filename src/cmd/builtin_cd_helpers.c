@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:30:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:03:41 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,6 @@ void	pwd_change(char *pwd, char *oldpwd, t_ast **env)
 		add_export(oldpw, env);
 		free(oldpw);
 	}
-}
-
-void	cd_exit_code(void)
-{
-	g_exit_code = 0;
 }
 
 int	change_to_path(char *path)

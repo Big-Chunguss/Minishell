@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:30:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 19:42:16 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ void	exit_number_fail(char *str)
 
 void	too_much_exit(t_ast **env)
 {
-	(*env)->env->error_code = 1;
-	cleanup_readline_resources();
-	exit((*env)->env->error_code);
+    (*env)->env->error_code = 1;
+    ft_putstr_fd("exit\nminishell: exit : too many arguments\n", STDERR_FILENO);
 }
 
-void	number_has_sign(char **argv, int i, t_ast **env)
+void	number_has_sign(char **argv, int i, t_ast **env, t_cleanup_params *cleanup)
 {
 	(*env)->env->error_code = (256 + atoi(argv[i + 1])) % 256;
 	cleanup_readline_resources();
-	exit((*env)->env->error_code);
+	cleanup_and_exit((*env)->env->error_code, cleanup);
 }

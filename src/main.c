@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/26 15:21:44 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/26 17:38:40 by hfragnol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	infinite_read(t_token **lst, t_ast **env)
 		line = get_input();
 		if (!line)
 			return ;
-		if (line[0] == 0 || g_exit_code > 128)
+		if (line[0] == 0 || return_quotes_error(line) == false
+			|| too_much_redir(line) == true)
 		{
 			free(line);
 			continue ;
@@ -45,22 +46,21 @@ void	infinite_read(t_token **lst, t_ast **env)
 char	*get_input(void)
 {
 	char	*line;
-	char	*tmp;
-
+	//char	*tmp;
 	line = readline("Minishell> ");
 	if (line == NULL)
 		return (NULL);
-	while (open_quotes(line))
-	{
-		tmp = readline_open_quotes(line);
-		if (!tmp)
-		{
-			free(line);
-			return (NULL);
-		}
-		free(line);
-		line = tmp;
-	}
+	// while (open_quotes(line))
+	// {
+	// 	tmp = readline_open_quotes(line);
+	// 	if (!tmp)
+	// 	{
+	// 		free(line);
+	// 		return (NULL);
+	// 	}
+	// 	free(line);
+	// 	line = tmp;
+	// }
 	return (line);
 }
 

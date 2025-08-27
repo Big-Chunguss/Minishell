@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:41:51 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 14:31:43 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:00:59 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,3 @@ void	clean_heredoc(char **argv)
 	free(pid_str);
 }
 
-int	is_limiter_line(char *line, char *limiter)
-{
-	return (ft_strcmp(line, limiter) == 0);
-}

@@ -1,5 +1,7 @@
-# Compiler and flags
-CC = cc
+# Compiler and flags# Source files (all with correct relative paths and .c extensions)
+SRC = main.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.c libft4.c  expand2.c handle_quotes.c \
+	ft_split.c ft_split_utils.c ft_split2.c ft_itoa.c expand.c chained_list.c chained_list2.c string_utils.c path_utils.c \
+	exit_status.c bash_split.c bash_split2.c bash_split3.c syntax_check.c syntax_check2.c pre_parsing.c \= cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 # Program name
@@ -19,14 +21,14 @@ YELLOW = \033[0;93m
 WHITE = \033[0;37m
 
 # Source files (all with correct relative paths and .c extensions)
-SRC = main.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.c libft4.c  expand2.c handle_quotes.c \
+SRC = main.c quotes_hugo.c utils.c utils2.c process_tokens.c quotes.c libft.c libft2.c libft3.c libft4.c  expand2.c handle_quotes.c \
 	ft_split.c ft_split_utils.c ft_split2.c ft_itoa.c expand.c chained_list.c chained_list2.c string_utils.c path_utils.c \
-	exit_status.c bash_split.c bash_split2.c bash_split3.c syntax_check.c syntax_check2.c \
+	exit_status.c bash_split.c bash_split2.c bash_split3.c syntax_check.c syntax_check2.c pre_parsing.c \
 	heredoc/get_next_line.c heredoc/get_next_line_utils.c heredoc/heredoc.c heredoc/heredoc_utils.c heredoc/heredoc_utils2.c heredoc/heredoc_file_writer.c heredoc/heredoc_check_utils.c heredoc/heredoc_utilts3.c heredoc/split_newline.c heredoc/heredoc_readline_utils.c quotes2.c heredoc/read_heredoc.c \
 	execution_posix/exec.c execution_posix/exec_utils.c execution_posix/exec_validation_utils.c execution_posix/exec_redirection.c execution_posix/exec_redirection_helpers.c execution_posix/heredoc_file_finder.c execution_posix/heredoc_path_utils.c \
 	cmd/builtin_dispatcher.c cmd/builtin_utils_helpers3.c cmd/builtin_echo.c cmd/builtin_exit.c cmd/builtin_utils_helpers4.c cmd/builtin_exit_helpers.c cmd/builtin_cd.c cmd/builtin_cd_helpers.c cmd/builtin_pwd.c cmd/builtin_export.c cmd/builtin_export_helpers.c cmd/builtin_unset.c cmd/builtin_unset_helpers.c cmd/builtin_env.c cmd/builtin_env_helpers.c cmd/builtin_utils.c cmd/builtin_utils_helpers.c cmd/builtin_utils_helpers2.c cmd/builtin_memory.c \
 	ast/new_ast.c ast/new_ast2.c ast/new_ast3.c ast/new_ast4.c ast/new_ast5.c signal/signal.c signal/heredoc_signals.c \
-	execution_posix/exec2.c execution_posix/exec2_utils.c execution_posix/exec2_pipeline.c execution_posix/exec2_wait.c \
+	execution_posix/exec2.c execution_posix/exec2_utils.c execution_posix/exec2_pipeline.c execution_posix/exec2_wait.c execution_posix/exec2_command_utils.c \
 	execution_posix/exec2_command.c execution_posix/exec2_command_helpers.c execution_posix/exec2_command_error_utils.c execution_posix/exec2_main.c \
 	execution_posix/exec2_redirection_helpers.c
 

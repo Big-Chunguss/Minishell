@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:04:04 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:18:46 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:32:16 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*get_path_var(t_ast **env)
 	i = 0;
 	while (current->env->env[i])
 	{
-		if (strncmp(current->env->env[i], "PATH=", 5) == 0)
+		if (ft_strncmp(current->env->env[i], "PATH=", 5) == 0)
 			return (current->env->env[i] + 5);
 		i++;
 	}
@@ -97,7 +97,7 @@ char	*get_cmd_path(const char *cmd, t_ast **env)
 	char	*path_var;
 	char	**paths;
 
-	if (strchr(cmd, '/'))
+	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = get_path_var(env);
 	if (!path_var)

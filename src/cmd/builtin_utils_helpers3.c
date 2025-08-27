@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:43:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/26 15:15:15 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:32:16 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ char	*get_env_var(t_ast **env, char *str)
 
 	if (!env || !(*env) || !(*env)->env || !(*env)->env->env)
 		return (NULL);
-	len = strlen(str);
+	len = ft_strlen(str);
 	i = 0;
 	while ((*env)->env->env[i])
 	{
-		if (strncmp((*env)->env->env[i], str, len) == 0
+		if (ft_strncmp((*env)->env->env[i], str, len) == 0
 			&& (*env)->env->env[i][len] == '=')
 			return ((*env)->env->env[i] + len + 1);
 		i++;

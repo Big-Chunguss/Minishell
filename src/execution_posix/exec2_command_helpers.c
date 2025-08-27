@@ -6,16 +6,11 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 14:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 20:48:10 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:22:13 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
 
 void	handle_empty_cmd_fork(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)

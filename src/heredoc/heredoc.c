@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 19:42:31 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:01:06 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,5 @@ int	write_all_lines(int fd, char **lines)
 void	link_or_copy_temp(const char *temp_path, const char *filename)
 {
 	unlink(filename);
-	if (symlink(temp_path, filename) < 0)
-		copy_tmp_to_file(temp_path, filename);
+	copy_tmp_to_file(temp_path, filename);
 }

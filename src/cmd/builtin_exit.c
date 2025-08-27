@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 19:37:56 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:19:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 extern int	g_exit_code;
 
-void	number_not_valid(char **argv, int i, t_ast **env, t_cleanup_params *cleanup)
+void	number_not_valid(char **argv, int i, t_ast **env,
+		t_cleanup_params *cleanup)
 {
 	(*env)->env->error_code = 2;
 	write(2, "minishell: exit: ", 17);
@@ -24,7 +25,8 @@ void	number_not_valid(char **argv, int i, t_ast **env, t_cleanup_params *cleanup
 	cleanup_and_exit(2, cleanup);
 }
 
-static void	handle_exit_with_arg(char **argv, int i, t_ast **env, t_cleanup_params *cleanup)
+static void	handle_exit_with_arg(char **argv, int i, t_ast **env,
+		t_cleanup_params *cleanup)
 {
 	if (!is_valid_number(argv[i + 1]))
 		number_not_valid(argv, i, env, cleanup);
@@ -47,7 +49,8 @@ static void	handle_exit_no_arg(t_ast **env)
 	exit(g_exit_code);
 }
 
-void	exit_recognition(char **argv, int i, t_ast **env, t_cleanup_params *cleanup)
+void	exit_recognition(char **argv, int i, t_ast **env,
+		t_cleanup_params *cleanup)
 {
 	int	a;
 

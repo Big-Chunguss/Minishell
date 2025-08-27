@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_tokens.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 12:22:47 by hfragnol         ###   ########.fr       */
+/*   Updated: 2025/08/27 21:16:38 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 	free_stack(&original_list_head);
 	if (ast_root)
 	{
-		execute_nodes2(&ast_root, env);
+		execute_nodes(&ast_root, env);
 		ast_free(ast_root);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:38:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 15:41:30 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:13:44 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int	search_value(char *str, t_ast **env)
 	target = cat_dup(str);
 	while (current->env->export[j])
 	{
-		if (ft_strncmp(current->env->export[j], (target), strlen(target)) != 0)
+		if (ft_strncmp(current->env->export[j], (target),
+				ft_strlen(target)) != 0)
 			j++;
 		else
 		{

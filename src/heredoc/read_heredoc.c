@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:25:03 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:56:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:54:20 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*heredoc_readline(void)
 	line = get_next_line(0);
 	if (!line)
 		return (NULL);
-	line[strcspn(line, "\n")] = '\0';
+	line[ft_strcspn(line, "\n")] = '\0';
 	return (line);
 }
 

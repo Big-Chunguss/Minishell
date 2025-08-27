@@ -6,18 +6,16 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:24:00 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/25 12:03:13 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:07:02 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_lstadd_back_with_quote_info(t_token **lst, t_token *new,
-		int was_quoted)
+void	ft_lstadd_back_with_quote_info(t_token **lst, t_token *new)
 {
 	t_token	*current;
 
-	(void)was_quoted;
 	new->next = NULL;
 	new->prev = NULL;
 	if (!*lst)

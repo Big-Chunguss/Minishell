@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec2_command_error_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:20:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 11:39:16 by hfragnol         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:30:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	classify_error(const char *cmd, char *resolved)
 {
 	int	has_slash;
 
-	has_slash = (strchr(cmd, '/') != NULL);
+	has_slash = (ft_strchr(cmd, '/') != NULL);
 	if (!resolved)
 		return (127);
 	if (is_directory(resolved))

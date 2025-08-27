@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 16:45:12 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:23:54 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:23:10 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_delimiter(char c, const char *delim)
 
 int	skip_spaces(const char *s, int i)
 {
-	while (s[i] && isspace((unsigned char)s[i]))
+	while (s[i] && ft_isspace((unsigned char)s[i]))
 		i++;
 	return (i);
 }
@@ -45,7 +45,7 @@ int	segment_length(const char *s, const char *delim, int i)
 	}
 	else
 	{
-		while (s[i] && !isspace((unsigned char)s[i]) && !is_delimiter(s[i],
+		while (s[i] && !ft_isspace((unsigned char)s[i]) && !is_delimiter(s[i],
 				delim))
 			i++;
 	}
@@ -72,8 +72,8 @@ int	count_words(const char *s, const char *delim)
 		}
 		else
 		{
-			while (s[i] && !isspace((unsigned char)s[i]) && !is_delimiter(s[i],
-					delim))
+			while (s[i] && !ft_isspace((unsigned char)s[i])
+				&& !is_delimiter(s[i], delim))
 				i++;
 			count++;
 		}

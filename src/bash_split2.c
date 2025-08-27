@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 11:56:42 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:07:42 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:45:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	init_extract_state(t_extract_state *state, const char *p)
 {
 	state->p = p;
-	state->token = malloc(strlen(p) + 3);
+	state->token = malloc(ft_strlen(p) + 3);
 	state->i = 0;
 	state->in_single_quote = 0;
 	state->in_double_quote = 0;
@@ -61,7 +61,8 @@ int	should_break(t_extract_state *state)
 {
 	if (!state->in_single_quote && !state->in_double_quote)
 	{
-		if (isspace(*state->p) || (is_special_char(*state->p) && state->i > 0))
+		if (ft_isspace(*state->p) || (is_special_char(*state->p)
+				&& state->i > 0))
 			return (1);
 	}
 	return (0);

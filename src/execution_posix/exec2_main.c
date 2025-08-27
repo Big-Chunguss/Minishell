@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:22:57 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:16:33 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exec2_exec_ast(t_ast **node, t_ast **head, t_ast **env,
 		handle_command_execution(*node, head, env, params);
 }
 
-void	execute_nodes2(t_ast **head, t_ast **env)
+void	execute_nodes(t_ast **head, t_ast **env)
 {
 	int				saved_stdout;
 	int				saved_stdin;

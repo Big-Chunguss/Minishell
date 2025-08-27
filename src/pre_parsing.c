@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 17:23:39 by hfragnol          #+#    #+#             */
-/*   Updated: 2025/08/26 17:37:43 by hfragnol         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:48:46 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,38 @@ bool	return_quotes_error(char *line)
 	{
 		if (count_single % 2 != 0)
 		{
-			ft_putstr_fd("syntax error: unclosed single quote\n", STDERR_FILENO);
+			ft_putstr_fd("syntax error: unclosed single quote\n",
+				STDERR_FILENO);
 			return (false);
 		}
 		if (count_double % 2 != 0)
 		{
-			ft_putstr_fd("syntax error: unclosed double quote\n", STDERR_FILENO);
+			ft_putstr_fd("syntax error: unclosed double quote\n",
+				STDERR_FILENO);
 			return (false);
 		}
 	}
 	return (true);
 }
 
-bool	too_much_redir(char *line)
+static bool	redir_sequence_error(char *line, int i, t_ast **env)
+{
+	int	count;
+
+	count = i + 1;
+	while (line[count] == ' ' || line[count] == '\t')
+		count++;
+	if ((line[count] == '>' || line[count] == '<') && count != i + 1)
+	{
+		ft_putstr_fd("syntax error near unexpected token 'redir \n",
+			STDERR_FILENO);
+		(*env)->env->error_code = 2;
+		return (true);
+	}
+	return (false);
+}
+
+bool	too_much_redir(char *line, t_ast **env)
 {
 	int			i;
 	int			count;
@@ -56,17 +75,10 @@ bool	too_much_redir(char *line)
 		update_quotes_state(&state, line[i]);
 		if (!state.single_open && !state.double_open)
 		{
-			if ((line[i] == '>' || line[i] == '<') && (line[i + 1] != line[i]
-					&& line[i + 1]))
-			{
-				count = i + 1;
-				while (line[count] == ' ' || line[count] == '\t')
-					count++;
-				if ((line[count] == '>' || line[count] == '<') && (count != i
-						+ 1))
-					return (ft_putstr_fd("syntax error near unexpected token"
-							" 'redir \n", STDERR_FILENO), true);
-			}
+			if ((line[i] == '>' || line[i] == '<') && line[i + 1]
+				&& line[i + 1] != line[i]
+				&& redir_sequence_error(line, i, env))
+				return (true);
 		}
 	}
 	return (false);

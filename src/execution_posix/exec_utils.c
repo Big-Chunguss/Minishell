@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:56:00 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:51:42 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	handle_errno_error(const char *path)
 
 	write(2, path, ft_strlen(path));
 	write(2, ": ", 2);
-	if (errno == EACCES)
+	if (errno == 13)
 	{
 		write(2, "Permission denied\n", 18);
 		exit(1);
 	}
-	else if (errno == ENOENT)
+	else if (errno == 2)
 	{
 		write(2, "No such file or directory\n", 26);
 		exit(1);

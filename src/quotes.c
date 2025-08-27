@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:28:27 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:06:26 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:32:16 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*get_env_value(char *var, int n, t_ast **env)
 	i = 0;
 	while (current->env->env[i])
 	{
-		if (!strncmp(current->env->env[i], var, n)
+		if (!ft_strncmp(current->env->env[i], var, n)
 			&& current->env->env[i][n] == '=')
 			return (ft_strdup(current->env->env[i] + n + 1));
 		i++;
@@ -44,7 +44,7 @@ static char	*get_env_value(char *var, int n, t_ast **env)
 
 char	*get_value(char *var, int n, t_ast **env)
 {
-	if (!strcmp(var, "?"))
+	if (!ft_strcmp(var, "?"))
 		return (get_exit_code_str(env));
 	return (get_env_value(var, n, env));
 }

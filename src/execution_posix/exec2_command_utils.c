@@ -6,14 +6,13 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 17:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 20:54:16 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:21:37 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
 
 int	prepare_command_args(t_ast *node, t_cleanup_params *cleanup, char ***tab,
 		char **path)
@@ -54,4 +53,3 @@ void	handle_external_command(char **tab, char *path, t_ast **env,
 	(*env)->env->error_code = 1;
 	cleanup_and_exit((*env)->env->error_code, &cleanup);
 }
-

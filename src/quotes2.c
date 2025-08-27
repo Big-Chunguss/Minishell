@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:59:03 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/26 17:34:32 by hfragnol         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:30:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,42 +38,3 @@ char	*single_quotes(char *str, int start, int end)
 	free(str);
 	return (res);
 }
-
-// int	open_quotes(const char *str)
-// {
-// 	int	i;
-// 	int	s;
-// 	int	d;
-
-// 	i = 0;
-// 	s = 0;
-// 	d = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '\'' && d % 2 == 0)
-// 			s++;
-// 		else if (str[i] == '"' && s % 2 == 0)
-// 			d++;
-// 		i++;
-// 	}
-// 	return (s % 2 != 0 || d % 2 != 0);
-// }
-
-// char	*readline_open_quotes(char *str)
-// {
-// 	char	*tmp;
-// 	char	*res;
-
-// 	tmp = readline("quote> ");
-// 	if (!tmp)
-// 	{
-// 		free(str);
-// 		return (NULL);
-// 	}
-// 	res = ft_strjoin_buffer(str, tmp, '\n');
-// 	free(str);
-// 	free(tmp);
-// 	if (!res)
-// 		return (NULL);
-// 	return (res);
-// }

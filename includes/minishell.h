@@ -6,10 +6,9 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 20:57:34 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 21:03:46 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:35:23 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -181,7 +180,6 @@ t_ast					**combine(t_ast **head, t_ast *cmd);
 void					free_split(char **split);
 void					handle_backslash(t_extract_state *state);
 void					handle_quote(t_extract_state *state, char quote_type);
-t_ast					**build_and_print_ast(t_token *lst, t_ast **env);
 void					handle_special_chars(t_extract_state *state);
 int						should_break(t_extract_state *state);
 void					init_extract_state(t_extract_state *state,
@@ -209,7 +207,6 @@ int						process_redirection_child(t_ast *child);
 void					builtin_env(t_ast **env);
 char					*env_get_entry(t_ast *env, char *key);
 char					*env_get_value(t_ast *env, char *key);
-char					*readline_open_quotes(char *str);
 int						open_quotes(const char *str);
 char					*clean_line(char *str, t_ast **env);
 char					**ft_split_once_range(const char *s, char sep,
@@ -254,12 +251,11 @@ int						handle_var_expansion(char **str, int *i, t_ast **env,
 int						ft_strnstr(char *big, char *little);
 int						check_redirection_without_file(t_token *lst);
 int						check_invalid_combinations(t_token *lst);
-void					show_list(t_token *list);
 void					free_stack(t_token **stack);
 int						ft_lstsize(t_token *lst);
 void					ft_lstadd_back(t_token **lst, t_token *new, char *str);
 void					ft_lstadd_back_with_quote_info(t_token **lst,
-							t_token *new, int was_quoted);
+							t_token *new);
 int						create_list(t_token **start, char **str);
 int						create_list_with_quote_info(t_token **start,
 							t_token_info *tokens, int token_count);
@@ -267,8 +263,7 @@ t_token					*ft_lstnew(char *str);
 t_token					*ft_lstnew_with_quote_info(char *str, int was_quoted);
 t_token_info			extract_token_with_quote_info(const char **s);
 void					execute_nodes(t_ast **head, t_ast **env);
-void					execute_nodes2(t_ast **head, t_ast **env);
-int						validate_command_exists(const char *cmd, t_ast **env);
+
 void					exec_pipe_right(t_ast *node, t_ast **head, t_ast **env,
 							t_pipe_data *data);
 void					exec_pipe_left(t_ast *node, t_ast **head, t_ast **env,
@@ -399,7 +394,6 @@ t_token_info			*split_bash_style_with_quotes(const char *input,
 void					exit_status(t_token **lst, t_ast **env);
 int						check_syntax_errors(t_token *lst);
 void					ft_putstr_fd(char *s, int fd);
-void					print_exit_code(t_ast **env);
 void					handle_errno_error(const char *path);
 void					command_not_found_error(const char *cmd);
 void					exit_child(int exit_code, int child);
@@ -410,6 +404,10 @@ void					setup_shell_signals(void);
 void					setup_child_signals(void);
 void					ignore_signals_during_execution(void);
 void					restore_parent_signals(void);
+int						ft_isalpha(int c);
+int						ft_isalnum(int c);
+int						ft_isspace(int c);
+size_t					ft_strcspn(const char *s1, const char *s2);
 // exec2 helper functions
 void					free_ast_full(t_ast **head);
 void					free_argv_shallow(char **tab);
@@ -471,9 +469,6 @@ int						handle_output_redirection(t_ast *child);
 // Command error utilities
 int						classify_error(const char *cmd, char *resolved);
 
-// Validation utilities
-int						validate_command_exists(const char *cmd, t_ast **env);
-
 // Split utilities
 char					**split_by_newline(char *str);
 char					**split_newline_alloc(char *str, int line_count);
@@ -505,7 +500,6 @@ void					create_initial_env(char *argv, t_ast **env);
 // CMD6 CD helpers
 int						handle_home_directory(t_ast **env);
 int						change_to_path(char *path);
-int						handle_specific_path(char *path, char *resolved_path);
 
 // Environment helpers
 void					set_env_var(t_ast *env, char *name, char *value);
@@ -516,6 +510,9 @@ int						validate_shlvl_export(int value);
 char					*create_validated_shlvl_entry(char *argv);
 void					execute_external_command(t_ast *node, t_ast **head,
 							t_ast **env, t_cmd_params *params);
+int						prepare_command_args(t_ast *node,
+							t_cleanup_params *cleanup, char ***tab,
+							char **path);
 
 // PRE PARSING UTILS HUGO
 int						count_total_quotes(char *line);
@@ -526,6 +523,6 @@ void					update_quotes_state(t_qtstate *state, char c);
 
 // PRE PARSING HUGO
 bool					return_quotes_error(char *line);
-bool					too_much_redir(char *line);
+bool					too_much_redir(char *line, t_ast **env);
 
 #endif

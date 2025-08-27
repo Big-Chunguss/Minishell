@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 19:28:11 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 19:42:40 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:20:48 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,8 @@ extern int	g_exit_code;
 
 void	handle_sigint_parent(int sig_num)
 {
-	const char	*prompt = "Minishell> ";
-
 	(void)sig_num;
-	write(STDOUT_FILENO, "\r", 1);
-	write(STDOUT_FILENO, prompt, 11);
-	write(STDOUT_FILENO, "^c\n", 3);
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -56,13 +52,8 @@ void	setup_sigquit_handler(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	disable_echoctl(void)
+void	ignore_signals_during_execution(void)
 {
-	struct termios	term;
-
-	if (tcgetattr(STDIN_FILENO, &term) == 0)
-	{
-		term.c_lflag &= ~ECHOCTL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }

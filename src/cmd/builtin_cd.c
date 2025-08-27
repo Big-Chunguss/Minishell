@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 19:53:28 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:30:35 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@ int	handle_home_directory(t_ast **env)
 	write(2, home, ft_strlen(home));
 	write(2, ": No such file or directory\n", 28);
 	return (1);
-}
-
-int	handle_specific_path(char *path, char *resolved_path)
-{
-	(void)resolved_path;
-	return (change_to_path(path));
 }
 
 static int	count_cd_args(char **argv, int i)

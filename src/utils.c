@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:16:51 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:25:21 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:45:21 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	check_type(char *str)
 {
-	if (!strcmp(str, "|"))
+	if (!ft_strcmp(str, "|"))
 		return (PIPE);
-	else if (!strcmp(str, "<"))
+	else if (!ft_strcmp(str, "<"))
 		return (INPUT_REDIRECT);
-	else if (!strcmp(str, "<<"))
+	else if (!ft_strcmp(str, "<<"))
 		return (HEREDOC);
-	else if (!strcmp(str, ">"))
+	else if (!ft_strcmp(str, ">"))
 		return (OUTPUT_REDIRECT);
-	else if (!strcmp(str, ">>"))
+	else if (!ft_strcmp(str, ">>"))
 		return (APPEND);
 	else if (contains_meta_character(str))
 		return (INVALID);
@@ -70,28 +70,4 @@ int	is_meta_character(char c)
 		i++;
 	}
 	return (0);
-}
-
-void	separate_tokens(char *str)
-{
-	int	i;
-	int	count_letters;
-
-	i = 0;
-	count_letters = 0;
-	while (str[i])
-	{
-		while (isspace(str[i]))
-			i++;
-		while (is_meta_character(str[i]))
-		{
-			count_letters++;
-			i++;
-		}
-		while (str[i] && !isspace(str[i]) && !is_meta_character(str[i]))
-		{
-			count_letters++;
-			i++;
-		}
-	}
 }

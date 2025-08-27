@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:25:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 21:02:47 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:21:57 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,3 @@ int	is_directory(const char *path)
 		return (S_ISDIR(st.st_mode));
 	return (0);
 }
-

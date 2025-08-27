@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 19:30:54 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:20:09 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	build_in(char **tab, int i, t_ast **env, t_cleanup_params *cleanup)
 		else if (ft_strcmp("echo", tab[i]) == 0)
 			echo_recognition(tab, i, env);
 		else if (ft_strcmp("exit", tab[i]) == 0)
-			exit_recognition(tab, i,env, cleanup);
+			exit_recognition(tab, i, env, cleanup);
 	}
 }
 
@@ -54,5 +54,25 @@ int	cmd_recognize(char *tab)
 {
 	if (ft_strnstr(BUILTIN, tab) == 1)
 		return (0);
+	return (1);
+}
+
+int	parse_exp(char *argv)
+{
+	int	j;
+
+	j = skip_isspace(argv);
+	if (argv[j] == '=')
+		return (1);
+	if (argv[j] >= '0' && argv[j] <= '9')
+		return (1);
+	if (check_dbl_equal(argv))
+		return (1);
+	while (ft_isalpha(argv[j]) || ft_isalnum(argv[j]) || argv[j] == '_')
+		j++;
+	if (argv[j] == '=' || argv[j] == '\0')
+		return (0);
+	if (argv[j] != '\0' && argv[j] != '=')
+		return (1);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 14:56:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:12:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,31 @@ void	unset_env(char *argv, t_ast **env)
 
 static void	unset_from_array(char **array, char *name, int name_len)
 {
-    int	i;
-    int	j;
-	char *va_start;
+	int		i;
+	int		j;
+	char	*va_start;
 
-    if (!array)
-        return ;
-    i = 0;
-    while (array[i])
-    {
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
 		va_start = array[i] + 7;
-        if (ft_strncmp(va_start, name, name_len) == 0
-            && (va_start[name_len] == '=' || va_start[name_len] == '\0'))
-        {
-            free(array[i]);
-            j = i;
-            while (array[j + 1])
-            {
-                array[j] = array[j + 1];
-                j++;
-            }
-            array[j] = NULL;
-            i--;
-        }
-        i++;
-    }
+		if (ft_strncmp(va_start, name, name_len) == 0
+			&& (va_start[name_len] == '=' || va_start[name_len] == '\0'))
+		{
+			free(array[i]);
+			j = i;
+			while (array[j + 1])
+			{
+				array[j] = array[j + 1];
+				j++;
+			}
+			array[j] = NULL;
+			i--;
+		}
+		i++;
+	}
 }
 
 void	unset_exp(char *name, t_ast **env)

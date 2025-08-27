@@ -6,33 +6,13 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:45:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 15:47:45 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:18:55 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_exit_code;
-
-int	parse_exp(char *argv)
-{
-	int	j;
-
-	j = skip_isspace(argv);
-	if (argv[j] == '=')
-		return (1);
-	if (argv[j] >= '0' && argv[j] <= '9')
-		return (1);
-	if (check_dbl_equal(argv))
-		return (1);
-	while (isalpha(argv[j]) || isalnum(argv[j]) || argv[j] == '_')
-		j++;
-	if (argv[j] == '=' || argv[j] == '\0')
-		return (0);
-	if (argv[j] != '\0' && argv[j] != '=')
-		return (1);
-	return (1);
-}
 
 static void	export_error(char *var_name)
 {
@@ -50,11 +30,9 @@ int	value_exists_in_export(t_ast **env, char *search)
 	if (!env || !(*env) || !(*env)->env || !(*env)->env->export || !search)
 		return (0);
 	name_len = ft_strlen(search);
-	printf("%s\n", search);
 	i = 0;
 	while ((*env)->env->export[i])
 	{
-		printf("%s", (*env)->env->export[i]);
 		va_start = (*env)->env->export[i] + 7;
 		if (ft_strncmp(va_start, search, name_len) == 0
 			&& (va_start[name_len] == '=' || va_start[name_len] == '\0'))
@@ -66,20 +44,18 @@ int	value_exists_in_export(t_ast **env, char *search)
 
 static void	handle_export_variable(char *argv, t_ast **env)
 {
-	int		is_assign;
 	char	*var_name;
 	char	*equals_pos;
 	int		name_len;
 	int		j;
 
-	is_assign = (strchr(argv, '=') != NULL);
-	if (!is_assign && value_exists_in_export(env, argv))
+	if ((ft_strchr(argv, '=') == NULL) && value_exists_in_export(env, argv))
 		return ;
-	if (!is_assign)
+	if (ft_strchr(argv, '=') == NULL)
 		add_export(argv, env);
 	else
 	{
-		equals_pos = strchr(argv, '=');
+		equals_pos = ft_strchr(argv, '=');
 		name_len = equals_pos - argv;
 		var_name = malloc(name_len + 1);
 		j = -1;

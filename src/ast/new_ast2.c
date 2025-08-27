@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:04:04 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:19:07 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:29:10 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	define_type(char *str, t_ast **env)
 		free(cmd_path);
 		return (NODE_COMMAND);
 	}
-	if (!strcmp(str, "<<") || !strcmp(str, "<") || !strcmp(str, ">>")
-		|| !strcmp(str, ">"))
+	if (!ft_strcmp(str, "<<") || !ft_strcmp(str, "<") || !ft_strcmp(str, ">>")
+		|| !ft_strcmp(str, ">"))
 		return (NODE_REDIRECTION);
-	if (!strcmp(str, "|"))
+	if (!ft_strcmp(str, "|"))
 		return (NODE_PIPE);
 	return (NODE_ARGUMENT);
 }

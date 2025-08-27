@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:41:26 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/25 12:23:05 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:46:08 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,24 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	copy_str(str, s1, &i);
 	copy_str2(str, s2, i);
 	return (str);
+}
+
+size_t	ft_strcspn(const char *s1, const char *s2)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (s1[i])
+	{
+		j = 0;
+		while (s2[j])
+		{
+			if (s1[i] == s2[j])
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (i);
 }

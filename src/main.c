@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfragnol <hfragnol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 12:47:21 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/26 17:38:40 by hfragnol         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:04:02 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ void	infinite_read(t_token **lst, t_ast **env)
 		if (!line)
 			return ;
 		if (line[0] == 0 || return_quotes_error(line) == false
-			|| too_much_redir(line) == true)
+			|| too_much_redir(line, env) == true)
 		{
 			free(line);
 			continue ;
 		}
 		add_history(line);
 		if (!ft_strcmp(line, "clear"))
-			clear_history();
+			rl_clear_history();
 		if (!ft_strcmp(line, "exit"))
 		{
 			free(line);
@@ -46,21 +46,10 @@ void	infinite_read(t_token **lst, t_ast **env)
 char	*get_input(void)
 {
 	char	*line;
-	//char	*tmp;
+
 	line = readline("Minishell> ");
 	if (line == NULL)
 		return (NULL);
-	// while (open_quotes(line))
-	// {
-	// 	tmp = readline_open_quotes(line);
-	// 	if (!tmp)
-	// 	{
-	// 		free(line);
-	// 		return (NULL);
-	// 	}
-	// 	free(line);
-	// 	line = tmp;
-	// }
 	return (line);
 }
 
@@ -93,7 +82,6 @@ int	main(int argc, char **argv, char **env)
 	lst = &list;
 	setup_sigint_handler();
 	setup_sigquit_handler();
-	disable_echoctl();
 	initialise_env(ast_head, env);
 	initialise_exp(ast_head, env);
 	initialise_shlvl(ast_head);
@@ -110,6 +98,4 @@ void	cleanup_readline_resources(void)
 {
 	cleanup_get_next_line();
 	rl_clear_history();
-	rl_cleanup_after_signal();
-	rl_deprep_terminal();
 }

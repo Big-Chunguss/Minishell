@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:12:57 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:19:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:18:15 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,6 @@ void	free_split(char **split)
 		i++;
 	}
 	free(split);
-}
-
-t_ast	**build_and_print_ast(t_token *lst, t_ast **env)
-{
-	t_ast	**root;
-
-	root = malloc(sizeof(t_ast *));
-	*root = parse_pipeline(&lst, env);
-	return (root);
 }
 
 char	*ft_strjoin_slash(char const *s1, char const *s2)

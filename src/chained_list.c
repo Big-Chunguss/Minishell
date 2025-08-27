@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:24:00 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/25 12:02:56 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 21:06:44 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	create_list_with_quote_info(t_token **start, t_token_info *tokens,
 			free_stack(start);
 			return (0);
 		}
-		ft_lstadd_back_with_quote_info(start, new, 0);
+		ft_lstadd_back_with_quote_info(start, new);
 		i++;
 	}
 	return (1);

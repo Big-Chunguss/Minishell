@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 20:54:52 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 23:22:36 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	execute_external_command(t_ast *node, t_ast **head, t_ast **env,
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		setup_child_signals();
 		run_command(node, head, env, params);
 	}

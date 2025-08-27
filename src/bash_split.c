@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 14:17:39 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/23 13:07:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/27 22:30:24 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_special_char(char c)
 
 static void	skip_whitespace(const char **s)
 {
-	while (isspace(**s))
+	while (ft_isspace(**s))
 		(*s)++;
 }
 
@@ -39,7 +39,7 @@ char	**split_bash_style(const char *input)
 	int			count;
 	char		*token;
 
-	alloc_count = strlen(input) / 2 + 5;
+	alloc_count = ft_strlen(input) / 2 + 5;
 	tokens = malloc(sizeof(char *) * alloc_count);
 	if (!tokens)
 		return (NULL);
@@ -68,7 +68,7 @@ t_token_info	*split_bash_style_with_quotes(const char *input,
 	int				count;
 	t_token_info	info;
 
-	alloc_count = strlen(input) / 2 + 5;
+	alloc_count = ft_strlen(input) / 2 + 5;
 	tokens = malloc(sizeof(t_token_info) * alloc_count);
 	if (!tokens)
 		return (NULL);

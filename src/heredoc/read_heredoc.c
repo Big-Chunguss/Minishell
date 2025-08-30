@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:25:03 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/30 17:15:37 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:37:26 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	read_heredoc(char *limiter, int quoted_limiter, t_ast **env,
 		char *output_path)
 {
 	char	*line;
-	char	*str;
 	char	temp_path[256];
+	int		fd;
 
-	str = ft_strdup("");
-	if (!str)
-		return ;
 	get_random_filename(temp_path);
+	fd = open(temp_path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+		return ;
 	while (1)
 	{
 		line = heredoc_readline();
@@ -52,12 +52,12 @@ void	read_heredoc(char *limiter, int quoted_limiter, t_ast **env,
 			break ;
 		}
 		maybe_expand_line(&line, quoted_limiter, env);
-		append_line(&str, line);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
-	finalize_heredoc(str, temp_path);
+	close(fd);
 	ft_strlcpy(output_path, temp_path, 256);
-	free(str);
 }
 
 void	read_heredoc_consume_only(char *limiter)

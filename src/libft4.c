@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:33:04 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 23:46:16 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:17:15 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,6 @@ int	ft_isalpha(int c)
 int	ft_isalnum(int c)
 {
 	if (ft_isalpha(c) || ft_isdigit(c))
-		return (1);
-	return (0);
-}
-
-int	ft_isspace(int c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r')
 		return (1);
 	return (0);
 }

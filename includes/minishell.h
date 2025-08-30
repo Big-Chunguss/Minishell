@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 20:57:34 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:28:17 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:13:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -477,7 +477,7 @@ char					**finish_last_line(char *str, char **result, int j,
 
 // Heredoc readline utilities
 void					maybe_expand_line(char **line, int quoted_limiter,
-							t_ast **env, char *output_path);
+							t_ast **env);
 void					append_line(char **acc, char *line);
 void					finalize_heredoc(char *str, char *temp_filename);
 

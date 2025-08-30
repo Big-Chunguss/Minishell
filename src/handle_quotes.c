@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 14:08:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 17:50:59 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 16:57:49 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static int	handle_dollar(char **str, int *i, t_ast **env, int *replaced_first)
 	start = *i;
 	len = 1;
 	if ((*str)[*i + 1] == '?')
-	{
 		len = 2;
-	}
 	else
 	{
 		while ((*str)[*i + len] && is_var_char((*str)[*i + len]))

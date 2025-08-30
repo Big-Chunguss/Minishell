@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:12:04 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /// @brief Starts heredoc processing and returns the temporary file path
 /// @param limiter String that marks the end of heredoc input
-/// @param quoted_limiter Flag indicating if limiter was quoted (affects expansion)
+/// @param quoted_limiter Flag indicating if limiter was quoted
+/// (affects expansion)
 /// @param env Pointer to environment AST for variable expansion
 /// @return String containing path to temporary heredoc file, or NULL on error
 char	*start_heredoc(char *limiter, int quoted_limiter, t_ast **env)

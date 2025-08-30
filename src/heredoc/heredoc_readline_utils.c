@@ -6,17 +6,15 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:35:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:01:35 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:12:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	maybe_expand_line(char **line, int quoted_limiter, t_ast **env, char *output_path)
+void	maybe_expand_line(char **line, int quoted_limiter, t_ast **env)
 {
 	char	*expanded;
-
-	(void)output_path;
 
 	if (quoted_limiter)
 		return ;

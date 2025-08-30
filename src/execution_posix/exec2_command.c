@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:58:46 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:24:45 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	execute_external_command(t_ast *node, t_ast **head, t_ast **env,
 	else if (WIFSIGNALED(status))
 		(*env)->env->error_code = 128 + WTERMSIG(status);
 	if ((*env)->env->error_code == 131)
-		ft_putstr_fd("Quit/ Core cumped\n", STDERR_FILENO);
+		ft_putstr_fd("Quit/ (Core dumped)\n", STDERR_FILENO);
 }
 
 void	execute_builtin_command(t_ast *node, t_ast **head, t_ast **env,

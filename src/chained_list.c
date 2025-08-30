@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:24:00 by stcharlo          #+#    #+#             */
-/*   Updated: 2025/08/29 18:28:12 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 16:57:21 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ t_token	*ft_lstnew_with_quote_info(char *str, int was_quoted)
 
 /// @brief Creates a token linked list from an array of token info structures
 /// @param start Pointer to pointer to the first token (will be set by function)
-/// @param tokens Array of token info structures containing values and quote flags
+/// @param tokens Array of token info structures containing values
+/// and quote flags
 /// @param token_count Number of tokens in the array
 /// @return 1 on success, 0 on allocation failure
 int	create_list_with_quote_info(t_token **start, t_token_info *tokens,

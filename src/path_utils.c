@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 22:30:35 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:16:40 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,12 @@ void	build_pattern(char *pattern, size_t size, const char *trimmed_limiter)
 	ft_strcpy_safe(pattern, "/tmp/minishell_heredoc_", size);
 	ft_strcat_safe(pattern, trimmed_limiter, size);
 	ft_strcat_safe(pattern, "_*", size);
+}
+
+int	ft_isspace(int c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r')
+		return (1);
+	return (0);
 }

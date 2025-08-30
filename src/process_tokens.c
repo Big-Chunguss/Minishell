@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 12:21:44 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:42:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:03:09 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	handle_heredoc_and_syntax(t_token **lst, t_token_info **tokens,
 		(*env)->env->error_code = 130;
 		g_exit_code = 0;
 		free_token_info_array(*tokens, token_count);
+		*tokens = NULL;
 		*lst = NULL;
 		return (0);
 	}
@@ -49,13 +50,15 @@ static int	handle_heredoc_and_syntax(t_token **lst, t_token_info **tokens,
 	{
 		(*env)->env->error_code = 2;
 		free_token_info_array(*tokens, token_count);
+		*tokens = NULL;
 		*lst = NULL;
 		return (0);
 	}
 	return (token_count);
 }
 
-/// @brief Initializes and processes tokens from input line, handles heredoc and syntax checking
+/// @brief Initializes and processes tokens from input line,
+///	handles heredoc and syntax checking
 /// @param lst Pointer to token list to be populated
 /// @param line Input command line string
 /// @param env Pointer to environment AST for variable expansion
@@ -68,6 +71,7 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 	char	*expanded_line;
 	char	*heredoc_path;
 	int		result;
+	t_token	*original_list;
 
 	expanded_line = unquoted_var_expansion(line, env);
 	*tokens = split_bash_style_with_quotes(expanded_line, &token_count);
@@ -75,12 +79,17 @@ static int	init_tokens_and_check(t_token **lst, char *line, t_ast **env,
 		free(expanded_line);
 	*lst = NULL;
 	create_list_with_quote_info(lst, *tokens, token_count);
+	original_list = *lst;
 	exit_status(lst, env);
 	heredoc_path = NULL;
 	check_heredoc(lst, env, &heredoc_path);
 	if (heredoc_path)
 		free(heredoc_path);
 	result = handle_heredoc_and_syntax(lst, tokens, token_count, env);
+	if (result == 0 && original_list)
+	{
+		free_stack(&original_list);
+	}
 	return (result);
 }
 
@@ -95,35 +104,33 @@ static void	handle_ast_and_exec(t_token **lst, t_ast **env,
 	t_ast	*ast_root;
 	t_token	*original_list_head;
 
+	if (!*lst)
+		return ;
 	original_list_head = *lst;
 	exit_status(lst, env);
 	ast_root = parse_pipeline(lst, env);
-	free_token_info_array(tokens, token_count);
+	if (tokens)
+		free_token_info_array(tokens, token_count);
+	free_stack(&original_list_head);
 	if (ast_root)
 	{
 		execute_nodes(&ast_root, env);
 		ast_free(ast_root);
 	}
 	unlink_redirection(&original_list_head);
-	free_stack(&original_list_head);
 }
 
-/// @brief Main token processing function - parses input line and executes commands
+/// @brief Main token processing function
+///	- parses input line and executes commands
 /// @param lst Pointer to token list (will be populated then used for execution)
 /// @param line Input command line string to be processed
-/// @param env Pointer to environment AST for variable expansion and execution context
+/// @param env Pointer to environment AST for variable expansion and
+/// execution context
 void	process_tokens(t_token **lst, char *line, t_ast **env)
 {
 	t_token_info	*tokens;
-	t_token *tmp;
 	int				token_count;
 
 	token_count = init_tokens_and_check(lst, line, env, &tokens);
-	tmp = (*lst);
-	while (tmp)
-	{
-		printf("lst: %s\n", tmp->value);
-		tmp = tmp->next;
-	}
 	handle_ast_and_exec(lst, env, tokens, token_count);
 }

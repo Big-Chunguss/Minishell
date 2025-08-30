@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:12:16 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	is_limiter_line(char *line, char *limiter)
 }
 
 /// @brief Generates a random temporary filename for heredoc
-/// @param file_name Buffer to store the generated filename (must be at least 256 bytes)
+/// @param file_name Buffer to store the generated filename
+/// (must be at least 256 bytes)
 void	get_random_filename(char *file_name)
 {
 	size_t			i;

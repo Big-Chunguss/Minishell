@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:33:49 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:03:41 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,12 @@ int	handle_output_redirection(t_ast *child)
 
 int	process_redirection_child(t_ast *child)
 {
-	char	*heredoc_path;
-
 	if (g_exit_code == 130)
 		return (-1);
 	if (!ft_strcmp(child->value, "<"))
 		return (handle_input_redirection(child));
 	else if (!ft_strcmp(child->value, "<<"))
-	{
-		heredoc_path = find_heredoc_file();
-		if (!heredoc_path)
-		{
-			write(2, "No heredoc file found!\n", 23);
-			return (-1);
-		}
-		free(child->target->value);
-		child->target->value = heredoc_path;
 		return (handle_input_redirection(child));
-	}
 	else if (!ft_strcmp(child->value, ">") || !ft_strcmp(child->value, ">>"))
 		return (handle_output_redirection(child));
 	return (0);

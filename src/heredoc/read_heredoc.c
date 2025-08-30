@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:25:03 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/30 17:15:37 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ char	*heredoc_readline(void)
 
 /// @brief Main heredoc reading function that processes user input until limiter
 /// @param limiter String that marks the end of heredoc input
-/// @param quoted_limiter Flag indicating if limiter was quoted (affects variable expansion)
+/// @param quoted_limiter Flag indicating if limiter was quoted
+///  (affects variable expansion)
 /// @param env Pointer to environment AST for variable expansion
 /// @param output_path Buffer to store the path of generated temporary file
 void	read_heredoc(char *limiter, int quoted_limiter, t_ast **env,
@@ -50,7 +51,7 @@ void	read_heredoc(char *limiter, int quoted_limiter, t_ast **env,
 			free(line);
 			break ;
 		}
-		maybe_expand_line(&line, quoted_limiter, env, output_path);
+		maybe_expand_line(&line, quoted_limiter, env);
 		append_line(&str, line);
 		free(line);
 	}

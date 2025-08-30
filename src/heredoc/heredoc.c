@@ -6,17 +6,30 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:17 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 23:01:06 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	start_heredoc(char *limiter, int quoted_limiter, t_ast **env)
+/// @brief Starts heredoc processing and returns the temporary file path
+/// @param limiter String that marks the end of heredoc input
+/// @param quoted_limiter Flag indicating if limiter was quoted (affects expansion)
+/// @param env Pointer to environment AST for variable expansion
+/// @return String containing path to temporary heredoc file, or NULL on error
+char	*start_heredoc(char *limiter, int quoted_limiter, t_ast **env)
 {
-	read_heredoc(limiter, quoted_limiter, env);
+	char	heredoc_path[256];
+
+	read_heredoc(limiter, quoted_limiter, env, heredoc_path);
+	if (heredoc_path[0] != '\0')
+		return (ft_strdup(heredoc_path));
+	return (NULL);
 }
 
+/// @brief Copies content from temporary file to target file
+/// @param temp_path Path to the source temporary file
+/// @param filename Path to the destination file
 void	copy_tmp_to_file(const char *temp_path, const char *filename)
 {
 	int		fd;
@@ -46,11 +59,11 @@ void	copy_tmp_to_file(const char *temp_path, const char *filename)
 	free(buffer);
 }
 
-int	open_tempfile(const char *filename, char *temp_path, size_t path_size)
+int	open_tempfile(char *temp_path)
 {
 	int	fd;
 
-	build_temp_path(temp_path, path_size, filename, getpid());
+	get_random_filename(temp_path);
 	fd = open(temp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{

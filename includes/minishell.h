@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 20:57:34 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 22:35:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:28:17 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ typedef struct s_segment
 	int					len;
 	int					word;
 }						t_segment;
+void					get_random_filename(char *file_name);
 
 // ast
 t_ast					*create_ast_node(int type, char *value);
@@ -222,8 +223,7 @@ char					*ft_substr(char const *s, unsigned int start,
 void					*ft_calloc(size_t nmemb, size_t size);
 char					*ft_strjoin(char const *s1, char const *s2);
 char					*ft_strchr(const char *s, int c);
-int						open_tempfile(const char *filename, char *temp_path,
-							size_t path_size);
+int						open_tempfile(char *temp_path);
 void					process_tokens(t_token **lst, char *line, t_ast **env);
 char					*get_input(void);
 void					infinite_read(t_token **lst, t_ast **env);
@@ -247,7 +247,7 @@ int						is_var_char2(char c);
 void					handle_quotes(const char *str, int i,
 							int *in_single_quotes, int *in_double_quotes);
 int						handle_var_expansion(char **str, int *i, t_ast **env,
-							int in_single_quotes);
+							int *replaced_first);
 int						ft_strnstr(char *big, char *little);
 int						check_redirection_without_file(t_token *lst);
 int						check_invalid_combinations(t_token *lst);
@@ -256,10 +256,8 @@ int						ft_lstsize(t_token *lst);
 void					ft_lstadd_back(t_token **lst, t_token *new, char *str);
 void					ft_lstadd_back_with_quote_info(t_token **lst,
 							t_token *new);
-int						create_list(t_token **start, char **str);
 int						create_list_with_quote_info(t_token **start,
 							t_token_info *tokens, int token_count);
-t_token					*ft_lstnew(char *str);
 t_token					*ft_lstnew_with_quote_info(char *str, int was_quoted);
 t_token_info			extract_token_with_quote_info(const char **s);
 void					execute_nodes(t_ast **head, t_ast **env);
@@ -371,14 +369,16 @@ char					*read_and_join(char *buffer, int fd, int *should_break);
 
 // Heredoc
 void					clean_heredoc(char **argv);
+void					process_heredoc_content(char *str, char *final_path);
 void					read_heredoc(char *limiter, int quoted_limiter,
-							t_ast **env);
+							t_ast **env, char *output_path);
 void					read_heredoc_consume_only(char *limiter);
 void					free_tab(char **tab);
-void					check_heredoc(t_token **lst, t_ast **env);
+void					check_heredoc(t_token **lst, t_ast **env,
+							char **heredoc_path_out);
 void					copy_tmp_to_file(const char *temp_path,
 							const char *filename);
-void					start_heredoc(char *limiter, int quoted_limiter,
+char					*start_heredoc(char *limiter, int quoted_limiter,
 							t_ast **env);
 
 void					setup_sigint_handler(void);
@@ -451,7 +451,7 @@ void					ft_strcpy_safe(char *dst, const char *src, size_t size);
 void					ft_strcat_safe(char *dst, const char *src, size_t size);
 
 // Heredoc file finder
-char					*find_heredoc_file(const char *limiter);
+char					*find_heredoc_file(void);
 
 // Heredoc path utilities
 void					build_prefix(const char *limiter, char *prefix,
@@ -477,12 +477,13 @@ char					**finish_last_line(char *str, char **result, int j,
 
 // Heredoc readline utilities
 void					maybe_expand_line(char **line, int quoted_limiter,
-							t_ast **env);
+							t_ast **env, char *output_path);
 void					append_line(char **acc, char *line);
-void					finalize_heredoc(char *str, char *filename);
+void					finalize_heredoc(char *str, char *temp_filename);
 
 // Heredoc check utilities
-void					check_heredoc(t_token **lst, t_ast **env);
+void					check_heredoc(t_token **lst, t_ast **env,
+							char **heredoc_path_out);
 
 // Cleanup functions
 void					cleanup_readline_resources(void);

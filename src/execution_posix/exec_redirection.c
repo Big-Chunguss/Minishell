@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 11:33:49 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 22:29:23 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 extern int	g_exit_code;
 
+/// @brief Handles input redirection for a command
+/// @param child AST node representing the input redirection
+/// @return 0 on success, -1 on error
 int	handle_input_redirection(t_ast *child)
 {
 	int	fd;
@@ -26,6 +29,9 @@ int	handle_input_redirection(t_ast *child)
 	return (0);
 }
 
+/// @brief Handles output redirection for a command
+/// @param child AST node representing the output redirection
+/// @return 0 on success, -1 on error
 int	handle_output_redirection(t_ast *child)
 {
 	int	fd;
@@ -48,7 +54,7 @@ int	process_redirection_child(t_ast *child)
 		return (handle_input_redirection(child));
 	else if (!ft_strcmp(child->value, "<<"))
 	{
-		heredoc_path = find_heredoc_file(child->target->value);
+		heredoc_path = find_heredoc_file();
 		if (!heredoc_path)
 		{
 			write(2, "No heredoc file found!\n", 23);

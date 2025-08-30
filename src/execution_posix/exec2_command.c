@@ -6,7 +6,7 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 23:22:36 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:58:46 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 
 extern int	g_exit_code;
 
+/// @brief Handles execution of empty commands with redirections only
+/// @param node AST node (may be NULL for empty command)
+/// @param head Pointer to AST head for context
+/// @param env Pointer to environment AST
+/// @param params Command execution parameters including file descriptors
 static void	handle_empty_command(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
 {
@@ -33,6 +38,11 @@ static void	handle_empty_command(t_ast *node, t_ast **head, t_ast **env,
 	cleanup_and_exit(0, &redir_cleanup);
 }
 
+/// @brief Main command execution function for individual commands
+/// @param node AST node representing the command to execute
+/// @param head Pointer to AST head for context
+/// @param env Pointer to environment AST
+/// @param params Command execution parameters including file descriptors
 void	run_command(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
 {

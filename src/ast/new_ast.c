@@ -6,12 +6,16 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:04:04 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 22:32:16 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/// @brief Creates a new AST node with specified type and value
+/// @param type Integer representing the node type (WORD, PIPE, REDIRECT, etc.)
+/// @param value String value for the node (duplicated internally)
+/// @return Pointer to newly created AST node, or NULL on allocation failure
 t_ast	*create_ast_node(int type, char *value)
 {
 	t_ast	*new;
@@ -32,6 +36,9 @@ t_ast	*create_ast_node(int type, char *value)
 	return (new);
 }
 
+/// @brief Adds a child node to an AST parent node
+/// @param parent Parent AST node to add child to
+/// @param child Child AST node to be added
 void	add_ast_child(t_ast *parent, t_ast *child)
 {
 	t_ast	**new_children;

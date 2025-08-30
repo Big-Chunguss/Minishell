@@ -6,12 +6,16 @@
 /*   By: agaroux <agaroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:10:00 by agaroux           #+#    #+#             */
-/*   Updated: 2025/08/27 21:16:33 by agaroux          ###   ########.fr       */
+/*   Updated: 2025/08/29 18:17:22 by agaroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/// @brief Initializes pipeline execution data structure
+/// @param data Pipeline data structure to initialize
+/// @param node AST node representing the start of the pipeline
+/// @param input_fd File descriptor for pipeline input
 static void	init_pipeline_vars(t_pipeline_data *data, t_ast *node, int input_fd)
 {
 	data->cmds = count_pipeline_cmds(node);
@@ -20,6 +24,11 @@ static void	init_pipeline_vars(t_pipeline_data *data, t_ast *node, int input_fd)
 	data->cur = node;
 }
 
+/// @brief Executes a complete command pipeline with proper process management
+/// @param node AST node representing the pipeline to execute
+/// @param head Pointer to AST head for context
+/// @param env Pointer to environment AST
+/// @param params Command execution parameters including file descriptors
 static void	run_pipeline(t_ast *node, t_ast **head, t_ast **env,
 		t_cmd_params *params)
 {
